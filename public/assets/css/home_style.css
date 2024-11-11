@@ -1,0 +1,18 @@
+body{
+    color: #0c5894;
+    background-color: #eeeeee;
+}
+
+p, h1, h2, h3 , ul li a{
+    color: inherit!important;
+}
+
+button {
+    border-color: #ad3324;
+    background-color: #ad3324;
+    border-radius: 10px;
+    border: none;
+    color: #fdfbfb;
+    font-family: "Open Sauce One", sans-serif;
+    padding: 10px;
+}

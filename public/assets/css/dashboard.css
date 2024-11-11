@@ -1,0 +1,329 @@
+@import url("https://fonts.cdnfonts.com/css/open-sauce-one");
+
+body {
+    margin: 0;
+    background-color: #eeeeee;
+    font-family: "Open Sauce One", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-style: normal;
+}
+
+header {
+    height: 100px;
+    background-color: #eeeeee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.brand-container {
+    width: 130px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.brand-container a {
+    height: 100%;
+}
+
+.brand-container a img {
+    height: 100%;
+}
+
+.brand-name {
+    color: blue;
+}
+
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 90px;
+    align-items: end;
+}
+
+.profile-icon {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fdfbfb;
+}
+
+.profile-icon button {
+    height: 50%;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ad3324;
+    cursor: pointer;
+}
+
+.profile-icon svg {
+    height: 100%;
+    fill: #ad3324;
+}
+
+.main-container {
+    height: calc(100vh - 100px);
+    display: flex;
+}
+
+.sidebar {
+    position: relative;
+    left: 0;
+    height: calc(100vh - 100px);
+    width: 200px;
+    background-color: #eeeeee;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.sidebar a {
+    font-size: 15px;
+    text-decoration: none;
+    color: #0c5894;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fdfbfb;
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
+    justify-content: center;
+}
+
+.sidebar a:hover {
+    color: #ad3324;
+}
+
+.sidebar svg {
+    fill: inherit;
+    height: inherit;
+    width: inherit;
+}
+
+.main {
+    width: calc(100% - 100px);
+    padding: 10px;
+    display: flex;
+    overflow-x: auto;
+    box-shadow: inset 0px 0px 5px 3px rgb(216 215 222 / 75%);
+    -webkit-box-shadow: inset 0px 0px 5px 3px rgb(216 215 222 / 75%);
+    -moz-box-shadow: inset 0px 0px 5px 3px rgba(39, 38, 46, 0.75);
+    flex-direction: column;
+    align-items: center;
+}
+
+.main h2 {
+    font-family: inherit;
+    margin: 10px;
+    color: #0c5894;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    width: 100%;
+    background-color: #fdfbfb;
+    height: 200px;
+    border-radius: 3px;
+    margin: 10px;
+    color: #0c5894;
+    box-shadow: 0px 0px 5px 3px rgb(216 215 222 / 75%);
+    -webkit-box-shadow: 0px 0px 5px 3px rgb(216 215 222 / 75%);
+    -moz-box-shadow: 0px 0px 5px 3px rgba(39, 38, 46, 0.75);
+}
+
+.deck-card {
+    height: fit-content;
+    width: 80%;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.card-profile {
+    width: 100%;
+    gap: 10px;
+    background-color: #fdfbfb;
+    height: fit-content;
+    border-radius: 3px;
+    padding: 20px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    font-size: 30px;
+    box-shadow: 0px 0px 5px 3px rgb(216 215 222 / 75%);
+    -webkit-box-shadow: 0px 0px 5px 3px rgb(216 215 222 / 75%);
+    -moz-box-shadow: 0px 0px 5px 3px rgba(39, 38, 46, 0.75);
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.card svg {
+    height: 50px;
+    width: 50px;
+    fill: #0c5894;
+}
+
+.chart-container {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-container div {
+    width: 100%;
+    height: 300px;
+    margin: 10px;
+    padding: 20px;
+    background-color: #fdfbfb;
+    display: flex;
+    border-radius: 3px;
+    justify-content: center;
+    color: #0c5894;
+    box-shadow: 0px 0px 5px 3px rgb(216 215 222 / 75%);
+    -webkit-box-shadow: 0px 0px 5px 3px rgb(216 215 222 / 75%);
+    -moz-box-shadow: 0px 0px 5px 3px rgba(39, 38, 46, 0.75);
+    flex-direction: column;
+    align-items: center;
+}
+
+.decks-container {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.deck-container {
+    flex-direction: column;
+    width: 100%;
+}
+
+.decks {
+    height: 200px;
+    width: 300px;
+}
+
+.deck-header {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eeeeee;
+    color: #0c5894;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    font-family: inherit;
+    height: 20px;
+}
+
+.deck-content {
+    height: 100px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fdfbfb;
+    color: #0c5894;
+}
+
+.deck-content-subtitle {
+    font-size: 10px;
+    background-color: #eeeeee;
+    border-radius: 5px;
+    color: #ad3324;
+    padding: 5px;
+}
+
+.deck-footer {
+    height: 40px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.deck-footer-buttons {
+    text-decoration: none;
+    background-color: #0c5894;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #eeeeee;
+    border-right: solid;
+}
+
+.deck-footer-buttons:hover {
+    background-color: #ad3324;
+}
+
+.active {
+    color: #ad3324 !important;
+}
+
+.profile-summary {
+    display: flex;
+    width: 100%;
+    height: fit-content;
+}
+
+.form-profile-inputs-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-profile-inputs-container label {
+    font-size: 10px;
+}
+
+.form-profile-inputs-container input {
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: #eeeeee;
+    font-family: inherit;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    gap: 10px;
+    font-family: inherit;
+}
+
+.profile-form button {
+    padding: 10px;
+    background-color: #0c5894;
+    border: none;
+    border-radius: 10px;
+    color: #fdfbfb;
+    width: fit-content;
+    align-self: end;
+    font-family: inherit;
+}
+
+.card-span {
+    white-space: pre;
+}
