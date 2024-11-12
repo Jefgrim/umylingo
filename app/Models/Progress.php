@@ -17,4 +17,7 @@ class Progress extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+    public function deck(){
+        return $this->belongsTo(Deck::class);
+    }
 }

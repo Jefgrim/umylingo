@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Achievement;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,10 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('archived_decks', function (Blueprint $table) {
+        Schema::create('user_achievements', function (Blueprint $table) {
             $table->id();
-            $table->string('language');
-            $table->string('deck_description');
+            $table->foreignIdFor(Achievement::class);
+            $table->foreignIdFor(User::class);
+            $table->timestamp('achieved_at');
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('archived_decks');
+        Schema::dropIfExists('user_achievements');
     }
 };

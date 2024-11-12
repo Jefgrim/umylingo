@@ -12,9 +12,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
     // $decks = Deck::all();
-    $users = User::all();
-    dd($users->countBy('isAdmin')[0]);
-});
+    $user = Auth::user();
+    dd($user->quizzes[0]->isAnswered);
+})
+    ->middleware('auth')
+    ->can('administrate');;
 
 
 // Route::resource('/app/decks', DeckController::class, [

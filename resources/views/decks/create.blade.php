@@ -20,6 +20,11 @@
                         <span>{{ $message }}</span>
                     @enderror
                     <textarea name="deck_description" id="" placeholder="Deck Description" required></textarea>
+
+                    <h2>Achievement</h2>
+
+                    <input type="text" name="achievement_title" placeholder="Achievement Title" required>
+                    <textarea name="achievement_description" placeholder="Achievement Description" required></textarea>
                     <button>Add</button>
                 </form>
             </div>

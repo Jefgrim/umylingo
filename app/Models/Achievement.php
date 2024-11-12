@@ -12,9 +12,14 @@ class Achievement extends Model
     protected $fillable = [
         'achievement_title',
         'achievement_description',
-        'achieved_at',
     ];
-    public function user(){
-        return $this->belongsTo(User::class);
+
+    public function userAchievements()
+    {
+        return $this->hasMany(UserAchievement::class);
+    }
+    public function deck()
+    {
+        return $this->belongsTo(Deck::class);
     }
 }

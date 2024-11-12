@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Deck;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('achievements', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Deck::class);
             $table->text('achievement_title');
             $table->text('achievement_description');
-            $table->timestamp('achieved_at');
             $table->timestamps();
         });
     }

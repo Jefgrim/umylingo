@@ -10,6 +10,7 @@ class Deck extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'achievement_id',
         'language',
         'deck_description'
     ];
@@ -17,5 +18,13 @@ class Deck extends Model
     public function cards()
     {
         return $this->hasMany(Card::class);
+    }
+    public function progress()
+    {
+        return $this->hasMany(Progress::class);
+    }
+    public function achievement()
+    {
+        return $this->hasMany(Achievement::class);
     }
 }
