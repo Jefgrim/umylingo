@@ -18,7 +18,7 @@ class CardController extends Controller
     }
     public function show(Card $card)
     {
-        // dd($card->choices[0]->choice);
+        //    
     }
     public function store()
     {
@@ -31,6 +31,8 @@ class CardController extends Controller
             'choice2' => ['required'],
             'choice3' => ['required'],
             'choice4' => ['required'],
+        ], [
+            'choice1.same' => 'Choice 1 must be the same with the answer.'
         ]);
 
         $card = Card::create([
@@ -61,7 +63,7 @@ class CardController extends Controller
             'choice' => request("choice4")
         ]);
 
-        return redirect('/app/decks');
+        return redirect('/app/decks/' . $card->deck_id);
     }
     public function edit(Card $card)
     {

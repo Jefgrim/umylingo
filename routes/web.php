@@ -65,6 +65,9 @@ Route::controller(CardController::class)->group(function () {
         ->middleware('auth')
         ->can('administrate');
 
+    Route::get('/app/card/{card}', 'show')
+        ->middleware('auth');
+
     Route::post('/app/cards/create', 'store')
         ->middleware('auth')
         ->can('administrate');
@@ -84,7 +87,7 @@ Route::controller(CardController::class)->group(function () {
 
 
 Route::controller(QuizController::class)->group(function () {
-    Route::get('/app/quiz/{quiz}', 'show')
+    Route::get('/app/quiz/{deck}', 'show')
         ->middleware('auth');
 
     Route::post('/app/quiz/create', 'store')

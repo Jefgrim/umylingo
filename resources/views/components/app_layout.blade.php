@@ -37,7 +37,6 @@
             @endcan
             <a href="/app/decks">Decks</a>
             <a href="/app/notes">Notes</a>
-            <a href="/app/progress">Progress</a>
             <a href="/app/achievements">Achievements</a>
             <a href="/app/profile">Profile</a>
         </div>

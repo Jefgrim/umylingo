@@ -19,7 +19,7 @@ class Card extends Model
     {
         return $this->belongsTo(Deck::class);
     }
-    public function quizes()
+    public function quizzes()
     {
         return $this->hasMany(Quiz::class);
     }

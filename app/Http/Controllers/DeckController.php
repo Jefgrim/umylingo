@@ -23,6 +23,11 @@ class DeckController extends Controller
     }
     public function show(Deck $deck)
     {
+        // $userId = Auth::user()->id; // Get the ID of the currently logged-in user
+        // // Filter quizzes for the current user
+        // $quizzes = $deck->cards[0]->quizzes->where('user_id', $userId);
+        // dd($quizzes);
+        
         return view('decks.show', ['deck' => $deck]);
     }
     public function store()

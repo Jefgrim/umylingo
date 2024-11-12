@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deck;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
@@ -15,33 +17,29 @@ class QuizController extends Controller
     {
         // 
     }
-    public function show(Quiz $quiz)
+    public function show(Deck $deck)
     {
         // if ($quiz->answer == $quiz->card->choices[0]->choice) {
         //     $result = true;
         // } else {
         //     $result = false;
         // }
-        dd($quiz->user);
-        // return view('quiz.show', ['deck' => $quiz]);
+        $cards = $deck->cards;
+
+        // dd($cards[0]->quizzes);
+
+        foreach ($cards as $card) {
+            Quiz::firstOrCreate([
+                'card_id' => $card->id,
+                'user_id' => Auth::user()->id,
+            ]);
+        }
+
+        return view('quiz.show', ['deck' => $deck]);
     }
     public function store()
     {
-        request()->validate([
-            'content' => ['required'],
-            'question' => ['required'],
-            'answer' => ['required'],
-            'deck_id' => ['required']
-        ]);
-
-        Quiz::create([
-            'content' => request('content'),
-            'question' => request('question'),
-            'answer' => request('answer'),
-            'deck_id' => request('deck_id')
-        ]);
-
-        return redirect('/app/quiz');
+        // 
     }
     public function edit(Quiz $quiz)
     {
