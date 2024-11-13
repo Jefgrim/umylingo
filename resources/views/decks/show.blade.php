@@ -23,7 +23,7 @@
         @endforeach
     </div>
     @if ($deck->cards->count() > 0)
-        @if ($deck->cards[0]->quizzes->where('user_id', Auth::user()->id)->count() > 0)
+        @if (Auth::user()->quizzes->count() > 0)
             <a href="/app/quiz/{{ $deck->id }}">Continue Quiz</a>
         @else
             <a href="/app/quiz/{{ $deck->id }}">Start Quiz</a>

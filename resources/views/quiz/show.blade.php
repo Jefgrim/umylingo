@@ -8,16 +8,21 @@
         <a href="/app/cards/{{ $deck->id }}/create">Add Card</a>
     @endcan
     <div class="cards-container deck-container">
+        {{-- {{ dd($deck->cards[0]->quizzes->where('card_id', $deck->cards[0]->id)->where('user_id', Auth::user()->id)->first()) }} --}}
         @foreach ($deck->cards as $card)
-            @if ($card->quizzes[0]->isAnswered)
+            @if ($card->quizzes->where('card_id', $card->id)->where('user_id', Auth::user()->id)->first()->isAnswered)
                 <h2>Answered</h2>
             @else
                 <h2>Not Answered</h2>
             @endif
 
-            @if ($card->quizzes[0]->isAnswered && $card->quizzes[0]->isCorrect)
+            @if (
+                $card->quizzes->where('card_id', $card->id)->where('user_id', Auth::user()->id)->first()->isAnswered &&
+                    $card->quizzes->where('card_id', $card->id)->where('user_id', Auth::user()->id)->first()->isCorrect)
                 <h2>Correct</h2>
-            @elseif($card->quizzes[0]->isAnswered && !$card->quizzes[0]->isCorrect)
+            @elseif(
+                $card->quizzes->where('card_id', $card->id)->where('user_id', Auth::user()->id)->first()->isAnswered &&
+                    !$card->quizzes->where('card_id', $card->id)->where('user_id', Auth::user()->id)->first()->isCorrect)
                 <h2>Wrong</h2>
             @endif
             <div class="card deck-card">

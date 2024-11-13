@@ -20,7 +20,7 @@
                 <div class="deck-footer">
                     <a href="/app/decks/{{ $deck->id }}" class="deck-footer-buttons">Learn</a>
                     @if ($deck->cards->count() > 0)
-                        @if ($deck->cards[0]->quizzes->where('user_id', Auth::user()->id)->count() > 0)
+                        @if (Auth::user()->quizzes->count() > 0)
                             <a href="/app/quiz/{{ $deck->id }}" class="deck-footer-buttons">Continue Quiz</a>
                         @else
                             <a href="/app/quiz/{{ $deck->id }}" class="deck-footer-buttons">Start Quiz</a>
