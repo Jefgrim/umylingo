@@ -20,10 +20,12 @@
                 <div class="deck-footer">
                     <a href="/app/decks/{{ $deck->id }}" class="deck-footer-buttons">Learn</a>
                     @if ($deck->cards->count() > 0)
-                        @if (Auth::user()->quizzes->count() > 0)
-                            <a href="/app/quiz/{{ $deck->id }}" class="deck-footer-buttons">Continue Quiz</a>
-                        @else
+                        @if (Auth::user()->progress->where('deck_id', $deck->id)->first() === null)
                             <a href="/app/quiz/{{ $deck->id }}" class="deck-footer-buttons">Start Quiz</a>
+                        @else
+                            @if (Auth::user()->progress->where('deck_id', $deck->id)->first()->isQuizStarted)
+                                <a href="/app/quiz/{{ $deck->id }}" class="deck-footer-buttons">Continue Quiz</a>
+                            @endif
                         @endif
                     @endif
                     @can('administrate')

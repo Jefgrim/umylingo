@@ -10,6 +10,8 @@ class Progress extends Model
     /** @use HasFactory<\Database\Factories\ProgressFactory> */
     use HasFactory;
     protected $fillable = [
+        'deck_id',
+        'user_id',
         'score',
         'isCompleted',
         'isQuizStarted',

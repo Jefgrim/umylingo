@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Deck;
+use App\Models\Progress;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,12 @@ class QuizController extends Controller
                 'user_id' => Auth::user()->id,
             ]);
         }
+
+        Progress::firstOrCreate([
+            'deck_id' => $deck->id,
+            'user_id' => Auth::user()->id,
+            'isQuizStarted' => 1
+        ]);
 
         return view('quiz.show', ['deck' => $deck]);
     }

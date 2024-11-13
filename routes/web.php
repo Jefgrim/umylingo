@@ -6,14 +6,15 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\SessionController;
+use App\Models\Deck;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
-    // $decks = Deck::all();
+    $deck = Deck::first();
     $user = Auth::user();
-    dd($user->quizzes[0]->isAnswered);
+    dd($user->progress->where('deck_id', 3)->first());
 })
     ->middleware('auth')
     ->can('administrate');;

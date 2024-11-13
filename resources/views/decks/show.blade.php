@@ -23,10 +23,14 @@
         @endforeach
     </div>
     @if ($deck->cards->count() > 0)
-        @if (Auth::user()->quizzes->count() > 0)
-            <a href="/app/quiz/{{ $deck->id }}">Continue Quiz</a>
-        @else
-            <a href="/app/quiz/{{ $deck->id }}">Start Quiz</a>
+        @if ($deck->cards->count() > 0)
+            @if (Auth::user()->progress->where('deck_id', $deck->id)->first() === null)
+                <a href="/app/quiz/{{ $deck->id }}">Start Quiz</a>
+            @else
+                @if (Auth::user()->progress->where('deck_id', $deck->id)->first()->isQuizStarted)
+                    <a href="/app/quiz/{{ $deck->id }}">Continue Quiz</a>
+                @endif
+            @endif
         @endif
     @endif
 
