@@ -29,6 +29,13 @@
                 <div class="deck-card-content">
                     <span class="deck-card-content-title card-span">{{ ucfirst($card->question) }}</span>
                 </div>
+                <form action="">
+                    <h2>Choices</h2>
+                    @foreach ($card->choices->shuffle() as $choice)
+                        <a href="">{{ $choice->choice }}</a>
+                    @endforeach
+                </form>
+
                 <div class="deck-card-footer">
                     @can('administrate')
                         <a href="/app/cards/{{ $card->id }}/edit" class="deck-footer-buttons">Edit</a>
