@@ -10,6 +10,7 @@ use App\Livewire\CreateDeck;
 use App\Livewire\Dashboard;
 use App\Livewire\DashboardDecks;
 use App\Livewire\Decks;
+use App\Livewire\EditDeck;
 use App\Livewire\ShowDeck;
 use App\Models\Card;
 use App\Models\Deck;
@@ -18,9 +19,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
-    $card = Card::first();
-    $user = Auth::user();
-    dd($card->choices);
+    $deck = Deck::find(10);
+    dd($deck->achievement);
 })
     ->middleware('auth')
     ->can('administrate');;
@@ -36,7 +36,7 @@ Route::get('/dashboard/decks', DashboardDecks::class)
     ->middleware('auth')
     ->can('administrate');
 
-Route::get('/deck/{deck}/edit', ShowDeck::class)
+Route::get('/deck/{deck}/edit', EditDeck::class)
     ->middleware('auth')
     ->can('administrate');
 

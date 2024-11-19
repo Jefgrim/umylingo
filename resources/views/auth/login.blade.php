@@ -26,6 +26,9 @@
                     @error('username')
                         <p style="color: #ad3324">{{ $message }}</p>
                     @enderror
+                    @error('password')
+                        <p style="color: #ad3324">{{ $message }}</p>
+                    @enderror
                     <input type="text" placeholder="Username" name="username" value="{{ old('username') }}" required>
                     <input type="password" placeholder="Password" name="password" required>
                     <button>Login</button>

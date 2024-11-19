@@ -1,10 +1,10 @@
 <div style="width:100%">
     <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-        <h2>Create Deck</h2>
+        <h2>Edit Deck</h2>
     </div>
     <div class="cards-container">
         <div class="card create-deck-card">
-            <form wire:submit='store'>
+            <form wire:submit='update'>
                 <p>Deck Information</p>
                 <div class="create-deck-inputs-container">
                     @error('language')
@@ -29,7 +29,7 @@
                     @enderror
                     <textarea placeholder="Achievement Description" required wire:model='form.achievement_description'></textarea>
                 </div>
-                <button>Create Deck</button>
+                <button>Save</button>
             </form>
         </div>
     </div>

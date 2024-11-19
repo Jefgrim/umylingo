@@ -28,13 +28,13 @@ class DatabaseSeeder extends Seeder
             'firstname' => 'test',
             'lastname' => 'test',
             'username' => 'test',
-            'password' => 'test',
+            'password' => 'Alex0807',
             'isAdmin' => false,
             'email' => 'test@example.com',
         ]);
 
-        $this->call(UserSeeder::class);
-        $this->call(DeckSeeder::class);
+        // $this->call(UserSeeder::class);
+        // $this->call(DeckSeeder::class);
         // $this->call(CardSeeder::class);
         // $this->call(QuizSeeder::class);
         // $this->call(ChoiceSeeder::class);

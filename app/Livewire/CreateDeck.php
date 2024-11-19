@@ -10,9 +10,9 @@ class CreateDeck extends AdminComponent
 {
     public DeckForm $form;
 
-    public function create()
+    public function store()
     {
-        $this->form->create();
+        $this->form->store();
 
         $this->redirect('/dashboard/decks');
     }

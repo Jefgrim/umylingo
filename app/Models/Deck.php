@@ -25,6 +25,6 @@ class Deck extends Model
     }
     public function achievement()
     {
-        return $this->hasMany(Achievement::class);
+        return $this->hasOne(Achievement::class);
     }
 }

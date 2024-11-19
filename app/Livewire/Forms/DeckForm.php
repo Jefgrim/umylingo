@@ -21,7 +21,9 @@ class DeckForm extends Form
     #[Validate('required')]
     public $achievement_description;
 
-    public function create()
+    public ?Deck $deck;
+
+    public function store()
     {
         $this->validate();
 
@@ -32,5 +34,21 @@ class DeckForm extends Form
             'achievement_title' => $this->achievement_title,
             'achievement_description' => $this->achievement_description,
         ]);
+    }
+
+    public function setDeck(Deck $deck)
+    {
+        $this->deck = $deck;
+        $this->language = $deck->language;
+        $this->deck_description = $deck->deck_description;
+        $this->achievement_title = $deck->achievement->achievement_title;
+        $this->achievement_description = $deck->achievement->achievement_description;
+    }
+    public function update()
+    {
+        $this->validate();
+
+        $this->deck->update($this->only('language', 'deck_description'));
+        $this->deck->achievement->update($this->only('achievement_title', 'achievement_description'));
     }
 }
