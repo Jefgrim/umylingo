@@ -125,7 +125,7 @@ header {
 
 .main h2 {
     font-family: inherit;
-    margin: 10px;
+    margin: 10px 0px 10px 0px;
     color: #0c5894;
 }
 
@@ -218,6 +218,14 @@ header {
     width: 100%;
 }
 
+.decks-button {
+    text-decoration: none;
+    background-color: #0c5894;
+    padding: 10px;
+    color: #eeeeee;
+    border: none;
+}
+
 .decks {
     height: 200px;
     width: 300px;
@@ -259,6 +267,7 @@ header {
     height: 40px;
     display: flex;
     justify-content: space-evenly;
+    gap: 3px;
 }
 
 .deck-footer-buttons {
@@ -270,7 +279,7 @@ header {
     align-items: center;
     justify-content: center;
     color: #eeeeee;
-    border-right: solid;
+    border: none;
 }
 
 .deck-footer-buttons:hover {

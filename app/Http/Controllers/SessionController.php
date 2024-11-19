@@ -18,7 +18,7 @@ class SessionController extends Controller
         if (Auth::guest()) {
             return view('auth.login');
         } else {
-            return redirect('/app/decks');
+            return redirect('/decks');
         }
     }
 
@@ -41,7 +41,7 @@ class SessionController extends Controller
 
         //redirect
 
-        return redirect('/app/decks');
+        return redirect('/decks');
     }
 
     public function destroy()

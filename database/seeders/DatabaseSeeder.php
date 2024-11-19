@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(UserSeeder::class);
-        // $this->call(DeckSeeder::class);
+        $this->call(DeckSeeder::class);
         // $this->call(CardSeeder::class);
         // $this->call(QuizSeeder::class);
         // $this->call(ChoiceSeeder::class);

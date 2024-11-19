@@ -18,7 +18,7 @@ class RegisteredUserController extends Controller
         if (Auth::guest()) {
             return view('auth.register');
         } else {
-            return redirect('/app/decks');
+            return redirect('/decks');
         }
     }
 
@@ -42,6 +42,6 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         //redirect
-        return redirect('/app/decks');
+        return redirect('/decks');
     }
 }

@@ -6,6 +6,8 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\SessionController;
+use App\Livewire\Decks;
+use App\Livewire\ShowDeck;
 use App\Models\Card;
 use App\Models\Deck;
 use App\Models\User;
@@ -21,82 +23,88 @@ Route::get('/test', function () {
     ->can('administrate');;
 
 
+Route::view('/', 'home');
+
+Route::get('/decks', Decks::class)
+    ->middleware('auth');
+    
+Route::get('/deck/{deck}', ShowDeck::class);
+
 // Route::resource('/app/decks', DeckController::class, [
 //     // 'only' => ['edit'],
 //     // 'except' => ['edit']
 // ])->middleware('auth');
 
-Route::view('/', 'home');
 
 
-Route::controller(AppController::class)->group(function () {
-    Route::get('/app/dashboard', 'index')
-        ->middleware('auth')
-        ->can('administrate');
-});
+// Route::controller(AppController::class)->group(function () {
+//     Route::get('/app/dashboard', 'index')
+//         ->middleware('auth')
+//         ->can('administrate');
+// });
 
-Route::controller(DeckController::class)->group(function () {
-    Route::get('/app/decks', 'index')
-        ->middleware('auth');
+// Route::controller(DeckController::class)->group(function () {
+//     Route::get('/app/decks', 'index')
+//         ->middleware('auth');
 
-    Route::get('/app/decks/create', 'create')
-        ->middleware('auth')
-        ->can('administrate');
+//     Route::get('/app/decks/create', 'create')
+//         ->middleware('auth')
+//         ->can('administrate');
 
-    Route::get('/app/decks/{deck}', 'show')
-        ->middleware('auth');
+//     Route::get('/app/decks/{deck}', 'show')
+//         ->middleware('auth');
 
-    Route::post('/app/decks/create', 'store')
-        ->middleware('auth')
-        ->can('administrate');
+//     Route::post('/app/decks/create', 'store')
+//         ->middleware('auth')
+//         ->can('administrate');
 
-    Route::get('/app/decks/{deck}/edit', 'edit')
-        ->middleware('auth')
-        ->can('administrate');
+//     Route::get('/app/decks/{deck}/edit', 'edit')
+//         ->middleware('auth')
+//         ->can('administrate');
 
-    Route::patch('/app/decks/{deck}', 'update')
-        ->middleware('auth')
-        ->can('administrate');
+//     Route::patch('/app/decks/{deck}', 'update')
+//         ->middleware('auth')
+//         ->can('administrate');
 
-    Route::delete('/app/decks/{deck}', 'destroy')
-        ->middleware('auth')
-        ->can('administrate');
-});
+//     Route::delete('/app/decks/{deck}', 'destroy')
+//         ->middleware('auth')
+//         ->can('administrate');
+// });
 
-Route::controller(CardController::class)->group(function () {
+// Route::controller(CardController::class)->group(function () {
 
-    Route::get('/app/cards/{deck}/create', 'create')
-        ->middleware('auth')
-        ->can('administrate');
+//     Route::get('/app/cards/{deck}/create', 'create')
+//         ->middleware('auth')
+//         ->can('administrate');
 
-    Route::get('/app/card/{card}', 'show')
-        ->middleware('auth');
+//     Route::get('/app/card/{card}', 'show')
+//         ->middleware('auth');
 
-    Route::post('/app/cards/create', 'store')
-        ->middleware('auth')
-        ->can('administrate');
+//     Route::post('/app/cards/create', 'store')
+//         ->middleware('auth')
+//         ->can('administrate');
 
-    Route::get('/app/cards/{card}/edit', 'edit')
-        ->middleware('auth')
-        ->can('administrate');
+//     Route::get('/app/cards/{card}/edit', 'edit')
+//         ->middleware('auth')
+//         ->can('administrate');
 
-    Route::patch('/app/cards/{card}', 'update')
-        ->middleware('auth')
-        ->can('administrate');
+//     Route::patch('/app/cards/{card}', 'update')
+//         ->middleware('auth')
+//         ->can('administrate');
 
-    Route::delete('/app/cards/{card}', 'destroy')
-        ->middleware('auth')
-        ->can('administrate');
-});
+//     Route::delete('/app/cards/{card}', 'destroy')
+//         ->middleware('auth')
+//         ->can('administrate');
+// });
 
 
-Route::controller(QuizController::class)->group(function () {
-    Route::get('/app/quiz/{deck}', 'show')
-        ->middleware('auth');
+// Route::controller(QuizController::class)->group(function () {
+//     Route::get('/app/quiz/{deck}', 'show')
+//         ->middleware('auth');
 
-    Route::post('/app/quiz/create', 'store')
-        ->middleware('auth');
-});
+//     Route::post('/app/quiz/create', 'store')
+//         ->middleware('auth');
+// });
 
 
 // Auth
