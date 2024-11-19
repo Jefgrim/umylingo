@@ -31,9 +31,8 @@
     </header>
     <div class="main-container">
         <div class="sidebar">
-            <a href="/decks">Decks</a>
-            <a href="/notes">Notes</a>
-            <a href="/achievements">Achievements</a>
+            <a href="/dashboard" class="active">Dashboard</a>
+            <a href="/dashboard/decks">Decks</a>
             <a href="/profile">Profile</a>
         </div>
         <div class="main">

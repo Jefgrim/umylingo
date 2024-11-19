@@ -17,6 +17,8 @@ class RegisteredUserController extends Controller
     {
         if (Auth::guest()) {
             return view('auth.register');
+        } elseif (Auth::user()->isAdmin) {
+            return redirect('/dashboard');
         } else {
             return redirect('/decks');
         }
@@ -42,6 +44,10 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         //redirect
-        return redirect('/decks');
+        if (Auth::user()->isAdmin) {
+            return redirect('/dashboard');
+        } else {
+            return redirect('/decks');
+        }
     }
 }

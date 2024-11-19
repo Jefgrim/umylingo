@@ -6,12 +6,12 @@ use App\Models\Deck;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-class Decks extends Component
+class DashboardDecks extends AdminComponent
 {
-    #[Title('Decks View')]
+    #[Title('Admin Decks View')]
     public function render()
     {
-        return view('livewire.decks',[
+        return view('livewire.dashboard-decks', [
             'decks' => Deck::all()
         ]);
     }

@@ -23,6 +23,15 @@ class DatabaseSeeder extends Seeder
             'isAdmin' => true,
             'email' => 'jefgrim@example.com',
         ]);
+        
+        User::factory()->create([
+            'firstname' => 'test',
+            'lastname' => 'test',
+            'username' => 'test',
+            'password' => 'test',
+            'isAdmin' => false,
+            'email' => 'test@example.com',
+        ]);
 
         $this->call(UserSeeder::class);
         $this->call(DeckSeeder::class);

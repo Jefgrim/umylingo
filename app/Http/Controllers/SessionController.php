@@ -17,6 +17,8 @@ class SessionController extends Controller
     {
         if (Auth::guest()) {
             return view('auth.login');
+        } elseif (Auth::user()->isAdmin) {
+            return redirect('/dashboard');
         } else {
             return redirect('/decks');
         }
@@ -41,12 +43,16 @@ class SessionController extends Controller
 
         //redirect
 
-        return redirect('/decks');
+        if (Auth::user()->isAdmin) {
+            return redirect('/dashboard');
+        } else {
+            return redirect('/decks');
+        }
     }
 
     public function destroy()
     {
         Auth::logout();
-        return redirect('/');
+        return redirect('/login');
     }
 }

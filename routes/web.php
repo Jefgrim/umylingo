@@ -6,6 +6,9 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\SessionController;
+use App\Livewire\CreateDeck;
+use App\Livewire\Dashboard;
+use App\Livewire\DashboardDecks;
 use App\Livewire\Decks;
 use App\Livewire\ShowDeck;
 use App\Models\Card;
@@ -25,10 +28,27 @@ Route::get('/test', function () {
 
 Route::view('/', 'home');
 
+Route::get('/dashboard', Dashboard::class)
+    ->middleware('auth')
+    ->can('administrate');
+
+Route::get('/dashboard/decks', DashboardDecks::class)
+    ->middleware('auth')
+    ->can('administrate');
+
+Route::get('/deck/{deck}/edit', ShowDeck::class)
+    ->middleware('auth')
+    ->can('administrate');
+
 Route::get('/decks', Decks::class)
     ->middleware('auth');
-    
-Route::get('/deck/{deck}', ShowDeck::class);
+
+Route::get('/deck/create', CreateDeck::class)
+    ->middleware('auth')
+    ->can('administrate');
+
+Route::get('/deck/{deck}', ShowDeck::class)
+    ->middleware('auth');
 
 // Route::resource('/app/decks', DeckController::class, [
 //     // 'only' => ['edit'],
