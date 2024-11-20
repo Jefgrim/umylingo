@@ -1,12 +1,16 @@
 @import url("https://fonts.cdnfonts.com/css/open-sauce-one");
 
-body {
-    margin: 0;
-    background-color: #eeeeee;
+
+* {
     font-family: "Open Sauce One", sans-serif;
     font-optical-sizing: auto;
     font-weight: 900;
     font-style: normal;
+}
+
+body {
+    margin: 0;
+    background-color: #eeeeee;
 }
 
 header {
@@ -114,13 +118,10 @@ header {
 .main {
     width: calc(100% - 100px);
     padding: 20px;
-    display: flex;
     overflow-x: auto;
     box-shadow: inset 0px 0px 5px 3px rgb(216 215 222 / 75%);
     -webkit-box-shadow: inset 0px 0px 5px 3px rgb(216 215 222 / 75%);
     -moz-box-shadow: inset 0px 0px 5px 3px rgba(39, 38, 46, 0.75);
-    flex-direction: column;
-    align-items: center;
 }
 
 .main h2 {
@@ -139,26 +140,26 @@ header {
     display: flex;
     gap: 10px;
     flex-direction: column;
+    padding: 20px;
 }
 
-.create-deck-inputs-container input[type="text"]{
-        padding: 10px;
-        height: 30px;
-        border-radius: 10px;
-        border: 0px;
-        background-color: #fdfbfb;
-        box-shadow: 0px 0px 4px 1px #0c5894;
-        box-shadow: inset 0px 0px 12px 3px rgb(217 210 210 / 75%);
+.create-deck-inputs-container input[type="text"] {
+    padding: 10px;
+    height: 30px;
+    border-radius: 10px;
+    border: 0px;
+    background-color: #fdfbfb;
+    box-shadow: 0px 0px 4px 1px #0c5894;
+    box-shadow: inset 0px 0px 12px 3px rgb(217 210 210 / 75%);
 }
-.create-deck-inputs-container textarea{
-        padding: 10px;
-        border-radius: 10px;
-        border: 0px;
-        background-color: #fdfbfb;
-        box-shadow: 0px 0px 4px 1px #0c5894;
-        box-shadow: inset 0px 0px 12px 3px rgb(217 210 210 / 75%);
+.create-deck-inputs-container textarea {
+    padding: 10px;
+    border-radius: 10px;
+    border: 0px;
+    background-color: #fdfbfb;
+    box-shadow: 0px 0px 4px 1px #0c5894;
+    box-shadow: inset 0px 0px 12px 3px rgb(217 210 210 / 75%);
 }
-
 
 .card {
     width: 100%;
@@ -172,10 +173,10 @@ header {
     -moz-box-shadow: 0px 0px 5px 3px rgba(39, 38, 46, 0.75);
 }
 
-.create-deck-card{
+.create-deck-card {
     height: fit-content;
     margin: 0;
-    padding: 20px
+    padding: 20px;
 }
 
 .deck-card {
@@ -367,3 +368,104 @@ header {
 .card-span {
     white-space: pre;
 }
+
+/* start edit create deck form */
+
+.form-container-edit-create-deck {
+    background: #fdfbfb;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-family: "Arial", sans-serif;
+}
+
+.form-container-edit-create-deck h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: #0c5894;
+    margin-bottom: 20px;
+}
+
+.form-container-edit-create-deck h3,
+.form-container-edit-create-deck h4 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.form-container-edit-create-deck .form-group {
+    margin-bottom: 15px;
+}
+
+.form-container-edit-create-deck label {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 0.95rem;
+}
+
+.form-container-edit-create-deck textarea,
+.form-container-edit-create-deck input[type="text"],
+.form-container-edit-create-deck input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+}
+
+.form-container-edit-create-deck textarea {
+    resize: none;
+}
+
+.form-container-edit-create-deck .error-message {
+    color: red;
+    font-size: 0.85rem;
+}
+
+.form-container-edit-create-deck .card-container {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #f8f8f8;
+}
+
+.form-container-edit-create-deck .choices-container label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.form-container-edit-create-deck .choice {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.form-container-edit-create-deck button {
+    padding: 14px 20px;
+    background-color: #0c5894;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.form-container-edit-create-deck button:hover {
+    background-color: #083b63;
+}
+
+.form-container-edit-create-deck .submit-container {
+    display: flex;
+    gap: 10px;
+}
+
+/* end edit create deck form */

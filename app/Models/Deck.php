@@ -12,7 +12,8 @@ class Deck extends Model
     protected $fillable = [
         'achievement_id',
         'language',
-        'deck_description'
+        'deck_description',
+        'isArchived'
     ];
 
     public function cards()

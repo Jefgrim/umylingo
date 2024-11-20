@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('language', 15);
             $table->text('deck_description');
+            $table->timestamp('isArchived')->nullable()->default(null);
             $table->timestamps();
         });
     }

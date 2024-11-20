@@ -15,8 +15,6 @@ return new class extends Migration
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Deck::class);
-            // $table->unsignedBigInteger('decks_id');
-
             $table->text('content');
             $table->text('question');
             $table->string('answer', 15);
