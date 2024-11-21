@@ -16,10 +16,6 @@ class DeckForm extends Form
     public $language;
     #[Validate('required')]
     public $deck_description;
-    #[Validate('required')]
-    public $achievement_title;
-    #[Validate('required')]
-    public $achievement_description;
 
     public $deletedCardIds = []; // Track IDs of deleted cards
     public Deck $deck;
@@ -29,13 +25,11 @@ class DeckForm extends Form
         $this->validate();
 
         $deck = Deck::create($this->only(['language', 'deck_description']));
-        $deck->achievement()->create($this->only('achievement_title', 'achievement_description'));
-
+       
         foreach ($this->cards as $cardData) {
             $card = $deck->cards()->create([
                 'content' => $cardData['content'],
-                'question' => $cardData['question'],
-                'answer' => $cardData['answer'],
+                'question' => $cardData['question']
             ]);
 
             foreach ($cardData['choices'] as $choiceData) {
@@ -52,14 +46,11 @@ class DeckForm extends Form
         $this->deck = $deck;
         $this->language = $deck->language;
         $this->deck_description = $deck->deck_description;
-        $this->achievement_title = $deck->achievement->achievement_title;
-        $this->achievement_description = $deck->achievement->achievement_description;
         $this->cards = $deck->cards->map(function ($card) {
             return [
                 'id' => $card->id,
                 'content' => $card->content,
                 'question' => $card->question,
-                'answer' => $card->answer,
                 'choices' => $card->choices->map(fn($choice) => [
                     'id' => $choice->id,
                     'choice' => $choice->choice,
@@ -80,8 +71,7 @@ class DeckForm extends Form
         $this->validate();
 
         $this->deck->update($this->only('language', 'deck_description'));
-        $this->deck->achievement->update($this->only('achievement_title', 'achievement_description'));
-
+        
         // Handle deleted cards
         if (!empty($this->deletedCardIds)) {
             $this->deck->cards()->whereIn('id', $this->deletedCardIds)->delete();
@@ -93,8 +83,7 @@ class DeckForm extends Form
                 $card = $this->deck->cards()->find($cardData['id']);
                 $card->update([
                     'content' => $cardData['content'],
-                    'question' => $cardData['question'],
-                    'answer' => $cardData['answer'],
+                    'question' => $cardData['question']
                 ]);
 
                 foreach ($cardData['choices'] as $choiceData) {
@@ -114,8 +103,7 @@ class DeckForm extends Form
             } else {
                 $newCard = $this->deck->cards()->create([
                     'content' => $cardData['content'],
-                    'question' => $cardData['question'],
-                    'answer' => $cardData['answer'],
+                    'question' => $cardData['question']
                 ]);
 
                 foreach ($cardData['choices'] as $choiceData) {

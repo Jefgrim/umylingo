@@ -37,6 +37,10 @@ class EditDeck extends AdminComponent
             ],
         ];
         $this->cardCount++;
+
+        if (count($this->cards) > 0) {
+            $this->resetErrorBag('cards');
+        }
     }
 
     public function removeCard($index)
@@ -75,6 +79,10 @@ class EditDeck extends AdminComponent
     public function toggleArchive()
     {
         $this->form->toggleArchive();
+        $this->redirect('/dashboard/decks');
+    }
+
+    public function cancel(){
         $this->redirect('/dashboard/decks');
     }
 

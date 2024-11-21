@@ -11,7 +11,6 @@ class Card extends Model
     protected $fillable = [
         'content',
         'question',
-        'answer',
         'deck_id'
     ];
 

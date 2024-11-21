@@ -33,6 +33,7 @@
         <div class="sidebar">
             <a href="/dashboard" class="active">Dashboard</a>
             <a href="/dashboard/decks">Decks</a>
+            <a href="/dashboard/achievements">Achievements</a>
             <a href="/profile">Profile</a>
         </div>
         <div class="main">

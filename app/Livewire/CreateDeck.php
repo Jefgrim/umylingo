@@ -35,7 +35,6 @@ class CreateDeck extends AdminComponent
                 $this->cards[$i] = [
                     'content' => '',
                     'question' => '',
-                    'answer' => '',
                     'choices' => [
                         ['choice' => '', 'isCorrect' => false],
                         ['choice' => '', 'isCorrect' => false],

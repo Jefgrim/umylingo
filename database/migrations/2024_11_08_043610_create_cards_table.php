@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignIdFor(Deck::class);
             $table->text('content');
             $table->text('question');
-            $table->string('answer', 15);
             $table->timestamps();
         });
     }

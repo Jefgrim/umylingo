@@ -21,24 +21,6 @@
             </div>
 
             <div>
-                <h3>Deck Achievement</h3>
-                <div class="form-group">
-                    <label for="achievement_title">Achievement Title</label>
-                    <input id="achievement_title" type="text" placeholder="Achievement Title" required wire:model='form.achievement_title'>
-                    <span class="error-message">
-                        @error('achievement_title') {{ $message }} @enderror
-                    </span>
-                </div>
-                <div class="form-group">
-                    <label for="achievement_description">Achievement Description</label>
-                    <textarea id="achievement_description" placeholder="Achievement Description" required wire:model='form.achievement_description'></textarea>
-                    <span class="error-message">
-                        @error('achievement_description') {{ $message }} @enderror
-                    </span>
-                </div>
-            </div>
-
-            <div>
                 <h3>Cards Details</h3>
                 <div>
                     <label for="cardCount" class="form-group-label">Total Cards: {{ $cardCount }}</label>
@@ -55,10 +37,6 @@
                         <div class="form-group">
                             <label for="question-{{ $i }}">Card Question</label>
                             <textarea id="question-{{ $i }}" required wire:model.live="cards.{{ $i }}.question" placeholder="Card Question"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="answer-{{ $i }}">Card Answer</label>
-                            <input id="answer-{{ $i }}" type="text" placeholder="Card Answer" required wire:model.live="cards.{{ $i }}.answer">
                         </div>
 
                         <div class="choices-container">

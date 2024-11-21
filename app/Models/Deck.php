@@ -24,8 +24,4 @@ class Deck extends Model
     {
         return $this->hasMany(Progress::class);
     }
-    public function achievement()
-    {
-        return $this->hasOne(Achievement::class);
-    }
 }

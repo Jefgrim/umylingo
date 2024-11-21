@@ -8,6 +8,7 @@ use App\Http\Controllers\AppController;
 use App\Http\Controllers\SessionController;
 use App\Livewire\CreateDeck;
 use App\Livewire\Dashboard;
+use App\Livewire\DashboardAchievements;
 use App\Livewire\DashboardDecks;
 use App\Livewire\Decks;
 use App\Livewire\EditDeck;
@@ -37,6 +38,10 @@ Route::get('/dashboard/decks', DashboardDecks::class)
     ->can('administrate');
 
 Route::get('/deck/{deck}/edit', EditDeck::class)
+    ->middleware('auth')
+    ->can('administrate');
+
+Route::get('/dashboard/achievements', DashboardAchievements::class)
     ->middleware('auth')
     ->can('administrate');
 

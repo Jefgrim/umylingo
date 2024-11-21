@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Card::class);
             $table->foreignIdFor(User::class);
-            $table->text('answer')->nullable();
             $table->boolean('isAnswered')->default(0);
             $table->boolean('isCorrect')->default(0);
             $table->timestamps();
