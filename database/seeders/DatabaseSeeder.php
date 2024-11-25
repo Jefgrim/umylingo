@@ -33,6 +33,15 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
+        User::factory()->create([
+            'firstname' => 'test2',
+            'lastname' => 'test2',
+            'username' => 'test2',
+            'password' => 'Alex0807',
+            'isAdmin' => false,
+            'email' => 'test2@example.com',
+        ]);
+
         // $this->call(UserSeeder::class);
         // $this->call(DeckSeeder::class);
         // $this->call(CardSeeder::class);

@@ -8,14 +8,14 @@
                     <label for="language">Language</label>
                     <input id="language" type="text" placeholder="Language" required wire:model='form.language'>
                     <span class="error-message">
-                        @error('language') {{ $message }} @enderror
+                        @error('form.language') {{ $message }} @enderror
                     </span>
                 </div>
                 <div class="form-group">
                     <label for="deck_description">Deck Description</label>
                     <textarea id="deck_description" name="deck_description" placeholder="Deck Description" required wire:model='form.deck_description'></textarea>
                     <span class="error-message">
-                        @error('deck_description') {{ $message }} @enderror
+                        @error('form.deck_description') {{ $message }} @enderror
                     </span>
                 </div>
             </div>

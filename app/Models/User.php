@@ -50,8 +50,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserAchievement::class);
     }
-    public function progress()
+    public function deckProgress()
     {
-        return $this->hasMany(Progress::class);
+        return $this->hasMany(DeckProgress::class);
     }
 }

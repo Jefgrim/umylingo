@@ -20,8 +20,7 @@ class CardFactory extends Factory
         return [
             'content' => 'Japanese of one is (一 ichi)',
             'deck_id' => fake()->randomNumber(1),
-            'question' => 'Japanese of one is (一 )',
-            'answer' => 'ichi'
+            'question' => 'What is ichi?'
         ];
     }
 }

@@ -13,13 +13,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('progress', function (Blueprint $table) {
+        Schema::create('deck_progress', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Deck::class);
             $table->foreignIdFor(User::class);
+            $table->integer('cardLearnIndex')->default(0);
+            $table->integer('cardQuizIndex')->default(0);
             $table->integer('score')->default(0);
-            $table->boolean('isCompleted')->default(0);
             $table->boolean('isQuizStarted')->default(0);
+            $table->boolean('isLearningStarted')->default(0);
+            $table->boolean('isLearningCompleted')->default(0);
+            $table->boolean('isQuizCompleted')->default(0);
             $table->timestamps();
         });
     }

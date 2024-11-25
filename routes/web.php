@@ -12,6 +12,7 @@ use App\Livewire\DashboardAchievements;
 use App\Livewire\DashboardDecks;
 use App\Livewire\Decks;
 use App\Livewire\EditDeck;
+use App\Livewire\LearnDeck;
 use App\Livewire\ShowDeck;
 use App\Models\Card;
 use App\Models\Deck;
@@ -52,7 +53,7 @@ Route::get('/deck/create', CreateDeck::class)
     ->middleware('auth')
     ->can('administrate');
 
-Route::get('/deck/{deck}', ShowDeck::class)
+Route::get('/deck/{deckProgress}', LearnDeck::class)
     ->middleware('auth');
 
 // Route::resource('/app/decks', DeckController::class, [

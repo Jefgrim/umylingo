@@ -8,7 +8,7 @@
                     <label for="edit-language">Language</label>
                     <input id="edit-language" type="text" placeholder="Language" required wire:model='form.language'>
                     <span class="error-message">
-                        @error('language')
+                        @error('form.language')
                             {{ $message }}
                         @enderror
                     </span>
@@ -17,7 +17,7 @@
                     <label for="edit-deck_description">Deck Description</label>
                     <textarea id="edit-deck_description" placeholder="Deck Description" required wire:model='form.deck_description'></textarea>
                     <span class="error-message">
-                        @error('deck_description')
+                        @error('form.deck_description')
                             {{ $message }}
                         @enderror
                     </span>
@@ -29,7 +29,7 @@
                 <div class="form-group">
                     <label for="edit-cardCount" class="form-group-label">Total Cards: {{ $cardCount }}</label>
                     <span class="error-message">
-                        @error('cards')
+                        @error('form.cards')
                             {{ $message }}
                         @enderror
                     </span>

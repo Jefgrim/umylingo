@@ -18,5 +18,8 @@ class Choice extends Model
     public function card(){
         return $this->belongsTo(Card::class);
     }
+    public function quizzes(){
+        return $this->hasMany(Quiz::class);
+    }
 
 }

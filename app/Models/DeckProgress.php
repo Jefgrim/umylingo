@@ -5,15 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Progress extends Model
+class DeckProgress extends Model
 {
-    /** @use HasFactory<\Database\Factories\ProgressFactory> */
+    /** @use HasFactory<\Database\Factories\DeckProgressFactory> */
     use HasFactory;
     protected $fillable = [
         'deck_id',
         'user_id',
         'score',
-        'isCompleted',
+        'cardLearnIndex',
+        'quizLearnIndex',
+        'isLearningStarted',
+        'isQuizStarted',
+        'isLearningCompleted',
         'isQuizStarted',
     ];
     public function user(){

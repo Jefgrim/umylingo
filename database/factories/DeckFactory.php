@@ -17,8 +17,8 @@ class DeckFactory extends Factory
     public function definition(): array
     {
         return [
-            'language' => 'japanese',
-            'deck_description' => fake()->paragraph(1)
+            'language' => 'Japanese',
+            'deck_description' => 'Learning Japanese numbers from 1 - 10.'
         ];
     }
 }

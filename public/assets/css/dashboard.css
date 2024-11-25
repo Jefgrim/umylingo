@@ -1,6 +1,5 @@
 @import url("https://fonts.cdnfonts.com/css/open-sauce-one");
 
-
 * {
     font-family: "Open Sauce One", sans-serif;
     font-optical-sizing: auto;
@@ -368,6 +367,200 @@ header {
 .card-span {
     white-space: pre;
 }
+
+/* START user end deck view */
+.deck-view-page {
+    padding: 20px;
+    background-color: #eeeeee; /* Matches your app's color scheme */
+}
+
+.deck-view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.deck-view-header h2 {
+    color: #ad3324; /* Primary color */
+    font-size: 1.5rem;
+}
+
+.add-deck-button {
+    background-color: #0c5894;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.deck-view-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.deck-view-card {
+    background-color: #fdfbfb;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 200px; /* Ensures uniform height */
+    overflow: hidden; /* Prevents overflow from long content */
+}
+
+.deck-view-language {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #0c5894; /* Primary color */
+}
+
+.deck-view-description {
+    margin-top: 8px;
+    color: #333;
+    flex-grow: 1;
+    overflow-y: auto; /* Makes content scrollable vertically */
+    max-height: 100px; /* Limits description height */
+}
+
+.deck-view-actions {
+    margin-top: 16px;
+}
+
+.deck-view-actions .btn {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.btn-primary {
+    background-color: #ad3324;
+    color: #fff;
+}
+
+.btn-secondary {
+    background-color: #0c5894;
+    color: #fff;
+}
+
+/* END user end deck view */
+
+/* START learn deck view */
+
+.learn-deck-view-page {
+    padding: 20px;
+    background-color: #eeeeee; /* Light background for readability */
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.learn-deck-view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.learn-deck-view-header h2 {
+    color: #ad3324; /* Primary color */
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.learn-deck-view-header p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.learn-completion-message {
+    background-color: #fdfbfb; /* Neutral background for clarity */
+    border: 2px solid #ad3324;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.learn-completion-message h3 {
+    color: #ad3324;
+    margin-bottom: 10px;
+}
+
+.learn-completion-actions .learn-btn {
+    margin-top: 10px;
+}
+
+.learn-deck-view-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.learn-deck-view-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 300px;
+}
+
+.learn-deck-view-description {
+    font-size: 1rem;
+    color: #333;
+}
+
+.learn-deck-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.learn-deck-navigation .learn-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+}
+
+.learn-btn-primary {
+    background-color: #ad3324;
+    color: white;
+    transition: background-color 0.3s;
+    border: none;
+    border-radius: 3px;
+    padding: 10px;
+}
+
+.learn-btn-primary:hover {
+    background-color: #90281e;
+}
+
+.learn-btn-secondary {
+    background-color: #0c5894;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.learn-btn-secondary:hover {
+    background-color: #08416c;
+}
+
+.learn-deck-view-page button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+    color: #666;
+}
+
+/* END learn deck view */
 
 /* start edit create deck form */
 

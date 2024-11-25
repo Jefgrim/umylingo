@@ -17,8 +17,9 @@ class ChoiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'card_id' => fake()->randomNumber(1),
-            'choice' => 'ichi'
+            'card_id' => fake()->randomNumber(2),
+            'choice' => 'one',
+            'isCorrect' => 1
         ];
     }
 }

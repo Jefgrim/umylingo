@@ -22,6 +22,6 @@ class Deck extends Model
     }
     public function progress()
     {
-        return $this->hasMany(Progress::class);
+        return $this->hasMany(DeckProgress::class);
     }
 }

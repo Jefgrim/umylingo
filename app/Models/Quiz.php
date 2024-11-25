@@ -12,14 +12,15 @@ class Quiz extends Model
         'card_id',
         'user_id',
         'isAnswered',
-        'isCorrect'
     ];
 
-    public function card(){
-        return $this->belongsTo(Card::class);
+    public function choice()
+    {
+        return $this->belongsTo(Choice::class);
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }

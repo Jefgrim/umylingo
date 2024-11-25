@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\DeckProgress;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -26,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('administrate', function () {
             return Auth::user()->isAdmin;
+        });
+
+        Gate::define('access-deck-progress', function ($user, DeckProgress $deckProgress) {
+            return $deckProgress->user_id === $user->id;
         });
     }
 }
