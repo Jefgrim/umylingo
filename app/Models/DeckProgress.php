@@ -14,16 +14,18 @@ class DeckProgress extends Model
         'user_id',
         'score',
         'cardLearnIndex',
-        'quizLearnIndex',
+        'cardQuizIndex',
         'isLearningStarted',
         'isQuizStarted',
         'isLearningCompleted',
-        'isQuizStarted',
+        'isQuizCompleted',
     ];
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    public function deck(){
+    public function deck()
+    {
         return $this->belongsTo(Deck::class);
     }
 }

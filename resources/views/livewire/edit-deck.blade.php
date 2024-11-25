@@ -29,7 +29,7 @@
                 <div class="form-group">
                     <label for="edit-cardCount" class="form-group-label">Total Cards: {{ $cardCount }}</label>
                     <span class="error-message">
-                        @error('form.cards')
+                        @error('cards')
                             {{ $message }}
                         @enderror
                     </span>

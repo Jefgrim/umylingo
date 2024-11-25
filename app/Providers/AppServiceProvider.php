@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\DeckProgress;
+use App\Models\LearnProgress;
+use App\Models\QuizProgress;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -29,8 +30,12 @@ class AppServiceProvider extends ServiceProvider
             return Auth::user()->isAdmin;
         });
 
-        Gate::define('access-deck-progress', function ($user, DeckProgress $deckProgress) {
-            return $deckProgress->user_id === $user->id;
+        Gate::define('access-learn-progress', function ($user, LearnProgress $learnProgress) {
+            return $learnProgress->user_id === $user->id;
+        });
+        
+        Gate::define('access-quiz-progress', function ($user, QuizProgress $quizProgress) {
+            return $quizProgress->user_id === $user->id;
         });
     }
 }

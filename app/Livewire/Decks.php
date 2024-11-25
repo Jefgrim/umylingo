@@ -3,7 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Deck;
-use App\Models\DeckProgress;
+use App\Models\LearnProgress;
+use App\Models\QuizProgress;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -17,18 +18,31 @@ class Decks extends Component
         $decks = Deck::all();
 
         foreach ($decks as $deck) {
-            DeckProgress::firstOrCreate([
+            LearnProgress::firstOrCreate([
                 'deck_id' => $deck->id,
                 'user_id' => Auth::id(),
             ]);
         }
 
-        $deckProgresses = DeckProgress::where('user_id', Auth::id())->get();
+        $learnProgresses = LearnProgress::where('user_id', Auth::id())->get();
 
-        // dd($deckProgresses[0]->deck->id);
+        foreach ($learnProgresses as $learnProgress) {
+            QuizProgress::firstOrCreate(
+                [
+                    'deck_id' => $learnProgress->deck_id,
+                    'user_id' => Auth::id(),
+                    'learn_progress_id' => $learnProgress->id
+                ]
+            );
+        }
 
-        return view('livewire.decks',[
-            'deckProgresses' => $deckProgresses
+        $quizProgresses = QuizProgress::where('user_id', Auth::id())->get();
+
+        // dd($learnProgresses);
+
+        return view('livewire.decks', [
+            'quizProgresses' => $quizProgresses,
+            'learnProgresses' => $learnProgresses,
         ]);
     }
 }

@@ -3,30 +3,35 @@
         <h2>Available Decks</h2>
     </div>
     <div class="deck-view-grid">
-        @foreach ($deckProgresses as $deckProgress)
-            <div class="deck-view-card" wire:key="{{ $deckProgress->deck->id }}">
+        @foreach ($learnProgresses as $learnProgress)
+            <div class="deck-view-card" wire:key="{{ $learnProgress->deck->id }}">
                 <div class="deck-view-language">
-                    {{ ucfirst($deckProgress->deck->language) }}
+                    {{ ucfirst($learnProgress->deck->language) }}
                 </div>
                 <div class="deck-view-description">
-                    <p>{{ str($deckProgress->deck->deck_description)->words(10) }}</p>
-                    <p>{{ $deckProgress->deck->cards->count() }} Cards</p>
+                    <p>{{ str($learnProgress->deck->deck_description)->words(10) }}</p>
+                    <p>{{ $learnProgress->deck->cards->count() }} Cards</p>
                 </div>
                 <div class="deck-view-actions">
-                    @if ($deckProgress->isLearningStarted && $deckProgress->isLearningCompleted)
-                        <a href="/deck/{{ $deckProgress->id }}" class="btn btn-primary">Review</a>
-                    @elseif($deckProgress->isLearningStarted && !$deckProgress->isLearningCompleted)
-                        <a href="/deck/{{ $deckProgress->id }}" class="btn btn-primary">Continue Learning</a>
-                    @elseif(!$deckProgress->isLearningStarted && !$deckProgress->isLearningCompleted)
-                        <a href="/deck/{{ $deckProgress->id }}" class="btn btn-primary">Learn</a>
+                    @if ($learnProgress->isStarted && $learnProgress->isCompleted)
+                        <a href="/deck/{{ $learnProgress->id }}/learn" class="btn btn-primary">Review</a>
+                    @elseif($learnProgress->isStarted && !$learnProgress->isCompleted)
+                        <a href="/deck/{{ $learnProgress->id }}/learn" class="btn btn-primary">Continue Learning</a>
+                    @elseif(!$learnProgress->isStarted && !$learnProgress->isCompleted)
+                        <a href="/deck/{{ $learnProgress->id }}/learn" class="btn btn-primary">Learn</a>
                     @endif
 
-                    @if ($deckProgress->isLearningCompleted)
-                        <a href="" class="btn btn-primary">Start Quiz</a>
-                    @elseif($deckProgress->isQuizStarted && !$deckProgress->isQuizCompleted)
-                        <a href="" class="btn btn-primary">Continue Quiz</a>
-                    @elseif($deckProgress->isQuizStarted && $deckProgress->isQuizCompleted)
-                        <a href="" class="btn btn-primary">Review Quiz</a>
+                    @if ($learnProgress->isCompleted)
+                        @if (!$learnProgress->quizProgress->isCompleted && !$learnProgress->quizProgress->isStarted)
+                            <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz" class="btn btn-primary">Start
+                                Quiz</a>
+                        @elseif($learnProgress->quizProgress->isStarted && !$learnProgress->quizProgress->isCompleted)
+                            <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz" class="btn btn-primary">Continue
+                                Quiz</a>
+                        @elseif($learnProgress->quizProgress->isStarted && $learnProgress->quizProgress->isCompleted)
+                            <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz" class="btn btn-primary">Review
+                                Quiz</a>
+                        @endif
                     @endif
                 </div>
             </div>

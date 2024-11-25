@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 
 class Deck extends Model
 {
@@ -20,8 +19,8 @@ class Deck extends Model
     {
         return $this->hasMany(Card::class);
     }
-    public function progress()
+    public function learnProgress()
     {
-        return $this->hasMany(DeckProgress::class);
+        return $this->hasMany(LearnProgress::class);
     }
 }

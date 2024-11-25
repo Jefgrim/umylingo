@@ -2,64 +2,67 @@
 
 namespace App\Livewire;
 
-use App\Models\Deck;
-use App\Models\DeckProgress;
-use Illuminate\Support\Facades\Auth;
+use App\Models\LearnProgress;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 class LearnDeck extends Component
 {
-    public $deckProgress;
+    public $learnProgress;
     public $currentIndex;
 
-    public function mount(DeckProgress $deckProgress)
+    public function mount(LearnProgress $learnProgress)
     {
-        if (Gate::denies('access-deck-progress', $deckProgress)) {
+        if (Gate::denies('access-learn-progress', $learnProgress)) {
             abort(403, 'Unauthorized access');
         }
 
-        $this->deckProgress = $deckProgress;
-        if (!$this->deckProgress->isLearningStarted) {
-            $deckProgress->update([
-                'isLearningStarted' => 1
+        $this->learnProgress = $learnProgress;
+
+        if ($this->learnProgress->cardIndex > $this->learnProgress->deck->cards->count() - 1) {
+            $learnProgress->update([
+                'currentIndex' => 0
             ]);
         }
-        $this->currentIndex = $this->deckProgress->cardLearnIndex;
+        if (!$this->learnProgress->isStarted) {
+            $learnProgress->update([
+                'isStarted' => 1
+            ]);
+        }
+        $this->currentIndex = $this->learnProgress->currentIndex;
     }
 
-    public function nextCard()
+    public function nextLearnCard()
     {
-        if ($this->deckProgress->cardLearnIndex < $this->deckProgress->deck->cards->count() - 1) {
-            $this->currentIndex = $this->deckProgress->cardLearnIndex + 1;
-            $this->saveProgress();
+        if ($this->learnProgress->currentIndex < $this->learnProgress->deck->cards->count() - 1) {
+            $this->currentIndex = $this->learnProgress->currentIndex + 1;
+            $this->saveLearnProgress();
         }
     }
 
-    public function previousCard()
+    public function previousLearnCard()
     {
-        if ($this->deckProgress->cardLearnIndex  > 0) {
-            $this->currentIndex = $this->deckProgress->cardLearnIndex - 1;
-            $this->saveProgress();
+        if ($this->learnProgress->currentIndex  > 0) {
+            $this->currentIndex = $this->learnProgress->currentIndex - 1;
+            $this->saveLearnProgress();
         }
     }
-
-    private function saveProgress()
+    private function saveLearnProgress()
     {
         // Save the progress, e.g., to the user's profile or a progress table
-        $deckProgress = $this->deckProgress;
-        // echo dd($deckProgress->cardLearnIndex);
+        $learnProgress = $this->learnProgress;
+        // echo dd($learnProgress->currentIndex);
         $currentIndex = $this->currentIndex;
 
-        $deckProgress->update([
-            'cardLearnIndex' => $currentIndex
+        $learnProgress->update([
+            'currentIndex' => $currentIndex
         ]);
 
-        if ($deckProgress->deck->cards->count() == ($currentIndex + 1)) {
-            if (!$deckProgress->isLearningCompleted && $deckProgress->cardLearnIndex == $currentIndex) {
-                $deckProgress->update([
-                    'cardLearnIndex' => $currentIndex,
-                    'isLearningCompleted' => 1
+        if ($learnProgress->deck->cards->count() == ($currentIndex + 1)) {
+            if (!$learnProgress->isCompleted && $learnProgress->currentIndex == $currentIndex) {
+                $learnProgress->update([
+                    'currentIndex' => $currentIndex,
+                    'isCompleted' => 1
                 ]);
             }
         }
@@ -67,12 +70,13 @@ class LearnDeck extends Component
 
     public function render()
     {
-        $cards = $this->deckProgress->deck->cards;
-        $currentCard = $cards[$this->deckProgress->cardLearnIndex] ?? null;
-
+        $cards = $this->learnProgress->deck->cards;
+        $quizProgress = $this->learnProgress->quizProgress;
+        $currentLearnCard = $cards[$this->learnProgress->currentIndex] ?? null;
         // echo dd($currentCard->content);
         return view('livewire.learn-deck', [
-            'currentCard' => $currentCard
+            'currentLearnCard' => $currentLearnCard,
+            'quizProgress' => $quizProgress
         ]);
     }
 }
