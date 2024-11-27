@@ -24,6 +24,12 @@ class LearnDeck extends Component
                 'currentIndex' => 0
             ]);
         }
+
+        if ($this->learnProgress->cardIndex == $this->learnProgress->deck->cards->count() - 1) {
+            $learnProgress->update([
+                'isCompleted' => 1
+            ]);
+        }
         if (!$this->learnProgress->isStarted) {
             $learnProgress->update([
                 'isStarted' => 1

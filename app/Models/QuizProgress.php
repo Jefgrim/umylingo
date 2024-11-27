@@ -27,4 +27,8 @@ class QuizProgress extends Model
     {
         return $this->belongsTo(LearnProgress::class);
     }
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
+    }
 }

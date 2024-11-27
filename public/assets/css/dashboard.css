@@ -368,6 +368,76 @@ header {
     white-space: pre;
 }
 
+/* Start Dashboard Design */
+
+.dashboard-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #ad3324;
+    margin-bottom: 2rem;
+}
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+.stat-box {
+    background-color: #fdfbfb;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 120px;
+}
+
+.stat-title {
+    font-size: 1.2rem;
+    color: #0c5894;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.charts-container {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 0 1rem;
+}
+
+.chart-box {
+    background-color: #fdfbfb;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px; /* Ensures consistent height for all charts */
+}
+
+canvas {
+    width: 100%;
+    height: 100%; /* Makes the canvas fill the parent container */
+}
+
+
+/* End Dashboard Design */
+
 /* START user end deck view */
 .deck-view-page {
     padding: 20px;
@@ -561,6 +631,139 @@ header {
 }
 
 /* END learn deck view */
+
+/* Start Quiiz Deck View */
+
+/* General Layout */
+.quiz-view-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #eeeeee;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Header */
+.quiz-view-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.quiz-title {
+    color: #ad3324;
+    font-size: 1.8em;
+    font-weight: bold;
+}
+.quiz-description {
+    color: #0c5894;
+    font-size: 1.2em;
+}
+
+/* Card Section */
+.quiz-card-container {
+    background: white;
+    border: 1px solid #ad3324;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+.quiz-question {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #333;
+}
+.quiz-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Radio Buttons as Buttons */
+.quiz-choice-button {
+    display: inline-block;
+    padding: 15px 20px;
+    font-size: 1.2em;
+    text-align: center;
+    border: 2px solid #0c5894;
+    border-radius: 8px;
+    background-color: white;
+    color: #0c5894;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    position: relative;
+    user-select: none;
+}
+.quiz-choice-button:hover {
+    background-color: #0c5894;
+    color: white;
+}
+.quiz-choice-button input {
+    display: none;
+}
+.quiz-choice-button input:checked + * {
+    background-color: #ad3324;
+    color: white;
+    border-color: #ad3324;
+}
+
+/* Feedback Styling */
+.quiz-feedback-message {
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.quiz-feedback-message.quiz-correct {
+    background-color: #d4edda;
+    color: #155724;
+}
+.quiz-feedback-message.quiz-wrong {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Correct and Wrong Choice Highlight */
+.quiz-choice-correct {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #155724;
+}
+.quiz-choice-wrong {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #721c24;
+}
+
+/* Navigation */
+.quiz-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+.quiz-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+.quiz-btn-secondary {
+    background-color: #0c5894;
+    color: white;
+}
+.quiz-btn-secondary:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+.quiz-btn-primary {
+    background-color: #ad3324;
+    color: white;
+}
+
+
+/* End Quiiz Deck View */
 
 /* start edit create deck form */
 

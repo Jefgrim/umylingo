@@ -2,14 +2,22 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Forms\QuizForm;
+use App\Models\Quiz;
 use App\Models\QuizProgress;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 class QuizDeck extends Component
 {
+    public QuizForm $form;
     public $quizProgress;
     public $currentIndex;
+
+    public $answers = [];
+
+    public $quizzes;
 
     public function mount(QuizProgress $quizProgress)
     {
@@ -18,6 +26,17 @@ class QuizDeck extends Component
         }
 
         $this->quizProgress = $quizProgress;
+        $cards = $this->quizProgress->deck->cards;
+
+        foreach ($cards as $card) {
+            Quiz::firstOrCreate([
+                'quiz_progress_id' => $quizProgress->id,
+                'user_id' => Auth::id(),
+                'card_id' => $card->id,
+            ]);
+        }
+
+        $this->quizzes = Quiz::where('user_id', Auth::id())->where('quiz_progress_id', $quizProgress->id)->get();
 
         if ($this->quizProgress->cardIndex > $this->quizProgress->deck->cards->count() - 1) {
             $quizProgress->update([
@@ -47,11 +66,30 @@ class QuizDeck extends Component
             $this->saveQuizProgress();
         }
     }
+
+    public function finishQuiz()
+    {
+        $quizProgress = $this->quizProgress;
+        $quizzes = $this->quizzes;
+        foreach ($quizzes as $quiz) {
+            if ($quiz->choice->isCorrect) {
+                $quiz->update(['isAnswered' => 1, 'isCorrect' => 1]);
+            } else {
+                $quiz->update(['isAnswered' => 1]);
+            }
+        }
+
+        $quizProgress->update(['isCompleted' => 1]);
+    }
+    public function setAnswer($choiceId, $quizId)
+    {
+        $quiz = Quiz::find($quizId);
+
+        $quiz->update(['choice_id' => $choiceId]);
+    }
     private function saveQuizProgress()
     {
-        // Save the progress, e.g., to the user's profile or a progress table
         $quizProgress = $this->quizProgress;
-        // echo dd($quizProgress->currentIndex);
         $currentIndex = $this->currentIndex;
 
         $quizProgress->update([
@@ -69,12 +107,11 @@ class QuizDeck extends Component
 
     public function render()
     {
-        $cards = $this->quizProgress->deck->cards;
+        $quizzes = $this->quizzes;
         $quizProgress = $this->quizProgress->quizProgress;
-        $currentQuizCard = $cards[$this->quizProgress->currentIndex] ?? null;
-        // echo dd($currentCard->content);
+        $currentQuiz = $quizzes[$this->quizProgress->currentIndex] ?? null;
         return view('livewire.quiz-deck', [
-            'currentQuizCard' => $currentQuizCard,
+            'currentQuiz' => $currentQuiz,
             'quizProgress' => $quizProgress
         ]);
     }
