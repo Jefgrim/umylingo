@@ -22,14 +22,14 @@
                 <!-- Choices -->
                 <div class="quiz-choices">
                     @foreach ($currentQuiz->card->choices as $choice)
-                        <label
-                            class="quiz-choice-button {{ $currentQuiz->choice_id == $choice->id ? ($currentQuiz->isCorrect ? 'quiz-choice-correct' : 'quiz-choice-wrong') : '' }}">
-                            <input type="radio" name="answers" id="answer{{ $choice->id }}"
+                        <button type="button"
+                                class="quiz-choice-button
+                                {{ $currentQuiz->choice_id == $choice->id && !$currentQuiz->isAnswered ? 'quiz-choice-selected' : '' }}
+                                {{ $currentQuiz->isAnswered && $currentQuiz->choice_id == $choice->id ? ($currentQuiz->isCorrect ? 'quiz-choice-correct' : 'quiz-choice-wrong') : '' }}"
                                 wire:click="setAnswer({{ $choice->id }}, {{ $currentQuiz->id }})"
-                                {{ $currentQuiz->isAnswered ? 'disabled' : '' }}
-                                {{ $currentQuiz->choice_id == $choice->id ? 'checked' : '' }}>
+                                {{ $currentQuiz->isAnswered ? 'disabled' : '' }}>
                             {{ $choice->choice }}
-                        </label>
+                        </button>
                     @endforeach
                 </div>
             </form>

@@ -36,16 +36,20 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+    // Get the current year from PHP
+    const currentYear = "{{ now()->year }}";
+
     // Line Chart for Users
     const ctx = document.getElementById('usersChart').getContext('2d');
     const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
         'November', 'December'
     ];
+
     const data = {
         labels: labels,
         datasets: [{
-            label: '2024 Umylingo Users Count',
-            data: [65, 59, 80, 81, 56, 55, 40],
+            label: `${currentYear} Umylingo Users Count`, // Use dynamic year here
+            data: [{{ $currentUsersPerMonth[1] }}, {{ $currentUsersPerMonth[2] }}, {{ $currentUsersPerMonth[3] }}, {{ $currentUsersPerMonth[4] }}, {{ $currentUsersPerMonth[5] }}, {{ $currentUsersPerMonth[6] }}, {{ $currentUsersPerMonth[7] }}, {{ $currentUsersPerMonth[8] }}, {{ $currentUsersPerMonth[9] }}, {{ $currentUsersPerMonth[10] }}, {{ $currentUsersPerMonth[11] }}, {{ $currentUsersPerMonth[12] }},],
             fill: false,
             borderColor: '#0c5894',
             tension: 0.1

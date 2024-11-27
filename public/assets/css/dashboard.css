@@ -267,7 +267,6 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #eeeeee;
     color: #0c5894;
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
@@ -633,13 +632,10 @@ canvas {
 /* END learn deck view */
 
 /* Start Quiiz Deck View */
-
-/* General Layout */
 .quiz-view-page {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background-color: #eeeeee;
     padding: 20px;
     border-radius: 8px;
 }
@@ -648,6 +644,9 @@ canvas {
 .quiz-view-header {
     text-align: center;
     margin-bottom: 20px;
+    padding: 0 0;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0);
 }
 .quiz-title {
     color: #ad3324;
@@ -678,7 +677,7 @@ canvas {
     gap: 10px;
 }
 
-/* Radio Buttons as Buttons */
+/* Buttons as Choice Options */
 .quiz-choice-button {
     display: inline-block;
     padding: 15px 20px;
@@ -697,12 +696,14 @@ canvas {
     background-color: #0c5894;
     color: white;
 }
-.quiz-choice-button input {
-    display: none;
+.quiz-choice-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
 }
-.quiz-choice-button input:checked + * {
-    background-color: #ad3324;
-    color: white;
+
+/* Highlight Selected Button (When Unanswered) */
+.quiz-choice-selected {
+    background-color: #f0f0f0;
     border-color: #ad3324;
 }
 

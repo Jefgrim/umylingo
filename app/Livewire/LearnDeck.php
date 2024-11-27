@@ -19,17 +19,24 @@ class LearnDeck extends Component
 
         $this->learnProgress = $learnProgress;
 
-        if ($this->learnProgress->cardIndex > $this->learnProgress->deck->cards->count() - 1) {
+        if ($this->learnProgress->currentIndex > $this->learnProgress->deck->cards->count() - 1) {
             $learnProgress->update([
                 'currentIndex' => 0
             ]);
         }
 
-        if ($this->learnProgress->cardIndex == $this->learnProgress->deck->cards->count() - 1) {
+        if ($this->learnProgress->currentIndex == $this->learnProgress->deck->cards->count() - 1) {
             $learnProgress->update([
                 'isCompleted' => 1
             ]);
         }
+
+        if ($this->learnProgress->currentIndex > $this->learnProgress->deck->cards->count() - 1) {
+            $learnProgress->update([
+                'currentIndex' => 0
+            ]);
+        }
+
         if (!$this->learnProgress->isStarted) {
             $learnProgress->update([
                 'isStarted' => 1
