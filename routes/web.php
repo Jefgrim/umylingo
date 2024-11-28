@@ -49,7 +49,7 @@ Route::get('/dashboard/profile', AdminProfile::class)
     ->middleware('auth')
     ->can('administrate');
 
-Route::get('/dashboard/achievements', CreateAchievements::class)
+Route::get('/dashboard/achievements', DashboardAchievements::class)
     ->middleware('auth')
     ->can('administrate');
 
