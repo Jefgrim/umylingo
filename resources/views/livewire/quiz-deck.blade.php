@@ -23,11 +23,11 @@
                 <div class="quiz-choices">
                     @foreach ($currentQuiz->card->choices as $choice)
                         <button type="button"
-                                class="quiz-choice-button
+                            class="quiz-choice-button
                                 {{ $currentQuiz->choice_id == $choice->id && !$currentQuiz->isAnswered ? 'quiz-choice-selected' : '' }}
                                 {{ $currentQuiz->isAnswered && $currentQuiz->choice_id == $choice->id ? ($currentQuiz->isCorrect ? 'quiz-choice-correct' : 'quiz-choice-wrong') : '' }}"
-                                wire:click="setAnswer({{ $choice->id }}, {{ $currentQuiz->id }})"
-                                {{ $currentQuiz->isAnswered ? 'disabled' : '' }}>
+                            wire:click="setAnswer({{ $choice->id }}, {{ $currentQuiz->id }})" wire:replace.self
+                            {{ $currentQuiz->isAnswered ? 'disabled' : '' }}>
                             {{ $choice->choice }}
                         </button>
                     @endforeach

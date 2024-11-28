@@ -562,6 +562,7 @@ canvas {
 
 .learn-completion-actions .learn-btn {
     margin-top: 10px;
+    text-decoration: none;
 }
 
 .learn-deck-view-grid {
@@ -697,14 +698,13 @@ canvas {
     color: white;
 }
 .quiz-choice-button:disabled {
-    background-color: #cccccc;
     cursor: not-allowed;
 }
 
 /* Highlight Selected Button (When Unanswered) */
 .quiz-choice-selected {
-    background-color: #f0f0f0;
-    border-color: #ad3324;
+    background-color: #0c5894;
+    color: #fdfbfb;
 }
 
 /* Feedback Styling */

@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Livewire\Forms\QuizForm;
 use App\Models\Quiz;
 use App\Models\QuizProgress;
 use Illuminate\Support\Facades\Auth;
@@ -11,13 +10,14 @@ use Livewire\Component;
 
 class QuizDeck extends Component
 {
-    public QuizForm $form;
     public $quizProgress;
     public $currentIndex;
 
     public $answers = [];
 
     public $quizzes;
+
+    public $quiz;
 
     public function mount(QuizProgress $quizProgress)
     {
@@ -26,6 +26,7 @@ class QuizDeck extends Component
         }
 
         $this->quizProgress = $quizProgress;
+        $this->quiz;
         $cards = $this->quizProgress->deck->cards;
 
         foreach ($cards as $card) {
@@ -83,9 +84,12 @@ class QuizDeck extends Component
     }
     public function setAnswer($choiceId, $quizId)
     {
-        $quiz = Quiz::find($quizId);
-
+        $quiz = $this->quizProgress->quizzes->find($quizId);
         $quiz->update(['choice_id' => $choiceId]);
+
+        $this->quizzes = Quiz::where('user_id', Auth::id())
+            ->where('quiz_progress_id', $this->quizProgress->id)
+            ->get();
     }
     private function saveQuizProgress()
     {
@@ -108,7 +112,7 @@ class QuizDeck extends Component
     public function render()
     {
         $quizzes = $this->quizzes;
-        $quizProgress = $this->quizProgress->quizProgress;
+        $quizProgress = $this->quizProgress;
         $currentQuiz = $quizzes[$this->quizProgress->currentIndex] ?? null;
         return view('livewire.quiz-deck', [
             'currentQuiz' => $currentQuiz,

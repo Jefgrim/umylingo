@@ -31,10 +31,10 @@
     </header>
     <div class="main-container">
         <div class="sidebar">
-            <a href="/decks">Decks</a>
-            <a href="/notes">Notes</a>
-            <a href="/achievements">Achievements</a>
-            <a href="/profile">Profile</a>
+            <a href="/decks" wire:current='active'>Decks</a>
+            <a href="/notes" wire:current='active'>Notes</a>
+            <a href="/achievements" wire:current='active'>Achievements</a>
+            <a href="/profile" wire:current='active'>Profile</a>
         </div>
         <div class="main">
             {{ $slot }}

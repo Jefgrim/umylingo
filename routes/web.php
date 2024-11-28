@@ -3,6 +3,9 @@
 
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
+use App\Livewire\Achievements;
+use App\Livewire\AdminProfile;
+use App\Livewire\CreateAchievements;
 use App\Livewire\CreateDeck;
 use App\Livewire\Dashboard;
 use App\Livewire\DashboardAchievements;
@@ -10,6 +13,8 @@ use App\Livewire\DashboardDecks;
 use App\Livewire\Decks;
 use App\Livewire\EditDeck;
 use App\Livewire\LearnDeck;
+use App\Livewire\Notes;
+use App\Livewire\Profile;
 use App\Livewire\QuizDeck;
 use App\Models\Deck;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +29,27 @@ Route::get('/test', function () {
 
 Route::view('/', 'home');
 
+Route::get('/profile', Profile::class)
+    ->middleware('auth');
+
+Route::get('/decks', Decks::class)
+    ->middleware('auth');
+
+Route::get('/achievements', Achievements::class)
+    ->middleware('auth');
+
+Route::get('/notes', Notes::class)
+    ->middleware('auth');
+
 Route::get('/dashboard', Dashboard::class)
+    ->middleware('auth')
+    ->can('administrate');
+
+Route::get('/dashboard/profile', AdminProfile::class)
+    ->middleware('auth')
+    ->can('administrate');
+
+Route::get('/dashboard/achievements', CreateAchievements::class)
     ->middleware('auth')
     ->can('administrate');
 
@@ -36,13 +61,6 @@ Route::get('/deck/{deck}/edit', EditDeck::class)
     ->middleware('auth')
     ->can('administrate');
 
-Route::get('/dashboard/achievements', DashboardAchievements::class)
-    ->middleware('auth')
-    ->can('administrate');
-
-Route::get('/decks', Decks::class)
-    ->middleware('auth');
-
 Route::get('/deck/create', CreateDeck::class)
     ->middleware('auth')
     ->can('administrate');
@@ -50,7 +68,7 @@ Route::get('/deck/create', CreateDeck::class)
 Route::get('/deck/{learnProgress}/learn', LearnDeck::class)
     ->middleware('auth');
 
-    Route::get('/deck/{quizProgress}/quiz', QuizDeck::class)
+Route::get('/deck/{quizProgress}/quiz', QuizDeck::class)
     ->middleware('auth');
 
 
