@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\LearnProgress;
+use App\Models\UserAchievement;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
@@ -78,6 +80,8 @@ class LearnDeck extends Component
                     'isCompleted' => 1
                 ]);
             }
+
+            $this->dispatch('checkAchievements');
         }
     }
 

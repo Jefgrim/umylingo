@@ -24,7 +24,7 @@ class Dashboard extends AdminComponent
         // Create an array of months (1 to 12)
         $months = range(1, 12);
         $this->currentUsers = User::where('isAdmin', false)->count();
-        
+
         $userCounts = User::where('isAdmin', false)
             ->whereYear('created_at', now()->year)
             ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')

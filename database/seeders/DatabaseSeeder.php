@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        User::create([
             'firstname' => 'Jefgrim',
             'lastname' => 'Alvar',
             'username' => 'jefgrim',
@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
             'isAdmin' => true,
             'email' => 'jefgrim@example.com',
         ]);
-        
-        User::factory()->create([
+
+        User::create([
             'firstname' => 'test',
             'lastname' => 'test',
             'username' => 'test',
@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        User::factory()->create([
+        User::create([
             'firstname' => 'test2',
             'lastname' => 'test2',
             'username' => 'test2',
@@ -42,10 +42,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test2@example.com',
         ]);
 
-        // $this->call(UserSeeder::class);
-        // $this->call(DeckSeeder::class);
-        // $this->call(CardSeeder::class);
-        // $this->call(QuizSeeder::class);
-        // $this->call(ChoiceSeeder::class);
+        $this->call(DeckSeeder::class);
+        $this->call(AchievementSeeder::class);
     }
 }

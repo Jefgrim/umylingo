@@ -434,7 +434,6 @@ canvas {
     height: 100%; /* Makes the canvas fill the parent container */
 }
 
-
 /* End Dashboard Design */
 
 /* START user end deck view */
@@ -493,7 +492,6 @@ canvas {
     color: #333;
     flex-grow: 1;
     overflow-y: auto; /* Makes content scrollable vertically */
-    max-height: 100px; /* Limits description height */
 }
 
 .deck-view-actions {
@@ -763,7 +761,6 @@ canvas {
     color: white;
 }
 
-
 /* End Quiiz Deck View */
 
 /* start edit create deck form */
@@ -867,7 +864,6 @@ canvas {
 
 /* end edit create deck form */
 
-
 /* start profile design */
 
 /* Profile Page Styles */
@@ -946,3 +942,185 @@ canvas {
 }
 
 /* end profile design */
+
+/* achievements start design */
+
+.achievements-container {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(300px, 1fr)
+    ); /* Ensure cards fit properly */
+    gap: 30px; /* Space between cards */
+    padding: 40px 20px;
+    justify-items: center;
+    background-color: #eeeeee; /* Light gray background */
+}
+
+/* Achievement card style */
+.achievement-card {
+    background-color: #fdfbfb; /* Off-white background for the card */
+    border-radius: 12px; /* Slightly rounded corners */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    max-width: 350px;
+    width: 100%; /* Ensure cards are responsive and fit within the grid */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box; /* Ensures padding does not affect the width */
+}
+
+.achievement-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Achievement Header - Title and Badge */
+.achievement-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.achievement-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.badge {
+    padding: 8px 14px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 20px;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.achieved-badge {
+    background-color: #4caf50; /* Green */
+}
+
+.not-achieved-badge {
+    background-color: #ad3324; /* User's red color */
+}
+
+/* Description and Details */
+.achievement-description {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.achievement-details {
+    font-size: 0.95rem;
+    color: #0c5894; /* User's blue color */
+}
+
+/* For Not Achieved Achievements */
+.not-achieved .achievement-requirements {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.not-achieved .achievement-requirements ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding-left: 0;
+}
+
+.not-achieved .achievement-status {
+    font-size: 1.1rem;
+    color: #ad3324; /* User's red color */
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+/* For Achieved Achievements */
+.achieved .achievement-status {
+    font-size: 1.1rem;
+    color: #4caf50; /* Green text */
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+/* achievements end design */
+
+/* admin achievements start */
+
+/* Admin Achievement Create View Specific Styles */
+.admin-achievement-create .admin-container {
+    background-color: #fdfbfb; /* Off-white background */
+    padding: 40px;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 40px auto;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.admin-achievement-create h2 {
+    text-align: center;
+    color: #0c5894; /* Blue for the heading */
+    margin-bottom: 30px;
+}
+
+/* Form Styles for Admin */
+.admin-achievement-create .achievement-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.admin-achievement-create .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-achievement-create label {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.admin-achievement-create .form-input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fff;
+}
+
+.admin-achievement-create .form-input:focus {
+    outline: none;
+    border-color: #0c5894; /* Blue border on focus */
+}
+
+/* Button */
+.admin-achievement-create .form-button {
+    background-color: #ad3324; /* Red button */
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.admin-achievement-create .form-button:hover {
+    background-color: #9b2d1f; /* Darker red on hover */
+}
+
+/* Requirements Group (display only for non-achieved status) */
+.admin-achievement-create #requirements-group {
+    display: block;
+}
+
+/* admin achievements end */

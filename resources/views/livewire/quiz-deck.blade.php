@@ -10,6 +10,11 @@
         <div class="quiz-card-container">
             <form class="quiz-card">
                 <!-- Feedback Message -->
+                @if ($isUnAnswered)
+                    <div class="quiz-feedback-message quiz-wrong">
+                        Please answer all the questions.
+                    </div>
+                @endif
                 @if ($currentQuiz->isAnswered)
                     <div class="quiz-feedback-message {{ $currentQuiz->isCorrect ? 'quiz-correct' : 'quiz-wrong' }}">
                         {{ $currentQuiz->isCorrect ? 'Correct Answer!' : 'Wrong Answer' }}

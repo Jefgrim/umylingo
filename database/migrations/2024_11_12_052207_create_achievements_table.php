@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->text('achievement_title');
             $table->text('achievement_description');
+            $table->text('achievement_requirements');
             $table->timestamps();
         });
     }

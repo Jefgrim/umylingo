@@ -2,9 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Models\Achievement;
 use App\Models\Deck;
 use App\Models\LearnProgress;
 use App\Models\QuizProgress;
+use App\Models\UserAchievement;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -25,6 +27,17 @@ class Decks extends Component
         }
 
         $learnProgresses = LearnProgress::where('user_id', Auth::id())->get();
+        
+        $achievements = Achievement::all();
+        
+        foreach($achievements as $achievement){
+            UserAchievement::firstOrCreate(
+                [
+                    'achievement_id' => $achievement->id,
+                    'user_id' => Auth::id()
+                ]
+            );
+        }
 
         foreach ($learnProgresses as $learnProgress) {
             QuizProgress::firstOrCreate(

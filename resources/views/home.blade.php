@@ -8,26 +8,9 @@
                         <h1 class="fw-bold">The best language learning for beginners like you</h1>
                     </div>
                 </div>
-                {{-- <div class="col-12 col-lg-10 mx-auto">
-                    <div class="position-relative" style="display: flex;flex-wrap: wrap;justify-content: flex-end;">
-                        <div style="position: relative;flex: 0 0 45%;transform: translate3d(-15%, 35%, 0);"><img
-                                class="img-fluid" src="assets/img/learn.jpg"></div>
-                        <div style="position: relative;flex: 0 0 45%;transform: translate3d(-5%, 20%, 0);"><img
-                                class="img-fluid" src="assets/img/grammar.jpg"></div>
-                        <div style="position: relative;flex: 0 0 60%;transform: translate3d(0, 0%, 0);"><img
-                                class="img-fluid" src="assets/img/letters.jpg"></div>
-                    </div>
-                </div> --}}
             </div>
         </div>
     </header>
-    {{-- <section class="py-5" >
-        <div class="container text-center py-5">
-            <p class="mb-4" style="font-size: 1.6rem;">We are here to assist you in learning a
-                language in a fun and
-                meaningful way.</p>
-        </div>
-    </section> --}}
     <section id="features">
         <div class="container py-5">
             <div class="row">
@@ -50,9 +33,8 @@
                                             d="M1.226 10.88H0l2.056-6.26h1.42l2.047 6.26h-1.29l-.48-1.61H1.707l-.48 1.61ZM2.76 5.818h-.054l-.75 2.532H3.51zm3.217 5.062V4.62h2.56c1.09 0 1.808.582 1.808 1.54 0 .762-.444 1.22-1.05 1.372v.055c.736.074 1.365.587 1.365 1.528 0 1.119-.89 1.766-2.133 1.766h-2.55ZM7.18 5.55v1.675h.8c.812 0 1.171-.308 1.171-.853 0-.51-.328-.822-.898-.822zm0 2.537V9.95h.903c.951 0 1.342-.312 1.342-.909 0-.591-.382-.954-1.095-.954H7.18Zm5.089-.711v.775c0 1.156.49 1.803 1.347 1.803.705 0 1.163-.454 1.212-1.096H16v.12C15.942 10.173 14.95 11 13.607 11c-1.648 0-2.573-1.073-2.573-2.849v-.78c0-1.775.934-2.871 2.573-2.871 1.347 0 2.34.849 2.393 2.087v.115h-1.172c-.05-.665-.516-1.156-1.212-1.156-.849 0-1.347.67-1.347 1.83Z">
                                         </path>
                                     </svg></div>
-                                <h5 class="fw-bold card-title">Multiple Languages</h5>
-                                <p class=" card-text mb-4">Explore and learn new languages at your own pace.
-                                    Learn and track your progress in multiple languages with enhance your skills.</p>
+                                <h5 class="fw-bold card-title">Multiple Decks</h5>
+                                <p class=" card-text mb-4">There will be different Decks for learning, every decks means lesson.</p>
                             </div>
                         </div>
                     </div>
@@ -90,9 +72,9 @@
                                             d="M5.933.87a2.89 2.89 0 0 1 4.134 0l.622.638.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636zM7.002 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm1.602-2.027c.04-.534.198-.815.846-1.26.674-.475 1.05-1.09 1.05-1.986 0-1.325-.92-2.227-2.262-2.227-1.02 0-1.792.492-2.1 1.29A1.71 1.71 0 0 0 6 5.48c0 .393.203.64.545.64.272 0 .455-.147.564-.51.158-.592.525-.915 1.074-.915.61 0 1.03.446 1.03 1.084 0 .563-.208.885-.822 1.325-.619.433-.926.914-.926 1.64v.111c0 .428.208.745.585.745.336 0 .504-.24.554-.627z">
                                         </path>
                                     </svg></div>
-                                <h5 class="fw-bold card-title">Interactive Quizzes</h5>
-                                <p class=" card-text mb-4">Test your knowledge with fun, interactive quizzes.
-                                    Challenge yourself with dynamic and interactive quizzes.</p>
+                                <h5 class="fw-bold card-title">Quizzes</h5>
+                                <p class=" card-text mb-4">Test your knowledge with quizzes.
+                                    Challenge yourself.</p>
                             </div>
                         </div>
                     </div>
@@ -110,7 +92,7 @@
                                     </svg></div>
                                 <h5 class="fw-bold card-title">Notes</h5>
                                 <p class=" card-text mb-4">Capture key insights with convenient
-                                    note-taking.Easily take notes to enhance your learning.</p>
+                                    note-taking. Easily take notes to enhance your learning.</p>
                             </div>
                         </div>
                     </div>
@@ -155,7 +137,7 @@
                                 </svg></div>
                             <div class="px-2">
                                 <h6 class="fw-bold mb-0">Phone</h6>
-                                <p class=" mb-0">+639919447082</p>
+                                <p class=" mb-0">+639662232867</p>
                             </div>
                         </div>
                         <div class="d-flex align-items-center p-3">
@@ -168,7 +150,7 @@
                                 </svg></div>
                             <div class="px-2">
                                 <h6 class="fw-bold mb-0">Email</h6>
-                                <p class=" mb-0">jamesclarkbadiang@gmail.com</p>
+                                <p class=" mb-0">info@umylingo.x10.mx</p>
                             </div>
                         </div>
                         <div class="d-flex align-items-center p-3">

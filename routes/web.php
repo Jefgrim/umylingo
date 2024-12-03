@@ -49,10 +49,6 @@ Route::get('/dashboard/profile', AdminProfile::class)
     ->middleware('auth')
     ->can('administrate');
 
-Route::get('/dashboard/achievements', DashboardAchievements::class)
-    ->middleware('auth')
-    ->can('administrate');
-
 Route::get('/dashboard/decks', DashboardDecks::class)
     ->middleware('auth')
     ->can('administrate');

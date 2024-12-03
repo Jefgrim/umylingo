@@ -20,7 +20,6 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(LearnProgress::class);
             $table->integer('currentIndex')->default(0);
-            $table->integer('score')->default(0);
             $table->boolean('isStarted')->default(0);
             $table->boolean('isCompleted')->default(0);
             $table->timestamps();

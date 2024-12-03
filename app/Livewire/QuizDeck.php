@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Models\LearnProgress;
 use App\Models\Quiz;
 use App\Models\QuizProgress;
+use App\Models\UserAchievement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
@@ -19,6 +21,8 @@ class QuizDeck extends Component
 
     public $quiz;
 
+    public $isUnAnswered = false;
+
     public function mount(QuizProgress $quizProgress)
     {
         if (Gate::denies('access-quiz-progress', $quizProgress)) {
@@ -28,8 +32,9 @@ class QuizDeck extends Component
         $this->quizProgress = $quizProgress;
         $this->quiz;
         $cards = $this->quizProgress->deck->cards;
+        $shuffledCards = $cards->shuffle();
 
-        foreach ($cards as $card) {
+        foreach ($shuffledCards as $card) {
             Quiz::firstOrCreate([
                 'quiz_progress_id' => $quizProgress->id,
                 'user_id' => Auth::id(),
@@ -70,17 +75,28 @@ class QuizDeck extends Component
 
     public function finishQuiz()
     {
-        $quizProgress = $this->quizProgress;
+        $this->isUnAnswered = false;
         $quizzes = $this->quizzes;
         foreach ($quizzes as $quiz) {
-            if ($quiz->choice->isCorrect) {
-                $quiz->update(['isAnswered' => 1, 'isCorrect' => 1]);
-            } else {
-                $quiz->update(['isAnswered' => 1]);
+            if ($quiz->choice_id == null) {
+                $this->isUnAnswered = true;
+                break;
             }
         }
 
-        $quizProgress->update(['isCompleted' => 1]);
+        if ($this->isUnAnswered == false) {
+            foreach ($quizzes as $quiz) {
+                if ($quiz->choice->isCorrect) {
+                    $quiz->update(['isCorrect' => 1, 'isAnswered' => 1]);
+                } else {
+                    $quiz->update(['isAnswered' => 1]);
+                }
+            }
+            $quizProgress = $this->quizProgress;
+            $quizProgress->update(['isCompleted' => 1]);
+        }
+
+        $this->dispatch('checkAchievements');
     }
     public function setAnswer($choiceId, $quizId)
     {

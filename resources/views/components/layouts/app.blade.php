@@ -40,6 +40,7 @@
             {{ $slot }}
         </div>
     </div>
+    <livewire:CheckAchievements />
 </body>
 
 </html>

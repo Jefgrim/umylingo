@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Achievement::class);
             $table->foreignIdFor(User::class);
-            $table->timestamp('achieved_at');
+            $table->timestamp('achieved_at')->nullable()->default(null);
             $table->timestamps();
         });
     }
