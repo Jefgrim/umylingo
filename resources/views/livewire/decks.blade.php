@@ -1,6 +1,7 @@
 <div class="deck-view-page">
     <div class="deck-view-header">
         <h2>Available Decks</h2>
+        {{ 'test' }}
     </div>
     <div class="deck-view-grid">
         @foreach ($learnProgresses as $learnProgress)
