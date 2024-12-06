@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('currentIndex')->default(0);
             $table->boolean('isStarted')->default(0);
             $table->boolean('isCompleted')->default(0);
+            $table->timestamp('startedAt')->nullable()->default(null);
+            $table->timestamp('completedAt')->nullable()->default(null);
             $table->timestamps();
         });
     }

@@ -8,6 +8,7 @@ use App\Models\QuizProgress;
 use App\Models\UserAchievement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class QuizDeck extends Component
@@ -23,6 +24,7 @@ class QuizDeck extends Component
 
     public $isUnAnswered = false;
 
+    public $achievementTitle;
     public function mount(QuizProgress $quizProgress)
     {
         if (Gate::denies('access-quiz-progress', $quizProgress)) {
@@ -72,6 +74,10 @@ class QuizDeck extends Component
             $this->saveQuizProgress();
         }
     }
+    #[On('achievementUnlocked')]
+    public function achievementUnlocked($achievementTitle){
+        $this->achievementTitle = $achievementTitle;
+    }
 
     public function finishQuiz()
     {
@@ -96,7 +102,7 @@ class QuizDeck extends Component
             $quizProgress->update(['isCompleted' => 1]);
         }
 
-        $this->dispatch('checkAchievements');
+        $this->dispatch('checkAchievements', quizzes: $this->quizzes, learnId: null);
     }
     public function setAnswer($choiceId, $quizId)
     {

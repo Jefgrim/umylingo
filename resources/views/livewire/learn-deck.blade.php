@@ -8,6 +8,11 @@
         <section class="learn-completion-message">
             <h3>Congratulations!</h3>
             <p>You have completed learning this deck.</p>
+            @if ($achievementTitle)
+                <div class="quiz-feedback-message quiz-correct">
+                    Achievement "{{ $achievementTitle }}" Achieved.
+                </div>
+            @endif
             <div class="learn-completion-actions">
                 @if (!$quizProgress->isStarted && !$quizProgress->isCompleted)
                     <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz" class="learn-btn learn-btn-primary">Start
@@ -16,7 +21,8 @@
                     <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz"
                         class="learn-btn learn-btn-primary">Continue Quiz</a>
                 @elseif($quizProgress->isCompleted)
-                    <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz" class="learn-btn learn-btn-primary">Review
+                    <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz"
+                        class="learn-btn learn-btn-primary">Review
                         Quiz</a>
                 @endif
             </div>

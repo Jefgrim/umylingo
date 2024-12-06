@@ -7,7 +7,6 @@
                     <h3 class="achievement-title">{{ $achievement->achievement->achievement_title }}</h3>
                     <div class="badge not-achieved-badge">Not Achieved</div>
                 </div>
-                <p class="achievement-description">{{ $achievement->achievement->achievement_description }}</p>
                 <div class="achievement-requirements">
                     <strong>Requirements:</strong>
                     <ul>

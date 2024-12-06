@@ -10,10 +10,13 @@ class QuizProgress extends Model
         'deck_id',
         'user_id',
         'learn_progress_id',
-        'score',
+        'correctItems',
+        'totalItems',
         'currentIndex',
         'isStarted',
         'isCompleted',
+        'startedAt',
+        'completedAt',
     ];
     public function user()
     {

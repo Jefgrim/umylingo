@@ -5,6 +5,7 @@ use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
 use App\Livewire\Achievements;
 use App\Livewire\AdminProfile;
+use App\Livewire\Assessments;
 use App\Livewire\CreateAchievements;
 use App\Livewire\CreateDeck;
 use App\Livewire\Dashboard;
@@ -36,6 +37,9 @@ Route::get('/decks', Decks::class)
     ->middleware('auth');
 
 Route::get('/achievements', Achievements::class)
+    ->middleware('auth');
+
+Route::get('/assessments', Assessments::class)
     ->middleware('auth');
 
 Route::get('/notes', Notes::class)

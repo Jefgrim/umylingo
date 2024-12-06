@@ -12,6 +12,8 @@ class LearnProgress extends Model
         'currentIndex',
         'isStarted',
         'isCompleted',
+        'startedAt',
+        'completedAt',
     ];
     public function user()
     {

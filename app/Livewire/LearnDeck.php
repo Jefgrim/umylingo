@@ -6,13 +6,21 @@ use App\Models\LearnProgress;
 use App\Models\UserAchievement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class LearnDeck extends Component
 {
     public $learnProgress;
     public $currentIndex;
+    public $achievementTitle;
 
+    #[On('achievementUnlocked')]
+    public function achievementUnlocked($achievementTitle)
+    {
+        $this->achievementTitle = $achievementTitle;
+    }
+    
     public function mount(LearnProgress $learnProgress)
     {
         if (Gate::denies('access-learn-progress', $learnProgress)) {

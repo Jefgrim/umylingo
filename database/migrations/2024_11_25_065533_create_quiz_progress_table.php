@@ -20,8 +20,12 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(LearnProgress::class);
             $table->integer('currentIndex')->default(0);
+            $table->integer('correctItems')->default(0);
+            $table->integer('totalItems')->default(0);
             $table->boolean('isStarted')->default(0);
             $table->boolean('isCompleted')->default(0);
+            $table->timestamp('startedAt')->nullable()->default(null);
+            $table->timestamp('completedAt')->nullable()->default(null);
             $table->timestamps();
         });
     }

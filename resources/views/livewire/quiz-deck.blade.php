@@ -15,6 +15,11 @@
                         Please answer all the questions.
                     </div>
                 @endif
+                @if ($achievementTitle)
+                    <div class="quiz-feedback-message quiz-correct">
+                        Achievement "{{ $achievementTitle }}" Achieved.
+                    </div>
+                @endif
                 @if ($currentQuiz->isAnswered)
                     <div class="quiz-feedback-message {{ $currentQuiz->isCorrect ? 'quiz-correct' : 'quiz-wrong' }}">
                         {{ $currentQuiz->isCorrect ? 'Correct Answer!' : 'Wrong Answer' }}
@@ -31,7 +36,9 @@
                             class="quiz-choice-button
                                 {{ $currentQuiz->choice_id == $choice->id && !$currentQuiz->isAnswered ? 'quiz-choice-selected' : '' }}
                                 {{ $currentQuiz->isAnswered && $currentQuiz->choice_id == $choice->id ? ($currentQuiz->isCorrect ? 'quiz-choice-correct' : 'quiz-choice-wrong') : '' }}"
-                            wire:click="setAnswer({{ $choice->id }}, {{ $currentQuiz->id }})" wire:replace.self
+                            wire:click="setAnswer({{ $choice->id }}, {{ $currentQuiz->id }})"
+                            wire:loading.class.remove="quiz-choice-selected"
+                            wire:target="setAnswer({{ $choice->id }}, {{ $currentQuiz->id }})"
                             {{ $currentQuiz->isAnswered ? 'disabled' : '' }}>
                             {{ $choice->choice }}
                         </button>

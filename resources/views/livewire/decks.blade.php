@@ -7,10 +7,10 @@
             <div class="deck-view-card" wire:key="{{ $learnProgress->deck->id }}">
                 <div class="deck-view-language">
                     {{ ucfirst($learnProgress->deck->language) }}
+                    {{ '(' }}{{ $learnProgress->deck->cards->count() }} Cards{{ ')' }}
                 </div>
                 <div class="deck-view-description">
-                    <p>{{ str($learnProgress->deck->deck_description)->words(10) }}</p>
-                    <p>{{ $learnProgress->deck->cards->count() }} Cards</p>
+                    <p>{{ $learnProgress->deck->deck_description }}</p>
                 </div>
                 <div class="deck-view-actions">
                     @if ($learnProgress->isStarted && $learnProgress->isCompleted)
@@ -26,7 +26,8 @@
                             <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz" class="btn btn-primary">Start
                                 Quiz</a>
                         @elseif($learnProgress->quizProgress->isStarted && !$learnProgress->quizProgress->isCompleted)
-                            <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz" class="btn btn-primary">Continue
+                            <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz"
+                                class="btn btn-primary">Continue
                                 Quiz</a>
                         @elseif($learnProgress->quizProgress->isStarted && $learnProgress->quizProgress->isCompleted)
                             <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz" class="btn btn-primary">Review
