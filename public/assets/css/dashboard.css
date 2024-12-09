@@ -525,6 +525,7 @@ canvas {
     background-color: #eeeeee; /* Light background for readability */
     font-family: Arial, sans-serif;
     line-height: 1.6;
+    position: relative;
 }
 
 .learn-deck-view-header {
@@ -637,6 +638,7 @@ canvas {
     gap: 20px;
     padding: 20px;
     border-radius: 8px;
+    position: relative;
 }
 
 /* Header */
@@ -1124,3 +1126,65 @@ canvas {
 }
 
 /* admin achievements end */
+
+.quiz-container {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    position: relative; /* Ensure the loader stays within the parent */
+    height: 100%; /* Make sure the parent has a defined height */
+    width: 100%;
+}
+
+/* loader */
+
+.loader,
+.loader:before,
+.loader:after {
+    border-radius: 50%;
+    width: 2.5em;
+    height: 2.5em;
+    animation-fill-mode: both;
+    animation: bblFadInOut 1.8s infinite ease-in-out;
+    position: absolute;
+}
+
+.loader {
+    position: absolute; /* Center the loader */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fdfbfb; /* Center circle color */
+    animation-delay: -0.16s; /* Delay for smooth animation */
+    margin-top: 150px;
+}
+
+.loader:before {
+    content: "";
+    left: -3.5em; /* Offset to the left of the center circle */
+    background-color: #ad3324; /* Red color for left circle */
+    animation-delay: -0.32s; /* Earlier animation delay */
+}
+
+.loader:after {
+    content: "";
+    left: 3.5em; /* Offset to the right of the center circle */
+    background-color: #0c5894; /* Blue color for right circle */
+    animation-delay: 0s; /* Default animation delay */
+}
+
+/* Pulsating Animation */
+@keyframes bblFadInOut {
+    0%,
+    80%,
+    100% {
+        transform: scale(0);
+        opacity: 0.3;
+    } /* Shrinks and fades */
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    } /* Expands fully and becomes visible */
+}
+
+/* loader */

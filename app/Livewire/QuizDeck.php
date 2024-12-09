@@ -2,10 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Models\LearnProgress;
 use App\Models\Quiz;
 use App\Models\QuizProgress;
-use App\Models\UserAchievement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\On;
@@ -23,6 +21,8 @@ class QuizDeck extends Component
     public $quiz;
 
     public $isUnAnswered = false;
+
+    public $correctItems = 0;
 
     public $achievementTitle;
     public function mount(QuizProgress $quizProgress)
@@ -46,6 +46,10 @@ class QuizDeck extends Component
 
         $this->quizzes = Quiz::where('user_id', Auth::id())->where('quiz_progress_id', $quizProgress->id)->get();
 
+        $quizProgress->update([
+            'totalItems' => $this->quizProgress->deck->cards->count()
+        ]);
+
         if ($this->quizProgress->cardIndex > $this->quizProgress->deck->cards->count() - 1) {
             $quizProgress->update([
                 'currentIndex' => 0
@@ -53,7 +57,8 @@ class QuizDeck extends Component
         }
         if (!$this->quizProgress->isStarted) {
             $quizProgress->update([
-                'isStarted' => 1
+                'isStarted' => 1,
+                'startedAt' => now(),
             ]);
         }
         $this->currentIndex = $this->quizProgress->currentIndex;
@@ -75,7 +80,8 @@ class QuizDeck extends Component
         }
     }
     #[On('achievementUnlocked')]
-    public function achievementUnlocked($achievementTitle){
+    public function achievementUnlocked($achievementTitle)
+    {
         $this->achievementTitle = $achievementTitle;
     }
 
@@ -94,16 +100,35 @@ class QuizDeck extends Component
             foreach ($quizzes as $quiz) {
                 if ($quiz->choice->isCorrect) {
                     $quiz->update(['isCorrect' => 1, 'isAnswered' => 1]);
+                    $this->correctItems++;
                 } else {
                     $quiz->update(['isAnswered' => 1]);
                 }
             }
             $quizProgress = $this->quizProgress;
-            $quizProgress->update(['isCompleted' => 1]);
+            $quizProgress->update([
+                'isCompleted' => 1,
+                'correctItems' => $this->correctItems,
+                'completedAt' => now()
+            ]);
         }
 
         $this->dispatch('checkAchievements', quizzes: $this->quizzes, learnId: null);
+
+        $this->assessments();
     }
+
+    public function assessments()
+    {
+        $durationInSeconds = $this->quizProgress->startedAt->diffInSeconds($this->quizProgress->completedAt);
+        $durationInMinutes = $this->quizProgress->startedAt->diffInMinutes($this->quizProgress->completedAt);
+        $correctPercentage = round(($this->quizProgress->correctItems / $this->quizProgress->totalItems) * 100, 2);
+
+        $quizzes = $this->quizProgress->quizzes;
+
+        dd($this->quizProgress->quizzes[0]->card);
+    }
+
     public function setAnswer($choiceId, $quizId)
     {
         $quiz = $this->quizProgress->quizzes->find($quizId);
@@ -112,6 +137,8 @@ class QuizDeck extends Component
         $this->quizzes = Quiz::where('user_id', Auth::id())
             ->where('quiz_progress_id', $this->quizProgress->id)
             ->get();
+
+            $this->nextQuizCard();
     }
     private function saveQuizProgress()
     {

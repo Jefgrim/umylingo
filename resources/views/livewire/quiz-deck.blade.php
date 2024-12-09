@@ -5,8 +5,10 @@
         <p class="quiz-description">{{ $quizProgress->deck->deck_description }}</p>
     </header>
 
+    <div class="loader" wire:loading.delay></div>
+
     <!-- Main Content Section -->
-    <main class="quiz-view-content">
+    <main class="quiz-view-content" wire:loading.remove.delay>
         <div class="quiz-card-container">
             <form class="quiz-card">
                 <!-- Feedback Message -->
@@ -34,11 +36,9 @@
                     @foreach ($currentQuiz->card->choices as $choice)
                         <button type="button"
                             class="quiz-choice-button
-                                {{ $currentQuiz->choice_id == $choice->id && !$currentQuiz->isAnswered ? 'quiz-choice-selected' : '' }}
-                                {{ $currentQuiz->isAnswered && $currentQuiz->choice_id == $choice->id ? ($currentQuiz->isCorrect ? 'quiz-choice-correct' : 'quiz-choice-wrong') : '' }}"
+                                    {{ $currentQuiz->choice_id == $choice->id && !$currentQuiz->isAnswered ? 'quiz-choice-selected' : '' }}
+                                    {{ $currentQuiz->isAnswered && $currentQuiz->choice_id == $choice->id ? ($currentQuiz->isCorrect ? 'quiz-choice-correct' : 'quiz-choice-wrong') : '' }}"
                             wire:click="setAnswer({{ $choice->id }}, {{ $currentQuiz->id }})"
-                            wire:loading.class.remove="quiz-choice-selected"
-                            wire:target="setAnswer({{ $choice->id }}, {{ $currentQuiz->id }})"
                             {{ $currentQuiz->isAnswered ? 'disabled' : '' }}>
                             {{ $choice->choice }}
                         </button>
@@ -49,7 +49,7 @@
     </main>
 
     <!-- Navigation Section -->
-    <footer class="quiz-navigation">
+    <footer class="quiz-navigation" wire:loading.remove>
         <button class="quiz-btn quiz-btn-secondary" wire:click="previousQuizCard"
             {{ $currentIndex == 0 ? 'disabled' : '' }}>
             Previous

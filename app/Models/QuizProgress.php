@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class QuizProgress extends Model
 {
+    protected $casts = [
+        'startedAt' => 'datetime',
+        'completedAt' => 'datetime',
+    ];
     protected $fillable = [
         'deck_id',
         'user_id',

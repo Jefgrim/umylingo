@@ -29,7 +29,9 @@
         </section>
     @endif
 
-    <main class="learn-deck-view-grid">
+    <div class="loader" wire:loading.delay></div>
+
+    <main class="learn-deck-view-grid" wire:loading.remove.delay>
         <div class="learn-deck-view-card" id="card-container">
             <div class="learn-deck-view-description">
                 <p>{{ $currentLearnCard->content }}</p>
@@ -37,7 +39,7 @@
         </div>
     </main>
 
-    <footer class="learn-deck-navigation">
+    <footer class="learn-deck-navigation" wire:loading.remove.delay>
         <button class="learn-btn learn-btn-secondary" wire:click="previousLearnCard"
             {{ $currentIndex == 0 ? 'disabled' : '' }}>
             Previous
