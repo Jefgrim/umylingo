@@ -13,6 +13,9 @@ use Livewire\Component;
 
 class Decks extends Component
 {
+    public $selectedLanguage;
+
+
     #[Title('Decks View')]
     public function render()
     {
@@ -27,10 +30,10 @@ class Decks extends Component
         }
 
         $learnProgresses = LearnProgress::where('user_id', Auth::id())->get();
-        
+
         $achievements = Achievement::all();
-        
-        foreach($achievements as $achievement){
+
+        foreach ($achievements as $achievement) {
             UserAchievement::firstOrCreate(
                 [
                     'achievement_id' => $achievement->id,
@@ -51,9 +54,20 @@ class Decks extends Component
 
         $quizProgresses = QuizProgress::where('user_id', Auth::id())->get();
 
-        // dd($learnProgresses);
+        if ($this->selectedLanguage) {
+            $learnProgresses = LearnProgress::whereHas('deck', function ($query) {
+                $query->where('language', $this->selectedLanguage)->where('user_id', Auth::id())->where('isArchived', null);
+            })->get();
+        } else {
+            $learnProgresses = LearnProgress::whereHas('deck', function ($query) {
+                $query->where('user_id', Auth::id())->where('isArchived', null);
+            })->get(); // Fetch all learn progresses if no language is selected
+        }
+
+        $languages = Deck::select('language')->where('isArchived', null)->distinct()->get();
 
         return view('livewire.decks', [
+            'languages' => $languages,
             'quizProgresses' => $quizProgresses,
             'learnProgresses' => $learnProgresses,
         ]);

@@ -27,6 +27,10 @@ class LearnDeck extends Component
             abort(403, 'Unauthorized access');
         }
 
+        if($learnProgress->deck->isArchived){
+            abort(403, "This Deck is archived.");
+        }
+
         $this->learnProgress = $learnProgress;
 
         if ($this->learnProgress->currentIndex > $this->learnProgress->deck->cards->count() - 1) {

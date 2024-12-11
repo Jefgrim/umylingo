@@ -2,10 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Models\LearnProgress;
 use App\Models\Quiz;
 use App\Models\QuizProgress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Redirect;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -31,6 +33,14 @@ class QuizDeck extends Component
     {
         if (Gate::denies('access-quiz-progress', $quizProgress)) {
             abort(403, 'Unauthorized access');
+        }
+
+        if ($quizProgress->deck->isArchived) {
+            abort(403, "This Deck is archived.");
+        }
+
+        if (!$quizProgress->learnProgress->isCompleted) {
+            abort(403, "Complete the lesson first.");
         }
 
         $this->quizProgress = $quizProgress;
@@ -125,9 +135,6 @@ class QuizDeck extends Component
 
     public function assessments()
     {
-        $durationInSeconds = $this->quizProgress->startedAt->diffInSeconds($this->quizProgress->completedAt);
-        $durationInMinutes = $this->quizProgress->startedAt->diffInMinutes($this->quizProgress->completedAt);
-        $correctPercentage = round(($this->quizProgress->correctItems / $this->quizProgress->totalItems) * 100, 2);
 
         $quizzes = $this->quizProgress->quizzes;
     }
@@ -141,7 +148,7 @@ class QuizDeck extends Component
             ->where('quiz_progress_id', $this->quizProgress->id)
             ->get();
 
-            $this->nextQuizCard();
+        $this->nextQuizCard();
     }
     private function saveQuizProgress()
     {
@@ -166,7 +173,19 @@ class QuizDeck extends Component
         $quizzes = $this->quizzes;
         $quizProgress = $this->quizProgress;
         $currentQuiz = $quizzes[$this->quizProgress->currentIndex] ?? null;
+
+        if ($quizProgress->isCompleted) {
+            $durationInSeconds = $this->quizProgress->startedAt->diffInSeconds($this->quizProgress->completedAt) ?? null;
+            $durationInMinutes = round($this->quizProgress->startedAt->diffInMinutes($this->quizProgress->completedAt), 0) ?? null;
+            $correctPercentage = round(($this->quizProgress->correctItems / $this->quizProgress->totalItems) * 100, 2) ?? null;
+            $remarks = $correctPercentage >= 70 ? 'Passed' : 'Failed';
+        }
+
         return view('livewire.quiz-deck', [
+            'remarks' => $remarks ?? null,
+            'correctPercentage' => $correctPercentage ?? null,
+            'durationInSeconds' => $durationInSeconds ?? null,
+            'durationInMinutes' => $durationInMinutes ?? null,
             'quizzes' => $quizzes,
             'currentQuiz' => $currentQuiz,
             'quizProgress' => $quizProgress

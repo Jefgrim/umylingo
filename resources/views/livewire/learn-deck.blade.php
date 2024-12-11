@@ -15,13 +15,13 @@
             @endif
             <div class="learn-completion-actions">
                 @if (!$quizProgress->isStarted && !$quizProgress->isCompleted)
-                    <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz" class="learn-btn learn-btn-primary">Start
+                    <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz" wire:navigate class="learn-btn learn-btn-primary">Start
                         Quiz</a>
                 @elseif($quizProgress->isStarted && !$quizProgress->isCompleted)
-                    <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz"
+                    <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz" wire:navigate
                         class="learn-btn learn-btn-primary">Continue Quiz</a>
                 @elseif($quizProgress->isCompleted)
-                    <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz"
+                    <a href="/deck/{{ $learnProgress->quizProgress->id }}/quiz" wire:navigate
                         class="learn-btn learn-btn-primary">Review
                         Quiz</a>
                 @endif

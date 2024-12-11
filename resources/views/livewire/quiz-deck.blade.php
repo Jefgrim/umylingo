@@ -66,10 +66,24 @@
     </footer>
 
     @else
-    <h2 class="quiz-completed-title">Quiz Completed</h2>
-    <p class="quiz-completed-description">You have completed the quiz for this deck. You scored
-        {{$quizProgress->correctItems}}/{{$quizProgress->totalItems}}</p>
-    <button class="quiz-btn quiz-btn-primary" wire:click="retakeQuiz">Retake Quiz</button>
+    <!-- Quiz Completed Section -->
+    <div class="stats-container" style="padding: 0;">
+
+        <div class="stat-box">
+            <p class="stat-title">Remarks</p>
+            <p class="stat-value">{{$remarks}}</p>
+        </div>
+        <div class="stat-box">
+            <p class="stat-title">Quiz Duration</p>
+            <p class="stat-value">{{ $durationInSeconds < 60 ? $durationInSeconds . ' Seconds' : $durationInMinutes
+                    . ' Minutes' }}</p>
+        </div>
+        <div class="stat-box">
+            <p class="stat-title">Score Percentage</p>
+            <p class="stat-value">{{$correctPercentage}}%</p>
+        </div>
+    </div>
+
     <div class="deck-view-grid">
         @foreach ($quizzes as $quiz)
         <div class="deck-view-card {{ $quiz->isCorrect ? 'quiz-assesment-choice-correct' : 'quiz-assesment-choice-wrong' }}"
@@ -82,7 +96,5 @@
         </div>
         @endforeach
     </div>
-
     @endif
-
 </div>
