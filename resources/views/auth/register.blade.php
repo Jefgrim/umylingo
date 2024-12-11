@@ -18,10 +18,10 @@
         <div>
             <a href="/"><img src="assets/img/logo.png" alt=""></a>
         </div>
-        <div>
+        <div class="form-container">
             <form method="POST" action="/register" class="login-form">
                 @csrf
-                <div class="login-input-container">
+                
                     <h2>Sign up</h2>
                     <div class="signup-input-container">
                         <input type="text" placeholder="First Name" name="firstname" value="{{ old('firstname') }}"
@@ -29,31 +29,36 @@
                         <input type="text" placeholder="Last Name" name="lastname" value="{{ old('lastname') }}"
                             required>
                     </div>
-                    @error('username')
-                        <p style="color: #ad3324; margin: 0; font-size: 10px; text-align: start; width: 70%;">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                    <input type="text" placeholder="Username" name="username" value="{{ old('username') }}" required>
 
-                    @error('email')
+                    <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                        @error('username')
                         <p style="color: #ad3324; margin: 0; font-size: 10px; text-align: start; width: 70%;">
                             {{ $message }}
                         </p>
-                    @enderror
-                    <input type="email" placeholder="Email" name="email" value="{{ old('email') }}" required>
-                    @error('password')
+                        @enderror
+                        <input type="text" placeholder="Username" name="username" value="{{ old('username') }}"
+                            required>
+
+                        @error('email')
                         <p style="color: #ad3324; margin: 0; font-size: 10px; text-align: start; width: 70%;">
                             {{ $message }}
                         </p>
-                    @enderror
+                        @enderror
+                        <input type="email" placeholder="Email" name="email" value="{{ old('email') }}" required>
+                        @error('password')
+                        <p style="color: #ad3324; margin: 0; font-size: 10px; text-align: start; width: 70%;">
+                            {{ $message }}
+                        </p>
+                        @enderror
+                    </div>
+
                     <div class="signup-input-container">
                         <input type="password" placeholder="Password" name="password" required>
                         <input type="password" placeholder="Confirm Password" name="password_confirmation" required>
                     </div>
                     <button>Register</button>
                     <p>Already Have an Account? </p><a href="/login" style="color: black">Log in</a>
-                </div>
+                
             </form>
         </div>
     </div>

@@ -381,5 +381,176 @@ class DeckSeeder extends Seeder
                 ]);
             }
         }
+
+        // New Deck: Korean Common Sentences
+        $eightDeck = Deck::create([
+            'language' => 'Korean',
+            'deck_description' => 'Learn commonly used Korean sentences and their English translations.',
+        ]);
+
+        $sentences = [
+            '안녕하세요? (Annyeonghaseyo?)' => 'Hello.',
+            '제 이름은 [이름]입니다. (Je ireumeun Juan imnida.)' => 'My name is Juan.',
+            '감사합니다. (Gamsahamnida.)' => 'Thank you.',
+            '죄송합니다. (Joesonghamnida.)' => 'I am sorry.',
+            '이것은 무엇입니까? (Igeoseun mueosimnikka?)' => 'What is this?',
+            '화장실이 어디에 있습니까? (Hwajangsiri eodie itsseumnikka?)' => 'Where is the bathroom?',
+            '얼마입니까? (Eolmaimnikka?)' => 'How much is it?',
+            '도와주세요! (Dowajuseyo!)' => 'Please help me!',
+            '괜찮아요. (Gwaenchanayo.)' => 'It’s okay.',
+            '배고파요. (Baegopayo.)' => 'I am hungry.',
+        ];
+
+        $englishSentences = [
+            'Hello.',
+            'My name is Juan.',
+            'Thank you.',
+            'I am sorry.',
+            'What is this?',
+            'Where is the bathroom?',
+            'How much is it?',
+            'Please help me!',
+            'It’s okay.',
+            'I am hungry.',
+            'I am thirsty.',
+            'Goodbye.',
+            'I like Korean food.',
+            'What time is it?',
+            'Where is the subway station?',
+        ];
+
+        foreach ($sentences as $korean => $correctAnswer) {
+            $wrongAnswers = array_diff($englishSentences, [$correctAnswer]);
+            shuffle($wrongAnswers);
+            $choices = array_slice($wrongAnswers, 0, 3);
+            $choices[] = $correctAnswer;
+            shuffle($choices);
+
+            $card = $eightDeck->cards()->create([
+                'content' => "'{$korean}' is a common Korean sentence that translates to '{$correctAnswer}' in English. This phrase is often used in everyday conversations.",
+                'question' => "What does '{$korean}' mean in English?",
+            ]);
+
+            foreach ($choices as $choice) {
+                $card->choices()->create([
+                    'choice' => $choice,
+                    'isCorrect' => $choice === $correctAnswer,
+                ]);
+            }
+        }
+
+        // New Deck: Korean Additional Common Sentences
+        $ninthDeck = Deck::create([
+            'language' => 'Korean',
+            'deck_description' => 'Expand your Korean knowledge with more common sentences and their English meanings.',
+        ]);
+
+        $sentences = [
+            '잘 지내세요? (Jal jinaeseyo?)' => 'How are you?',
+            '이것을 주세요. (Igeoseul juseyo.)' => 'Please give me this.',
+            '영어를 할 줄 아세요? (Yeongeoreul hal jul aseyo?)' => 'Do you speak English?',
+            '문제를 이해했어요. (Munjeleul ihaehaesseoyo.)' => 'I understand the problem.',
+            '천천히 말해주세요. (Cheoncheonhi malhaejuseyo.)' => 'Please speak slowly.',
+            '기차역은 어디에 있습니까? (Gichayeogeun eodie itsseumnikka?)' => 'Where is the train station?',
+            '나는 한국어를 배우고 있어요. (Naneun hangugeoreul baeugo isseoyo.)' => 'I am learning Korean.',
+            '만나서 반가워요. (Mannaseo bangawoyo.)' => 'Nice to meet you.',
+            '얼마나 멀리 있어요? (Eolmana meolli isseoyo?)' => 'How far is it?',
+            '다시 한 번 말해주세요. (Dasi han beon malhaejuseyo.)' => 'Please say it again.',
+        ];
+
+        $englishSentences = [
+            'How are you?',
+            'Please give me this.',
+            'Do you speak English?',
+            'I understand the problem.',
+            'Please speak slowly.',
+            'Where is the train station?',
+            'I am learning Korean.',
+            'Nice to meet you.',
+            'How far is it?',
+            'Please say it again.',
+            'I am lost.',
+            'What is your phone number?',
+            'Where can I find a taxi?',
+            'Is it nearby?',
+            'Can you help me with this?',
+        ];
+
+        foreach ($sentences as $korean => $correctAnswer) {
+            $wrongAnswers = array_diff($englishSentences, [$correctAnswer]);
+            shuffle($wrongAnswers);
+            $choices = array_slice($wrongAnswers, 0, 3);
+            $choices[] = $correctAnswer;
+            shuffle($choices);
+
+            $card = $ninthDeck->cards()->create([
+                'content' => "'{$korean}' is a useful Korean sentence that translates to '{$correctAnswer}' in English. It is helpful in daily interactions.",
+                'question' => "What does '{$korean}' mean in English?",
+            ]);
+
+            foreach ($choices as $choice) {
+                $card->choices()->create([
+                    'choice' => $choice,
+                    'isCorrect' => $choice === $correctAnswer,
+                ]);
+            }
+        }
+
+        // New Deck: Korean Travel and Dining Sentences
+        $tenthDeck = Deck::create([
+            'language' => 'Korean',
+            'deck_description' => 'Learn essential Korean sentences for travel and dining situations.',
+        ]);
+
+        $sentences = [
+            '공항은 어디에 있습니까? (Gonghangeun eodie itsseumnikka?)' => 'Where is the airport?',
+            '호텔 예약을 했습니다. (Hotel yeyageul haetseumnida.)' => 'I have a hotel reservation.',
+            '추천 메뉴가 무엇인가요? (Chucheon menyuga mueosingayo?)' => 'What do you recommend on the menu?',
+            '물이 필요해요. (Muri piryohaeyo.)' => 'I need water.',
+            '포크가 있나요? (Pokeuga innayo?)' => 'Do you have a fork?',
+            '이건 너무 매워요. (Igeon neomu maewoyo.)' => 'This is too spicy.',
+            '계산서를 주세요. (Gyesanseoreul juseyo.)' => 'Please give me the bill.',
+            '화장실은 어디에 있나요? (Hwajangsireun eodie innayo?)' => 'Where is the restroom?',
+            '버스 정류장은 어디인가요? (Beoseu jeongryujangeun eodingayo?)' => 'Where is the bus stop?',
+            '기차 시간표를 보여주세요. (Gicha siganpyoreul boyeojuseyo.)' => 'Please show me the train schedule.',
+        ];
+
+        $englishSentences = [
+            'Where is the airport?',
+            'I have a hotel reservation.',
+            'What do you recommend on the menu?',
+            'I need water.',
+            'Do you have a fork?',
+            'This is too spicy.',
+            'Please give me the bill.',
+            'Where is the restroom?',
+            'Where is the bus stop?',
+            'Please show me the train schedule.',
+            'I am lost.',
+            'Do you have vegetarian options?',
+            'Where can I buy a ticket?',
+            'Can you take a photo of me?',
+            'How long does it take to get there?',
+        ];
+
+        foreach ($sentences as $korean => $correctAnswer) {
+            $wrongAnswers = array_diff($englishSentences, [$correctAnswer]);
+            shuffle($wrongAnswers);
+            $choices = array_slice($wrongAnswers, 0, 3);
+            $choices[] = $correctAnswer;
+            shuffle($choices);
+
+            $card = $tenthDeck->cards()->create([
+                'content' => "'{$korean}' is a useful Korean sentence that translates to '{$correctAnswer}' in English. This phrase is essential for travel or dining interactions.",
+                'question' => "What does '{$korean}' mean in English?",
+            ]);
+
+            foreach ($choices as $choice) {
+                $card->choices()->create([
+                    'choice' => $choice,
+                    'isCorrect' => $choice === $correctAnswer,
+                ]);
+            }
+        }
     }
 }

@@ -56,8 +56,6 @@
                         <li></li>
                         <li><a href="#">Multiple Languages</a></li>
                         <li><a href="#">Progress Tracking</a></li>
-                        <li><a href="#">Interactive Quizes</a></li>
-                        <li><a href="#">Notes</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column">
@@ -78,7 +76,7 @@
             </div>
             <hr>
             <div class=" d-flex justify-content-between align-items-center pt-3">
-                <p class="mb-0">Copyright © 2024 UMYLINGO</p>
+                <p class="mb-0">Copyright © 2024 UMYLINGO | Developed by Jefgrim Alvar</p>
                 <ul class="list-inline mb-0">
                     <li class="list-inline-item"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
                             fill="currentColor" viewBox="0 0 16 16" class="bi bi-facebook">

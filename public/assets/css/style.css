@@ -67,3 +67,36 @@ form.login-form button {
     display: flex;
     gap: 10px;
 }
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    form.login-form {
+        min-width: 100%;
+        padding: 20px;
+        box-shadow: none;
+    }
+
+    form.login-form input {
+        width: 100%;
+    }
+
+    form.login-form button {
+        width: 100%;
+    }
+
+    .form-container {
+        width: 90%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .container img {
+        width: 100px;
+        height: 100px;
+    }
+}

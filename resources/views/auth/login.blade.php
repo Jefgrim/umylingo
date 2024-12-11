@@ -18,7 +18,7 @@
         <div>
             <a href="/"><img src="assets/img/logo.png" alt=""></a>
         </div>
-        <div>
+        <div class="form-container">
             <form method="POST" action="/login" class="login-form">
                 @csrf
                 <div class="login-input-container">
