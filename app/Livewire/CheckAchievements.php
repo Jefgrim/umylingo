@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\QuizProgress;
 use App\Models\UserAchievement;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -22,12 +23,9 @@ class CheckAchievements extends Component
         // First Steps achievement check
         if (!$userAchievements[0]->achieved_at) {
             $learnProgresses = Auth::user()->learnProgress;
-            foreach ($learnProgresses as $learnProgress) {
-                if ($learnProgress->isCompleted) {
-                    $userAchievements[0]->update(['achieved_at' => now()]);
-                    $this->dispatch('achievementUnlocked', achievementTitle: $userAchievements[0]->achievement->achievement_title);
-                    break;
-                }
+            if ($learnProgresses->where('isCompleted', 1)->count() == 1) {
+                $userAchievements[0]->update(['achieved_at' => now()]);
+                $this->dispatch('achievementUnlocked', achievementTitle: $userAchievements[0]->achievement->achievement_title);
             }
         }
 
@@ -44,46 +42,35 @@ class CheckAchievements extends Component
             }
         }
 
-        // Level Up achievement check
-        if (!$userAchievements[0]->achieved_at) {
+        // Language Enthusiast check
+        if (!$userAchievements[2]->achieved_at) {
             $learnProgresses = Auth::user()->learnProgress;
-            foreach ($learnProgresses as $learnProgress) {
-                if ($learnProgress->isCompleted) {
-                    $userAchievements[0]->update(['achieved_at' => now()]);
-                    break;
-                }
+            if ($learnProgresses->where('isCompleted', 1)->count() >= 5) {
+                $userAchievements[2]->update(['achieved_at' => now()]);
+                $this->dispatch('achievementUnlocked', achievementTitle: $userAchievements[2]->achievement->achievement_title);
             }
         }
 
-        // Language Enthusiast achievement check
-        if (!$userAchievements[0]->achieved_at) {
-            $learnProgresses = Auth::user()->learnProgress;
-            foreach ($learnProgresses as $learnProgress) {
-                if ($learnProgress->isCompleted) {
-                    $userAchievements[0]->update(['achieved_at' => now()]);
-                    break;
-                }
-            }
-        }
+        // Quiz Conqueror check
+        if (!$userAchievements[3]->achieved_at) {
+            $quizProgresses = QuizProgress::where('user_id', Auth::id())->get();
+            $totalCorrectItems = 0;
+            $totalItems = 0;
 
-        // Quiz Conqueror achievement check
-        if (!$userAchievements[0]->achieved_at) {
-            $learnProgresses = Auth::user()->learnProgress;
-            foreach ($learnProgresses as $learnProgress) {
-                if ($learnProgress->isCompleted) {
-                    $userAchievements[0]->update(['achieved_at' => now()]);
-                    break;
-                }
-            }
-        }
+            if ($quizProgresses->where('isCompleted', 1)->count() > 5) {
+                $quizProgresses = QuizProgress::where('user_id', Auth::id())->where('isCompleted', 1)->get();
+                $quizzesAbove80PercentCount = 0;
 
-        // Language Prodigy achievement check
-        if (!$userAchievements[0]->achieved_at) {
-            $learnProgresses = Auth::user()->learnProgress;
-            foreach ($learnProgresses as $learnProgress) {
-                if ($learnProgress->isCompleted) {
-                    $userAchievements[0]->update(['achieved_at' => now()]);
-                    break;
+                foreach ($quizProgresses as $quizProgress) {
+                    $correctPercentage = ($quizProgress->correctItems / $quizProgress->totalItems) * 100;
+                    if ($correctPercentage >= 80) {
+                        $quizzesAbove80PercentCount++;
+                    }
+                }
+
+                if ($quizzesAbove80PercentCount >= 5) {
+                    $userAchievements[3]->update(['achieved_at' => now()]);
+                    $this->dispatch('achievementUnlocked', achievementTitle: $userAchievements[3]->achievement->achievement_title);
                 }
             }
         }

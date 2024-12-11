@@ -25,6 +25,8 @@ class QuizDeck extends Component
     public $correctItems = 0;
 
     public $achievementTitle;
+
+    public $assessment = false;
     public function mount(QuizProgress $quizProgress)
     {
         if (Gate::denies('access-quiz-progress', $quizProgress)) {
@@ -111,11 +113,14 @@ class QuizDeck extends Component
                 'correctItems' => $this->correctItems,
                 'completedAt' => now()
             ]);
+
+            $this->assessment = true;
         }
 
         $this->dispatch('checkAchievements', quizzes: $this->quizzes, learnId: null);
 
-        $this->assessments();
+
+        // $this->assessments();
     }
 
     public function assessments()
@@ -125,8 +130,6 @@ class QuizDeck extends Component
         $correctPercentage = round(($this->quizProgress->correctItems / $this->quizProgress->totalItems) * 100, 2);
 
         $quizzes = $this->quizProgress->quizzes;
-
-        dd($this->quizProgress->quizzes[0]->card);
     }
 
     public function setAnswer($choiceId, $quizId)
@@ -164,6 +167,7 @@ class QuizDeck extends Component
         $quizProgress = $this->quizProgress;
         $currentQuiz = $quizzes[$this->quizProgress->currentIndex] ?? null;
         return view('livewire.quiz-deck', [
+            'quizzes' => $quizzes,
             'currentQuiz' => $currentQuiz,
             'quizProgress' => $quizProgress
         ]);

@@ -32,7 +32,6 @@
     <div class="main-container">
         <div class="sidebar">
             <a href="/decks" wire:navigate wire:current='active'>Decks</a>
-            <a href="/notes" wire:navigate wire:current='active'>Notes</a>
             <a href="/achievements" wire:navigate wire:current='active'>Achievements</a>
             <a href="/profile" wire:navigate wire:current='active'>Profile</a>
         </div>

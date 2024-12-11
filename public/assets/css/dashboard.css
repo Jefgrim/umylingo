@@ -701,6 +701,17 @@ canvas {
     cursor: not-allowed;
 }
 
+.quiz-assesment-choice-correct{
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #155724;
+}
+.quiz-assesment-choice-wrong{
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #721c24;
+}
+
 /* Highlight Selected Button (When Unanswered) */
 .quiz-choice-selected {
     background-color: #0c5894;

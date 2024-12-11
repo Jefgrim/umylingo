@@ -26,27 +26,15 @@ class AchievementSeeder extends Seeder
         ]);
 
         Achievement::create([
-            'achievement_title' => 'Level Up',
-            'achievement_description' => 'You reached level 5.',
-            'achievement_requirements' => 'Achieve level 5'
-        ]);
-
-        Achievement::create([
             'achievement_title' => 'Language Enthusiast',
-            'achievement_description' => 'You have learned 10 decks.',
-            'achievement_requirements' => 'Learn 10 decks'
+            'achievement_description' => 'You have learned 5 decks.',
+            'achievement_requirements' => 'Learn 5 decks'
         ]);
 
         Achievement::create([
             'achievement_title' => 'Quiz Conqueror',
             'achievement_description' => 'You have scored 80% or higher on 5 quizzes.',
-            'achievement_requirements' => 'Achieve 80% or higher on 5 quizzes'
-        ]);
-
-        Achievement::create([
-            'achievement_title' => 'Language Prodigy',
-            'achievement_description' => 'You have reached level 10.',
-            'achievement_requirements' => 'Achieve level 10'
+            'achievement_requirements' => 'Achieve 80% or higher score on 5 quizzes'
         ]);
     }
 }
