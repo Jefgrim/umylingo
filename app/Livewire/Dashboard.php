@@ -26,11 +26,12 @@ class Dashboard extends AdminComponent
         $this->currentUsers = User::where('isAdmin', false)->count();
 
         $userCounts = User::where('isAdmin', false)
-            ->whereYear('created_at', now()->year)
-            ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-            ->groupBy('month')
-            ->pluck('count', 'month')
-            ->toArray();
+    ->whereYear('created_at', now()->year)
+    ->get()
+    ->groupBy(fn($user) => $user->created_at->format('n')) // Month as number 1-12
+    ->map(fn($group) => $group->count())
+    ->toArray();
+
 
         // Initialize the currentUsers array with 0 for each month
         $this->currentUsersPerMonth = array_fill_keys($months, 0);
