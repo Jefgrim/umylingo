@@ -30,12 +30,21 @@ class SessionController extends Controller
 
         $attributes = request()->validate([
             'username' => ['required'],
-            'password' => ['required', Password::min(5)],
+            'password' => ['required', Password::min(10)],
         ]);
+
+        // Check if username exists
+        $user = User::where('username', $attributes['username'])->first();
+        
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'username' => 'Username not found.'
+            ]);
+        }
 
         if (!Auth::attempt($attributes)) {
             throw ValidationException::withMessages([
-                'username' => 'Credentials do not match.'
+                'password' => 'Incorrect password.'
             ]);
         }
 
