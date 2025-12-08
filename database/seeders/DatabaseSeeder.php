@@ -16,30 +16,39 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::create([
-            'firstname' => 'Jefgrim',
-            'lastname' => 'Alvar',
-            'username' => 'jefgrim',
-            'password' => 'Alex0807',
+            'firstname' => env('SEEDER_ADMIN1_FIRSTNAME'),
+            'lastname' => env('SEEDER_ADMIN1_LASTNAME'),
+            'username' => env('SEEDER_ADMIN1_USERNAME'),
+            'password' => env('SEEDER_ADMIN1_PASSWORD'),
             'isAdmin' => true,
-            'email' => 'jefgrim@example.com',
+            'email' => env('SEEDER_ADMIN1_EMAIL'),
+        ]);
+
+        User::create([
+            'firstname' => env('SEEDER_ADMIN2_FIRSTNAME'),
+            'lastname' => env('SEEDER_ADMIN2_LASTNAME'),
+            'username' => env('SEEDER_ADMIN2_USERNAME'),
+            'password' => env('SEEDER_ADMIN2_PASSWORD'),
+            'isAdmin' => true,
+            'email' => env('SEEDER_ADMIN2_EMAIL'),
         ]);
 
         User::create([
             'firstname' => 'test',
             'lastname' => 'test',
             'username' => 'test',
-            'password' => 'Alex0807',
+            'password' => env('SEEDER_USER_PASSWORD'),
             'isAdmin' => false,
-            'email' => 'test@example.com',
+            'email' => env('SEEDER_TEST_EMAIL'),
         ]);
 
         User::create([
             'firstname' => 'test2',
             'lastname' => 'test2',
             'username' => 'test2',
-            'password' => 'Alex0807',
+            'password' => env('SEEDER_USER_PASSWORD'),
             'isAdmin' => false,
-            'email' => 'test2@example.com',
+            'email' => env('SEEDER_TEST2_EMAIL'),
         ]);
 
         $this->call(DeckSeeder::class);
