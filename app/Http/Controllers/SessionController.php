@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Validation\ValidationException;
 
 class SessionController extends Controller
 {
-    //
+    private const MAX_LOGIN_ATTEMPTS = 5;
+    private const LOCK_TIME_SECONDS = 900; // 15 minutes
 
     public function create()
     {
@@ -26,37 +29,93 @@ class SessionController extends Controller
 
     public function store()
     {
-        //validate
-
+        // Validate input
         $attributes = request()->validate([
             'username' => ['required'],
             'password' => ['required', Password::min(10)],
         ]);
 
+        $ipAddress = request()->ip();
+        $key = $this->throttleKey($ipAddress);
+
+        // Rate limit guard
+        if (RateLimiter::tooManyAttempts($key, self::MAX_LOGIN_ATTEMPTS)) {
+            $seconds = RateLimiter::availableIn($key);
+            $minutesRemaining = (int) max(1, ceil($seconds / 60));
+            Log::warning('Login blocked due to rate limit', [
+                'username' => $attributes['username'],
+                'ip' => $ipAddress,
+                'retry_after_seconds' => $seconds,
+            ]);
+            throw ValidationException::withMessages([
+                'username' => "Too many login attempts. Please try again in {$minutesRemaining} minute(s)."
+            ]);
+        }
+
         // Check if username exists
         $user = User::where('username', $attributes['username'])->first();
         
         if (!$user) {
+            RateLimiter::hit($key, self::LOCK_TIME_SECONDS);
+            $remainingAttempts = max(0, self::MAX_LOGIN_ATTEMPTS - RateLimiter::attempts($key));
+            Log::warning('Login failed - username not found', [
+                'username' => $attributes['username'],
+                'ip' => $ipAddress,
+                'remaining_attempts' => $remainingAttempts,
+            ]);
             throw ValidationException::withMessages([
-                'username' => 'Username not found.'
+                'username' => "Username not found. You have {$remainingAttempts} attempt(s) remaining."
             ]);
         }
 
+        // Attempt login
         if (!Auth::attempt($attributes)) {
+            RateLimiter::hit($key, self::LOCK_TIME_SECONDS);
+            $remainingAttempts = max(0, self::MAX_LOGIN_ATTEMPTS - RateLimiter::attempts($key));
+
+            if (RateLimiter::tooManyAttempts($key, self::MAX_LOGIN_ATTEMPTS)) {
+                $seconds = RateLimiter::availableIn($key);
+                $minutesRemaining = (int) max(1, ceil($seconds / 60));
+                Log::warning('Login locked out', [
+                    'username' => $attributes['username'],
+                    'ip' => $ipAddress,
+                    'retry_after_seconds' => $seconds,
+                ]);
+                throw ValidationException::withMessages([
+                    'password' => "Too many failed login attempts. Please try again in {$minutesRemaining} minute(s)."
+                ]);
+            }
+
+            Log::warning('Login failed - incorrect password', [
+                'username' => $attributes['username'],
+                'ip' => $ipAddress,
+                'remaining_attempts' => $remainingAttempts,
+            ]);
+
             throw ValidationException::withMessages([
-                'password' => 'Incorrect password.'
+                'password' => "Incorrect password. You have {$remainingAttempts} attempt(s) remaining."
             ]);
         }
+
+        // Successful login
+        RateLimiter::clear($key);
+        Log::info('Login successful', [
+            'username' => $attributes['username'],
+            'ip' => $ipAddress,
+        ]);
 
         request()->session()->regenerate();
 
         //redirect
-
         if (Auth::user()->isAdmin) {
             return redirect('/dashboard');
-        } else {
-            return redirect('/decks');
         }
+        return redirect('/decks');
+    }
+
+    private function throttleKey(string $ip): string
+    {
+        return 'login:' . $ip;
     }
 
     public function destroy()
