@@ -32,13 +32,16 @@ Route::get('/test', function () {
 Route::view('/', 'home');
 
 Route::get('/profile', Profile::class)
-    ->middleware('auth');
+    ->middleware('auth')
+    ->middleware('learn');
 
 Route::get('/decks', Decks::class)
-    ->middleware('auth');
+    ->middleware('auth')
+    ->middleware('learn');
 
 Route::get('/achievements', Achievements::class)
-    ->middleware('auth');
+    ->middleware('auth')
+    ->middleware('learn');
 
 Route::get('/dashboard', Dashboard::class)
     ->middleware('auth')
@@ -61,10 +64,12 @@ Route::get('/deck/create', CreateDeck::class)
     ->can('administrate');
 
 Route::get('/deck/{learnProgress}/learn', LearnDeck::class)
-    ->middleware('auth');
+    ->middleware('auth')
+    ->middleware('learn');
 
 Route::get('/deck/{quizProgress}/quiz', QuizDeck::class)
-    ->middleware('auth');
+    ->middleware('auth')
+    ->middleware('learn');
 
 // Auth
 Route::get('/register', [RegisteredUserController::class, 'create']);
