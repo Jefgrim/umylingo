@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\Admin\LogController as AdminLogController;
 use App\Livewire\Achievements;
 use App\Livewire\AdminProfile;
 use App\Livewire\Assessment;
@@ -33,15 +34,15 @@ Route::view('/', 'home');
 
 Route::get('/profile', Profile::class)
     ->middleware('auth')
-    ->middleware('learn');
+    ->can('learn');
 
 Route::get('/decks', Decks::class)
     ->middleware('auth')
-    ->middleware('learn');
+    ->can('learn');
 
 Route::get('/achievements', Achievements::class)
     ->middleware('auth')
-    ->middleware('learn');
+    ->can('learn');
 
 Route::get('/dashboard', Dashboard::class)
     ->middleware('auth')
@@ -55,6 +56,11 @@ Route::get('/dashboard/decks', DashboardDecks::class)
     ->middleware('auth')
     ->can('administrate');
 
+Route::get('/dashboard/logs', [AdminLogController::class, 'index'])
+    ->middleware('auth')
+    ->can('administrate')
+    ->name('admin.logs');
+
 Route::get('/deck/{deck}/edit', EditDeck::class)
     ->middleware('auth')
     ->can('administrate');
@@ -65,11 +71,11 @@ Route::get('/deck/create', CreateDeck::class)
 
 Route::get('/deck/{learnProgress}/learn', LearnDeck::class)
     ->middleware('auth')
-    ->middleware('learn');
+    ->can('learn');
 
 Route::get('/deck/{quizProgress}/quiz', QuizDeck::class)
     ->middleware('auth')
-    ->middleware('learn');
+    ->can('learn');
 
 // Auth
 Route::get('/register', [RegisteredUserController::class, 'create']);
