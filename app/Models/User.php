@@ -39,7 +39,6 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'locked_until' => 'datetime',
         ];
     }
 
@@ -59,38 +58,5 @@ class User extends Authenticatable
     public function progress()
     {
         return $this->hasOne(UserProgress::class);
-    }
-
-    public function isAccountLocked(): bool
-    {
-        return $this->locked_until && $this->locked_until->isFuture();
-    }
-
-    public function getRemainingLockTime(): int
-    {
-        if (!$this->isAccountLocked()) {
-            return 0;
-        }
-        return $this->locked_until->diffInMinutes(now());
-    }
-
-    public function incrementLoginAttempts(): void
-    {
-        $this->increment('login_attempts');
-    }
-
-    public function resetLoginAttempts(): void
-    {
-        $this->update([
-            'login_attempts' => 0,
-            'locked_until' => null,
-        ]);
-    }
-
-    public function lockAccount(): void
-    {
-        $this->update([
-            'locked_until' => now()->addMinutes(15),
-        ]);
     }
 }
