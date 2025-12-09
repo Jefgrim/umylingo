@@ -30,10 +30,6 @@ class AppServiceProvider extends ServiceProvider
             return Auth::user()->isAdmin;
         });
 
-        Gate::define('learn', function () {
-            return !Auth::user()->isAdmin;
-        });
-
         Gate::define('access-learn-progress', function ($user, LearnProgress $learnProgress) {
             return $learnProgress->user_id === $user->id;
         });

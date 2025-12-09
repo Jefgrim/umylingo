@@ -32,16 +32,13 @@ Route::get('/test', function () {
 Route::view('/', 'home');
 
 Route::get('/profile', Profile::class)
-    ->middleware('auth')
-    ->can('learn');
+    ->middleware('auth');
 
 Route::get('/decks', Decks::class)
-    ->middleware('auth')
-    ->can('learn');
+    ->middleware('auth');
 
 Route::get('/achievements', Achievements::class)
-    ->middleware('auth')
-    ->can('learn');
+    ->middleware('auth');
 
 Route::get('/dashboard', Dashboard::class)
     ->middleware('auth')
