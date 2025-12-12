@@ -11,9 +11,16 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
         .challenge-container {
             max-width: 500px;
-            margin: 3rem auto;
+            margin: 2rem auto;
             padding: 1rem;
         }
 
@@ -21,7 +28,7 @@
             background-color: #fdfbfb;
             border: 1px solid #ddd;
             border-radius: 12px;
-            padding: 2.5rem;
+            padding: 2rem;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
@@ -80,7 +87,8 @@
 
         .challenge-input {
             width: 100%;
-            padding: 1rem;
+            max-width: 100%;
+            padding: 0.75rem;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1.1rem;
@@ -88,6 +96,7 @@
             font-family: 'Courier New', monospace;
             letter-spacing: 0.3rem;
             transition: border-color 0.3s;
+            box-sizing: border-box;
         }
 
         .challenge-input:focus {
@@ -130,14 +139,16 @@
         .btn-verify {
             background-color: #0c5894;
             color: white;
-            padding: 1rem 2rem;
+            padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 8px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             width: 100%;
+            max-width: 100%;
             transition: all 0.3s;
+            box-sizing: border-box;
         }
 
         .btn-verify:hover {
@@ -175,6 +186,7 @@
         @media (max-width: 768px) {
             .challenge-container {
                 margin: 1rem auto;
+                padding: 0.5rem;
             }
 
             .challenge-card {
@@ -183,6 +195,7 @@
 
             .challenge-input {
                 font-size: 1rem;
+                padding: 0.75rem;
                 letter-spacing: 0.2rem;
             }
         }

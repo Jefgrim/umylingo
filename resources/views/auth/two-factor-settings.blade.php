@@ -11,10 +11,17 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
         .two-factor-container {
             max-width: 800px;
             margin: 2rem auto;
-            padding: 2rem;
+            padding: 1rem;
         }
         .two-factor-card {
             background-color: #fdfbfb;
@@ -124,12 +131,14 @@
         }
         .two-factor-input {
             width: 100%;
-            padding: 1rem;
+            max-width: 100%;
+            padding: 0.75rem;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
             margin-bottom: 1rem;
             transition: border-color 0.3s;
+            box-sizing: border-box;
         }
         .two-factor-input:focus {
             outline: none;
@@ -138,14 +147,16 @@
         .btn-primary {
             background-color: #0c5894;
             color: white;
-            padding: 1rem 2rem;
+            padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             width: 100%;
+            max-width: 100%;
             transition: background-color 0.3s;
+            box-sizing: border-box;
         }
         .btn-primary:hover {
             background-color: #094270;
@@ -160,7 +171,9 @@
             font-weight: 600;
             cursor: pointer;
             width: 100%;
+            max-width: 100%;
             transition: background-color 0.3s;
+            box-sizing: border-box;
         }
         .btn-secondary:hover {
             background-color: #5a6268;
@@ -168,15 +181,17 @@
         .btn-danger {
             background-color: #ad3324;
             color: white;
-            padding: 1rem 2rem;
+            padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             width: 100%;
+            max-width: 100%;
             transition: background-color 0.3s;
             margin-top: 1rem;
+            box-sizing: border-box;
         }
         .btn-danger:hover {
             background-color: #8a2719;
@@ -200,7 +215,7 @@
         }
         @media (max-width: 768px) {
             .two-factor-container {
-                padding: 1rem;
+                padding: 0.5rem;
             }
             .two-factor-card {
                 padding: 1.5rem;

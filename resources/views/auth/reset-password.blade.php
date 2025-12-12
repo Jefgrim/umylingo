@@ -9,16 +9,23 @@
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
         .reset-container {
             max-width: 600px;
-            margin: 4rem auto;
-            padding: 2rem;
+            margin: 2rem auto;
+            padding: 1rem;
         }
         .reset-card {
             background-color: #fdfbfb;
             border: 1px solid #ddd;
             border-radius: 12px;
-            padding: 2.5rem;
+            padding: 2rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .reset-title {
@@ -41,6 +48,7 @@
             padding: 1rem;
             border-radius: 8px;
             margin-bottom: 1rem;
+            word-wrap: break-word;
         }
         .info-box {
             background-color: #e7f3ff;
@@ -49,6 +57,7 @@
             padding: 1rem;
             margin: 1rem 0;
             color: #094270;
+            word-wrap: break-word;
         }
         .warning-box {
             background-color: #fff3cd;
@@ -57,6 +66,7 @@
             padding: 1rem;
             margin: 1rem 0;
             color: #856404;
+            word-wrap: break-word;
         }
         .form-group {
             margin-bottom: 1.5rem;
@@ -69,11 +79,13 @@
         }
         .form-input {
             width: 100%;
-            padding: 1rem;
+            max-width: 100%;
+            padding: 0.75rem;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
             transition: border-color 0.3s;
+            box-sizing: border-box;
         }
         .form-input:focus {
             outline: none;
@@ -82,15 +94,17 @@
         .btn-primary {
             background-color: #0c5894;
             color: white;
-            padding: 1rem 2rem;
+            padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             width: 100%;
+            max-width: 100%;
             transition: background-color 0.3s;
             margin-top: 1rem;
+            box-sizing: border-box;
         }
         .btn-primary:hover {
             background-color: #094270;
@@ -109,6 +123,14 @@
             margin: 1.5rem 0;
             color: #999;
             font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            .reset-container {
+                padding: 0.5rem;
+            }
+            .reset-card {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>

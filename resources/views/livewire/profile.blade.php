@@ -411,6 +411,8 @@
 
     .security-action {
         flex-shrink: 0;
+        display: flex;
+        align-items: center;
     }
 
     .btn-secondary {
@@ -424,6 +426,7 @@
         border-radius: 8px;
         font-weight: 600;
         transition: all 0.3s ease;
+        max-width: 100%;
     }
 
     .btn-secondary:hover {
@@ -457,6 +460,7 @@
         .btn-secondary {
             width: 100%;
             justify-content: center;
+            box-sizing: border-box;
         }
 
         .section-title {

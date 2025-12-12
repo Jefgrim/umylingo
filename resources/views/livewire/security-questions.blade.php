@@ -41,7 +41,7 @@
                             <span class="label-icon">{{ $index + 1 }}.</span>
                             Security Question {{ $index + 1 }}
                         </label>
-                        <select wire:model="questions.{{ $index }}" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <select wire:model="questions.{{ $index }}" style="width: 100%; max-width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 0.5rem; font-size: 1rem; box-sizing: border-box;">
                             <option value="">-- Select a question --</option>
                             @foreach($availableQuestions as $q)
                                 <option value="{{ $q }}">{{ $q }}</option>
@@ -50,7 +50,7 @@
                         
                         @if(!empty($questions[$index] ?? ''))
                             <input type="text" wire:model="answers.{{ $index }}" placeholder="Your answer (case-insensitive)" 
-                                   style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
+                                   style="width: 100%; max-width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
                         @endif
                     </div>
                 @endforeach
