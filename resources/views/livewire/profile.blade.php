@@ -65,6 +65,82 @@
             </form>
         </div>
 
+        <div class="profile-section password-section">
+            <h2 class="section-title">
+                <span class="section-icon">🔑</span>
+                Password & Security
+            </h2>
+            <form wire:submit.prevent="updatePassword">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="current-password">
+                            <span class="label-icon">🔒</span>
+                            Current Password
+                        </label>
+                        <input type="password" id="current-password" wire:model="current_password" placeholder="Enter current password">
+                        @error('current_password')
+                            <span class="error-text">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">
+                            <span class="label-icon">✨</span>
+                            New Password
+                        </label>
+                        <input type="password" id="new-password" wire:model="password" placeholder="Enter new password">
+                        @error('password')
+                            <span class="error-text">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">
+                            <span class="label-icon">✅</span>
+                            Confirm New Password
+                        </label>
+                        <input type="password" id="confirm-password" wire:model="password_confirmation" placeholder="Confirm new password">
+                        @error('password_confirmation')
+                            <span class="error-text">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                @if(auth()->user()?->two_factor_confirmed_at)
+                    <div class="twofactor-hint">
+                        2FA is enabled. Enter a code from your authenticator app <strong>or</strong> a recovery code to change your password.
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="twofactor-code">
+                                <span class="label-icon">📱</span>
+                                Authenticator Code
+                            </label>
+                            <input type="text" id="twofactor-code" wire:model="two_factor_code" inputmode="numeric" pattern="[0-9]*" placeholder="6-digit code">
+                            @error('two_factor_code')
+                                <span class="error-text">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="recovery-code">
+                                <span class="label-icon">🔑</span>
+                                Recovery Code
+                            </label>
+                            <input type="text" id="recovery-code" wire:model="recovery_code" placeholder="Recovery code">
+                            @error('recovery_code')
+                                <span class="error-text">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                @endif
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit" disabled wire:dirty.remove.attr='disabled'>
+                        <span class="btn-icon">🔄</span>
+                        Update Password
+                    </button>
+                </div>
+            </form>
+        </div>
+
         <div class="profile-section security-section">
             <h2 class="section-title">
                 <span class="section-icon">🔐</span>
@@ -137,6 +213,20 @@
     .alert-icon {
         font-size: 1.5rem;
         font-weight: bold;
+    }
+
+    .password-section {
+        border: 2px solid #f1f5f9;
+    }
+
+    .twofactor-hint {
+        background-color: #e7f3ff;
+        border: 1px solid #b3d9ff;
+        color: #0b4f82;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        margin: 1rem 0 1.5rem;
+        font-size: 0.95rem;
     }
 
     .profile-section {
