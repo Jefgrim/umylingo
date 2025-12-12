@@ -169,6 +169,30 @@
                     </a>
                 </div>
             </div>
+
+            <div class="security-card" style="margin-top: 1.5rem;">
+                <div class="security-content">
+                    <h3>Security Questions</h3>
+                    <p>Set up security questions for password recovery when you forget your password.</p>
+                    @if(auth()->user()->securityQuestions->count() > 0)
+                        <div class="status-badge active">
+                            <span class="badge-icon">✓</span>
+                            {{ auth()->user()->securityQuestions->count() }} Question(s) Configured
+                        </div>
+                    @else
+                        <div class="status-badge inactive">
+                            <span class="badge-icon">○</span>
+                            Not Configured
+                        </div>
+                    @endif
+                </div>
+                <div class="security-action">
+                    <a href="/security-questions" class="btn-secondary">
+                        <span class="btn-icon">❓</span>
+                        Manage Questions
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

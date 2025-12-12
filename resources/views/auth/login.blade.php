@@ -23,6 +23,9 @@
                 @csrf
                 <div class="login-input-container">
                     <h2>Login</h2>
+                    @if (session('status'))
+                        <p style="color: #0f5132; background-color: #d1e7dd; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">{{ session('status') }}</p>
+                    @endif
                     @error('username')
                         <p style="color: #ad3324">{{ $message }}</p>
                     @enderror
@@ -32,6 +35,7 @@
                     <input type="text" placeholder="Username" name="username" value="{{ old('username') }}" required>
                     <input type="password" placeholder="Password" name="password" required>
                     <button>Login</button>
+                    <p style="margin-top: 1rem;"><a href="/forgot-password" style="color: #0c5894; text-decoration: underline;">Forgot Password?</a></p>
                     <p>Don't Have an Account? </p><a href="/register" style="color: black">Sign up</a>
                 </div>
             </form>

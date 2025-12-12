@@ -5,6 +5,7 @@ use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TwoFactorChallengeController;
 use App\Http\Controllers\TwoFactorController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\Admin\LogController as AdminLogController;
 use App\Livewire\Achievements;
 use App\Livewire\AdminProfile;
@@ -21,6 +22,7 @@ use App\Livewire\LearnDeck;
 use App\Livewire\Notes;
 use App\Livewire\Profile;
 use App\Livewire\QuizDeck;
+use App\Livewire\SecurityQuestions;
 use App\Models\Deck;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +37,10 @@ Route::get('/test', function () {
 Route::view('/', 'home');
 
 Route::get('/profile', Profile::class)
+    ->middleware('auth')
+    ->can('learn');
+
+Route::get('/security-questions', SecurityQuestions::class)
     ->middleware('auth')
     ->can('learn');
 
@@ -91,6 +97,11 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store']);
 Route::post('/logout', [SessionController::class, 'destroy']);
+
+// Password Reset
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotForm'])->name('password.request');
+Route::get('/reset-password', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset.form');
+Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name('password.reset');
 
 Route::middleware('auth')->group(function () {
     Route::get('/two-factor', [TwoFactorController::class, 'edit'])->name('two-factor.index');
