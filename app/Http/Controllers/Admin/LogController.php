@@ -50,23 +50,25 @@ class LogController extends Controller
         $logs = [];
 
         foreach ($lines as $line) {
-            if (empty($line)) {
+            if (empty(trim($line))) {
                 continue;
             }
 
             $parsed = $this->parseLine($line);
             if (!$parsed) {
+                // Skip unparseable lines instead of failing
                 continue;
             }
 
-            if ($type !== 'all' && $parsed['type'] !== $type) {
+            // Filter by type if not 'all'
+            if ($type !== 'all' && strtolower($parsed['type']) !== strtolower($type)) {
                 continue;
             }
 
             $logs[] = $parsed;
         }
 
-        // Return in reverse chronological order
+        // Return in reverse chronological order (most recent first)
         return array_reverse($logs);
     }
 
@@ -75,29 +77,49 @@ class LogController extends Controller
      */
     private function parseLine(string $line): ?array
     {
-        // Format: [2024-12-09 10:30:45] local.WARNING: ... {"key": "value"}
-        if (!preg_match('/^\[([^\]]+)\]\s+(\w+)\.(\w+):\s+(.+?)\s+(\{.*\})?$/', $line, $matches)) {
-            return null;
+        // Format 1: [2024-12-09 10:30:45] local.WARNING: ... {"key": "value"}
+        // Format 2: [2024-12-09 10:30:45] local.WARNING: ...
+        $pattern = '/^\[([^\]]+)\]\s+(\w+)\.(\w+):\s+(.+?)(?:\s+(\{.+\}))?$/s';
+        
+        if (!preg_match($pattern, $line, $matches)) {
+            // Try simpler format without channel
+            $simplePattern = '/^\[([^\]]+)\]\s+(\w+):\s+(.+?)(?:\s+(\{.+\}))?$/s';
+            if (!preg_match($simplePattern, $line, $matches)) {
+                return null;
+            }
+            // Adjust matches for simpler format
+            $timestamp = $matches[1];
+            $channel = 'local';
+            $level = strtolower($matches[2]);
+            $message = $matches[3];
+            $contextJson = $matches[4] ?? null;
+        } else {
+            $timestamp = $matches[1];
+            $channel = $matches[2];
+            $level = strtolower($matches[3]);
+            $message = $matches[4];
+            $contextJson = $matches[5] ?? null;
         }
-
-        $timestamp = $matches[1];
-        $channel = $matches[2];
-        $level = strtolower($matches[3]);
-        $message = $matches[4];
-        $contextJson = $matches[5] ?? null;
 
         $context = [];
-        if ($contextJson) {
-            $context = json_decode($contextJson, true) ?? [];
+        if ($contextJson && trim($contextJson)) {
+            try {
+                $decoded = json_decode($contextJson, true);
+                if (is_array($decoded)) {
+                    $context = $decoded;
+                }
+            } catch (\Exception $e) {
+                // If JSON decode fails, just leave context empty
+            }
         }
 
-        $type = $this->categorizeLog($message, $level);
+        $type = $this->categorizeLog($message, $level, $context);
 
         return [
             'timestamp' => $timestamp,
             'channel' => $channel,
             'level' => $level,
-            'message' => $message,
+            'message' => trim($message),
             'context' => $context,
             'type' => $type,
             'raw' => $line,
@@ -105,31 +127,62 @@ class LogController extends Controller
     }
 
     /**
-     * Categorize log by message content.
+     * Categorize log by message content and context.
      */
-    private function categorizeLog(string $message, string $level): string
+    private function categorizeLog(string $message, string $level, array $context = []): string
     {
-        if (stripos($message, 'login') !== false) {
-            return 'login';
-        }
-        if (stripos($message, 'deck') !== false) {
-            return 'deck';
-        }
-        if (stripos($message, 'card') !== false) {
-            return 'card';
-        }
-        if (stripos($message, 'user') !== false) {
-            return 'user';
-        }
-        if (stripos($message, 'request') !== false) {
-            return 'request';
-        }
-        if ($level === 'error' || $level === 'critical') {
+        $messageLower = strtolower($message);
+        $contextString = strtolower(json_encode($context));
+        
+        // PRIORITY 1: Level-based categorization (errors and warnings first)
+        if ($level === 'error' || $level === 'critical' || $level === 'emergency' || $level === 'alert') {
             return 'error';
         }
+        
         if ($level === 'warning') {
             return 'warning';
         }
+        
+        // PRIORITY 2: Content-based categorization
+        
+        // Check for authentication/login related
+        if (stripos($messageLower, 'login') !== false || 
+            stripos($messageLower, 'auth') !== false ||
+            stripos($messageLower, 'logout') !== false ||
+            stripos($messageLower, 'authenticated') !== false) {
+            return 'login';
+        }
+        
+        // Check for deck operations
+        if (stripos($messageLower, 'deck') !== false ||
+            stripos($contextString, 'deck') !== false) {
+            return 'deck';
+        }
+        
+        // Check for card operations
+        if (stripos($messageLower, 'card') !== false ||
+            stripos($contextString, 'card') !== false) {
+            return 'card';
+        }
+        
+        // Check for user operations
+        if (stripos($messageLower, 'user') !== false ||
+            stripos($contextString, 'user') !== false) {
+            return 'user';
+        }
+        
+        // Check for HTTP requests
+        if (stripos($messageLower, 'request') !== false ||
+            stripos($messageLower, 'http') !== false ||
+            stripos($messageLower, 'get ') !== false ||
+            stripos($messageLower, 'post ') !== false ||
+            stripos($messageLower, 'put ') !== false ||
+            stripos($messageLower, 'delete ') !== false ||
+            stripos($messageLower, 'patch ') !== false) {
+            return 'request';
+        }
+        
+        // PRIORITY 3: Default to 'other' for info, debug, notice logs
         return 'other';
     }
 
@@ -162,6 +215,7 @@ class LogController extends Controller
             'request' => 'HTTP Requests',
             'error' => 'Errors',
             'warning' => 'Warnings',
+            'other' => 'Other',
         ];
     }
 }
