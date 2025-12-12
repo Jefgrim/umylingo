@@ -32,5 +32,12 @@
             <button type="submit" class="btn-submit" disabled wire:dirty.remove.attr='disabled'>Save
                 Changes</button>
         </form>
+        <div class="form-grid" style="margin-top: 24px;">
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <h2>Two-Factor Authentication</h2>
+                <p>Protect your account with an authenticator app. You will need a one-time code at login.</p>
+                <a href="/two-factor" class="btn-submit" style="display: inline-block; text-align: center;">Manage 2FA</a>
+            </div>
+        </div>
     </div>
 </div>

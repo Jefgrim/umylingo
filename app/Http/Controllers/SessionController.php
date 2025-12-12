@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Auth\SessionGuard;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class SessionController extends Controller
@@ -68,8 +68,8 @@ class SessionController extends Controller
             ]);
         }
 
-        // Attempt login
-        if (!Auth::attempt($attributes)) {
+        // Check password
+        if (!Hash::check($attributes['password'], $user->password)) {
             RateLimiter::hit($key, self::LOCK_TIME_SECONDS);
             $remainingAttempts = max(0, self::MAX_LOGIN_ATTEMPTS - RateLimiter::attempts($key));
 
@@ -97,8 +97,23 @@ class SessionController extends Controller
             ]);
         }
 
+        // Require two-factor challenge when enabled
+        if ($user->two_factor_secret && $user->two_factor_confirmed_at) {
+            RateLimiter::clear($key);
+            Log::info('Login requires two-factor challenge', [
+                'username' => $attributes['username'],
+                'ip' => $ipAddress,
+            ]);
+
+            request()->session()->put('login.id', $user->id);
+            request()->session()->put('login.remember', false);
+
+            return redirect()->route('two-factor.challenge');
+        }
+
         // Successful login
         RateLimiter::clear($key);
+        Auth::login($user);
         Log::info('Login successful', [
             'username' => $attributes['username'],
             'ip' => $ipAddress,

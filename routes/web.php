@@ -3,6 +3,8 @@
 
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\TwoFactorChallengeController;
+use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\Admin\LogController as AdminLogController;
 use App\Livewire\Achievements;
 use App\Livewire\AdminProfile;
@@ -84,3 +86,13 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store']);
 Route::post('/logout', [SessionController::class, 'destroy']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/two-factor', [TwoFactorController::class, 'edit'])->name('two-factor.index');
+    Route::post('/two-factor/confirm', [TwoFactorController::class, 'store'])->name('two-factor.confirm');
+    Route::post('/two-factor/recovery-codes', [TwoFactorController::class, 'regenerate'])->name('two-factor.recovery-codes');
+    Route::delete('/two-factor', [TwoFactorController::class, 'destroy'])->name('two-factor.disable');
+});
+
+Route::get('/two-factor-challenge', [TwoFactorChallengeController::class, 'create'])->name('two-factor.challenge');
+Route::post('/two-factor-challenge', [TwoFactorChallengeController::class, 'store']);
