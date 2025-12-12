@@ -22,12 +22,16 @@ class TwoFactorController extends Controller
 
         $secret = decrypt($user->two_factor_secret);
         $recoveryCodes = $this->recoveryCodes($user);
+        
+        // Check if we should show recovery codes (only once after enabling/regenerating)
+        $showRecoveryCodes = $request->session()->pull('show_recovery_codes', false);
 
         return view('auth.two-factor-settings', [
             'qrCodeUrl' => $provider->qrCodeUrl(config('app.name'), $user->email ?? $user->username, $secret),
             'secret' => $secret,
             'recoveryCodes' => $recoveryCodes,
             'hasConfirmedTwoFactor' => (bool) $user->two_factor_confirmed_at,
+            'showRecoveryCodes' => $showRecoveryCodes,
         ]);
     }
 
@@ -62,6 +66,9 @@ class TwoFactorController extends Controller
             'user_id' => $user->id,
         ]);
 
+        // Set session flag to show recovery codes once
+        $request->session()->put('show_recovery_codes', true);
+
         return redirect()->route('two-factor.index')->with('status', 'Two-factor authentication enabled.');
     }
 
@@ -82,6 +89,9 @@ class TwoFactorController extends Controller
             'user_id' => $user->id,
         ]);
 
+        // Set session flag to show recovery codes once
+        $request->session()->put('show_recovery_codes', true);
+
         return redirect()->route('two-factor.index')->with('status', 'Recovery codes regenerated.');
     }
 
@@ -98,16 +108,31 @@ class TwoFactorController extends Controller
             return redirect()->route('two-factor.index')->with('status', 'Two-factor authentication is not enabled.');
         }
 
-        $secret = decrypt($user->two_factor_secret);
+        $code = trim(str_replace(' ', '', $request->input('code')));
+        $isValid = false;
+        $usedRecoveryCode = false;
 
-        if (!$provider->verify($secret, trim(str_replace(' ', '', $request->input('code'))))) {
+        // Try authenticator code first
+        $secret = decrypt($user->two_factor_secret);
+        if ($provider->verify($secret, $code)) {
+            $isValid = true;
+        } else {
+            // Try recovery codes
+            $recoveryCodes = $this->recoveryCodes($user);
+            if (in_array($code, $recoveryCodes)) {
+                $isValid = true;
+                $usedRecoveryCode = true;
+            }
+        }
+
+        if (!$isValid) {
             Log::warning('Failed attempt to disable two-factor authentication', [
                 'user_id' => $user->id,
                 'ip' => $request->ip(),
             ]);
             
             throw ValidationException::withMessages([
-                'code' => 'The provided code is invalid.',
+                'code' => 'The provided code or recovery code is invalid.',
             ]);
         }
 
@@ -119,6 +144,7 @@ class TwoFactorController extends Controller
 
         Log::info('Two-factor authentication disabled', [
             'user_id' => $user->id,
+            'used_recovery_code' => $usedRecoveryCode,
         ]);
 
         return redirect()->route('two-factor.index')->with('status', 'Two-factor authentication disabled.');

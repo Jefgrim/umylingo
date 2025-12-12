@@ -275,31 +275,40 @@
                         <span class="status-badge">✓ Two-Factor Authentication is Active</span>
                     </div>
 
-                    <div class="recovery-codes-box">
-                        <h3 class="two-factor-subtitle" style="margin-top: 0;">🔑 Recovery Codes</h3>
-                        <p class="info-text"><strong>Important:</strong> Store these codes in a safe place. Each code can only be used once to access your account if you lose access to your authenticator.</p>
-                        <ul class="recovery-codes-list">
-                            @foreach ($recoveryCodes as $code)
-                                <li class="recovery-code-item">{{ $code }}</li>
-                            @endforeach
-                        </ul>
-                        <form method="POST" action="/two-factor/recovery-codes">
-                            @csrf
-                            <button type="submit" class="btn-secondary">🔄 Regenerate Recovery Codes</button>
-                        </form>
-                    </div>
+                    @if($showRecoveryCodes)
+                        <div class="warning-box" style="background-color: #dc3545; border-color: #dc3545; color: white; padding: 1.5rem; margin: 1.5rem 0;">
+                            <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem;">⚠️ CRITICAL: Save These Codes NOW!</h3>
+                            <p style="margin: 0; font-size: 1rem; line-height: 1.6;"><strong>These recovery codes will ONLY be shown this ONE TIME and cannot be retrieved later.</strong> Save them in a secure password manager or write them down and store them safely. You will need one of these codes if you lose access to your authenticator app.</p>
+                        </div>
+                        
+                        <div class="recovery-codes-box">
+                            <h3 class="two-factor-subtitle" style="margin-top: 0;">🔑 Your Recovery Codes (One-Time Display)</h3>
+                            <ul class="recovery-codes-list">
+                                @foreach ($recoveryCodes as $code)
+                                    <li class="recovery-code-item">{{ $code }}</li>
+                                @endforeach
+                            </ul>
+                            <p class="info-text" style="text-align: center; margin-top: 1rem;"><strong>Each code can only be used once.</strong> Make sure you've saved all codes before leaving this page.</p>
+                        </div>
+                    @else
+                        <div class="warning-box" style="border: 2px solid #ffc107; padding: 1.5rem;">
+                            <h3 style="color: #856404; margin-top: 0; font-size: 1.1rem;">🔑 Recovery Codes</h3>
+                            <p style="color: #856404; margin-bottom: 0.5rem;"><strong>Your recovery codes are securely stored.</strong> They were shown once when you first enabled 2FA and cannot be viewed again for security reasons.</p>
+                            <p style="color: #856404; margin-bottom: 0;"><strong>Important:</strong> If you've lost access to your recovery codes, you will need to disable and re-enable 2FA to get new codes. Keep your codes in a secure location.</p>
+                        </div>
+                    @endif
 
                     <div class="two-factor-card" style="border: 2px solid #ad3324;">
                         <h3 class="two-factor-subtitle" style="color: #ad3324;">⚠️ Disable Two-Factor Authentication</h3>
-                        <p class="info-text">To disable 2FA, enter a current verification code from your authenticator app.</p>
+                        <p class="info-text">To disable 2FA, enter a current verification code from your authenticator app or use one of your recovery codes.</p>
                         <form method="POST" action="/two-factor" class="two-factor-form">
                             @csrf
                             @method('DELETE')
                             @error('code')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
-                            <input type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*"
-                                placeholder="Enter 6-digit code to disable" name="code" required class="two-factor-input" maxlength="6">
+                            <input type="text" autocomplete="one-time-code"
+                                placeholder="Enter 6-digit code or recovery code" name="code" required class="two-factor-input">
                             <button type="submit" class="btn-danger">🔓 Disable Two-Factor Authentication</button>
                         </form>
                     </div>
