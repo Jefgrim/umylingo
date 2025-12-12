@@ -63,6 +63,11 @@ Route::get('/dashboard/logs', [AdminLogController::class, 'index'])
     ->can('administrate')
     ->name('admin.logs');
 
+Route::post('/dashboard/logs/verify', [AdminLogController::class, 'verify'])
+    ->middleware('auth')
+    ->can('administrate')
+    ->name('admin.logs.verify');
+
 Route::get('/deck/{deck}/edit', EditDeck::class)
     ->middleware('auth')
     ->can('administrate');

@@ -167,6 +167,10 @@
                             <span class="btn-icon">⚙</span>
                             Manage 2FA
                         </a>
+                        <a href="{{ route('admin.logs') }}" class="btn-secondary" style="margin-top: 0.5rem; background-color: #ad3324;">
+                            <span class="btn-icon">📜</span>
+                            View Logs (2FA Required)
+                        </a>
                     </div>
                 </div>
             </div>

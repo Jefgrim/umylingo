@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Laravel\Fortify\Contracts\TwoFactorAuthenticationProvider;
 
 class LogController extends Controller
 {
@@ -14,8 +17,21 @@ class LogController extends Controller
      */
     public function index(Request $request)
     {
+        $user = $request->user();
         $type = $request->get('type', 'all');
         $path = storage_path('logs/laravel.log');
+
+        // Require 2FA to be enabled
+        if (!$user->two_factor_secret || !$user->two_factor_confirmed_at) {
+            return redirect()->route('two-factor.index')->with('status', 'Enable two-factor authentication to access logs.');
+        }
+
+        // Require recent 2FA verification for logs (10-minute window)
+        $lastVerified = (int) $request->session()->get('logs_2fa_passed_at');
+        $freshWindowSeconds = 10 * 60;
+        if (!$lastVerified || (time() - $lastVerified) > $freshWindowSeconds) {
+            return view('admin.logs-verify');
+        }
 
         if (!file_exists($path)) {
             return view('admin.logs', [
@@ -40,6 +56,72 @@ class LogController extends Controller
             'types' => $this->getAvailableTypes(),
             'levelColor' => fn($level) => $this->getLevelColor($level),
         ]);
+    }
+
+    public function verify(Request $request, TwoFactorAuthenticationProvider $provider)
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (!$user->two_factor_secret || !$user->two_factor_confirmed_at) {
+            return redirect()->route('two-factor.index')->with('status', 'Enable two-factor authentication to access logs.');
+        }
+
+        $request->validate([
+            'code' => ['nullable', 'string', 'required_without:recovery_code'],
+            'recovery_code' => ['nullable', 'string', 'required_without:code'],
+        ], [
+            'code.required_without' => 'Enter an authentication code or a recovery code.',
+            'recovery_code.required_without' => 'Enter an authentication code or a recovery code.',
+        ]);
+
+        $code = trim(str_replace(' ', '', (string) $request->input('code')));
+        $recoveryCode = trim((string) $request->input('recovery_code'));
+
+        if ($code === '' && $recoveryCode === '') {
+            throw ValidationException::withMessages([
+                'code' => 'Enter an authentication code or a recovery code.',
+            ]);
+        }
+
+        $passed = false;
+        $secret = decrypt($user->two_factor_secret);
+
+        if ($code !== '' && $provider->verify($secret, $code)) {
+            $passed = true;
+        }
+
+        if (!$passed && $recoveryCode !== '') {
+            $recoveryCodes = $this->recoveryCodes($user);
+            $matchedIndex = array_search($recoveryCode, $recoveryCodes, true);
+
+            if ($matchedIndex !== false) {
+                $passed = true;
+                unset($recoveryCodes[$matchedIndex]);
+                $user->forceFill([
+                    'two_factor_recovery_codes' => encrypt(json_encode(array_values($recoveryCodes))),
+                ])->save();
+            }
+        }
+
+        if (!$passed) {
+            throw ValidationException::withMessages([
+                'code' => 'The provided authentication or recovery code is invalid.',
+            ]);
+        }
+
+        $request->session()->put('logs_2fa_passed_at', time());
+
+        return redirect()->route('admin.logs');
+    }
+
+    private function recoveryCodes(User $user): array
+    {
+        if (!$user->two_factor_recovery_codes) {
+            return [];
+        }
+
+        return json_decode(decrypt($user->two_factor_recovery_codes), true) ?: [];
     }
 
     /**

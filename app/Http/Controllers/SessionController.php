@@ -136,6 +136,12 @@ class SessionController extends Controller
     public function destroy()
     {
         Auth::logout();
+        
+        // Clear sensitive session data on logout
+        request()->session()->forget('logs_2fa_passed_at');
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        
         return redirect('/login');
     }
 }
