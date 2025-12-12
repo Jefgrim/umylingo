@@ -74,6 +74,11 @@
                     <form method="POST" action="/two-factor" style="margin-top: 16px;">
                         @csrf
                         @method('DELETE')
+                        @error('code')
+                            <p style="color: #ad3324">{{ $message }}</p>
+                        @enderror
+                        <input type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*"
+                            placeholder="Enter 6-digit code to disable" name="code" required>
                         <button type="submit" style="background: #ad3324; color: white;">Disable Two-Factor</button>
                     </form>
                 @endif

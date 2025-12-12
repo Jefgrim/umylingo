@@ -85,10 +85,31 @@ class TwoFactorController extends Controller
         return redirect()->route('two-factor.index')->with('status', 'Recovery codes regenerated.');
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, TwoFactorAuthenticationProvider $provider)
     {
+        $request->validate([
+            'code' => ['required', 'string'],
+        ]);
+
         /** @var User $user */
         $user = $request->user();
+
+        if (!$user->two_factor_secret || !$user->two_factor_confirmed_at) {
+            return redirect()->route('two-factor.index')->with('status', 'Two-factor authentication is not enabled.');
+        }
+
+        $secret = decrypt($user->two_factor_secret);
+
+        if (!$provider->verify($secret, trim(str_replace(' ', '', $request->input('code'))))) {
+            Log::warning('Failed attempt to disable two-factor authentication', [
+                'user_id' => $user->id,
+                'ip' => $request->ip(),
+            ]);
+            
+            throw ValidationException::withMessages([
+                'code' => 'The provided code is invalid.',
+            ]);
+        }
 
         $user->forceFill([
             'two_factor_secret' => null,
