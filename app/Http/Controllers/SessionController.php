@@ -32,7 +32,7 @@ class SessionController extends Controller
         // Validate input
         $attributes = request()->validate([
             'username' => ['required'],
-            'password' => ['required', Password::min(10)],
+            'password' => ['required', Password::min(12)],
         ]);
 
         $ipAddress = request()->ip();
