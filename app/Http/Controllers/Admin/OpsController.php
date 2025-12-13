@@ -31,6 +31,7 @@ class OpsController extends Controller
             'logs' => $this->recentLogs(),
             'backups' => $this->listBackups(),
             'health' => $this->healthSnapshot(),
+            'tooling' => $this->toolingStatus(),
         ]);
     }
 
@@ -93,7 +94,7 @@ class OpsController extends Controller
 
             if (!$mysqldump) {
                 Log::error('mysqldump not found in any expected location', [
-                    'checked_paths' => array_filter($mysqldumpPaths),
+                    'checked_paths' => $mysqldumpPaths,
                 ]);
                 return redirect()->route('admin.ops')->with('error', 
                     'mysqldump not found. Set MYSQLDUMP_PATH env var or check https://dev.mysql.com/downloads/mysql/');
@@ -246,24 +247,10 @@ class OpsController extends Controller
                 'user_username' => $user->username,
             ]);
 
-            $mysqlPaths = [
-                'C:\ServBay\service\mysql\bin\mysql.exe',
-                'C:\ServBay\service\mariadb\bin\mysql.exe',
-                'C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe',
-                'C:\xampp\mysql\bin\mysql.exe',
-                env('MYSQL_PATH', ''),
-            ];
-
-            $mysql = null;
-            foreach ($mysqlPaths as $path) {
-                if (!empty($path) && file_exists($path)) {
-                    $mysql = $path;
-                    break;
-                }
-            }
+            [$mysql, $mysqlPaths] = $this->findExecutable($this->mysqlPaths());
 
             if (!$mysql) {
-                Log::error('mysql executable not found for restore', ['checked_paths' => array_filter($mysqlPaths)]);
+                Log::error('mysql executable not found for restore', ['checked_paths' => $mysqlPaths]);
                 return redirect()->route('admin.ops')->with('error', 'mysql executable not found. Set MYSQL_PATH env var.');
             }
 
@@ -438,6 +425,66 @@ class OpsController extends Controller
         usort($backups, fn($a, $b) => $b['modified'] <=> $a['modified']);
 
         return $backups;
+    }
+
+    private function toolingStatus(): array
+    {
+        [$mysqldump, $mysqldumpPaths] = $this->findExecutable($this->mysqldumpPaths());
+        [$mysql, $mysqlPaths] = $this->findExecutable($this->mysqlPaths());
+
+        return [
+            'mysqldump' => [
+                'found' => (bool) $mysqldump,
+                'path' => $mysqldump,
+                'checked' => $mysqldumpPaths,
+            ],
+            'mysql' => [
+                'found' => (bool) $mysql,
+                'path' => $mysql,
+                'checked' => $mysqlPaths,
+            ],
+        ];
+    }
+
+    private function findExecutable(array $paths): array
+    {
+        $checked = array_values(array_filter($paths));
+        $found = null;
+
+        foreach ($checked as $path) {
+            if (file_exists($path)) {
+                $found = $path;
+                break;
+            }
+        }
+
+        return [$found, $checked];
+    }
+
+    private function mysqldumpPaths(): array
+    {
+        return [
+            'C:\\ServBay\\service\\mysql\\bin\\mysqldump.exe',
+            'C:\\ServBay\\service\\mariadb\\bin\\mysqldump.exe',
+            'C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe',
+            'C:\\Program Files (x86)\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe',
+            'C:\\xampp\\mysql\\bin\\mysqldump.exe',
+            'C:\\wamp64\\bin\\mysql\\mysql8.0.32\\bin\\mysqldump.exe',
+            env('MYSQLDUMP_PATH', ''),
+        ];
+    }
+
+    private function mysqlPaths(): array
+    {
+        return [
+            'C:\\ServBay\\service\\mysql\\bin\\mysql.exe',
+            'C:\\ServBay\\service\\mariadb\\bin\\mysql.exe',
+            'C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe',
+            'C:\\Program Files (x86)\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe',
+            'C:\\xampp\\mysql\\bin\\mysql.exe',
+            'C:\\wamp64\\bin\\mysql\\mysql8.0.32\\bin\\mysql.exe',
+            env('MYSQL_PATH', ''),
+        ];
     }
 
     private function healthSnapshot(): array

@@ -24,25 +24,30 @@
         <div class="alert-error">{{ session('error') }}</div>
     @endif
 
-    <div class="ops-grid">
-        <section class="ops-card">
-            <div class="ops-card-header">
-                <h2>Health</h2>
-                <p class="muted">Live checks for core services</p>
-            </div>
-            <div class="health-list">
-                @forelse($health as $check)
-                    <div class="health-item">
-                        <span class="health-name">{{ $check['name'] }}</span>
-                        <span class="health-chip {{ $check['status'] }}">{{ strtoupper($check['status']) }}</span>
-                        <p class="health-detail">{{ $check['detail'] }}</p>
-                    </div>
-                @empty
-                    <p class="muted">No health data.</p>
-                @endforelse
-            </div>
-        </section>
+    @php
+        $backupCount = count($backups ?? []);
+        $latestBackup = $backupCount > 0 ? $backups[0] : null;
+    @endphp
 
+    <div class="summary-grid">
+        <div class="summary-card">
+            <p class="summary-label">Backups stored</p>
+            <p class="summary-value">{{ $backupCount }}</p>
+            <p class="summary-hint">Retention: last 5 kept</p>
+        </div>
+        <div class="summary-card">
+            <p class="summary-label">Last backup size</p>
+            <p class="summary-value">{{ $latestBackup ? $formatSize($latestBackup['size']) : '—' }}</p>
+            <p class="summary-hint">{{ $latestBackup ? $formatTime($latestBackup['modified']) : 'No backups yet' }}</p>
+        </div>
+        <div class="summary-card">
+            <p class="summary-label">Backup location</p>
+            <p class="summary-value">storage/app/backups</p>
+            <p class="summary-hint">Excluded from git</p>
+        </div>
+    </div>
+
+    <div class="ops-grid">
         <section class="ops-card">
             <div class="ops-card-header">
                 <div>
@@ -57,6 +62,26 @@
                     </button>
                 </form>
             </div>
+            <div class="tooling-status">
+                <div class="tool-line">
+                    <div class="tool-label">Backup binary (mysqldump)</div>
+                    @if(($tooling['mysqldump']['found'] ?? false) && !empty($tooling['mysqldump']['path']))
+                        <div class="tool-ok">Found: {{ $tooling['mysqldump']['path'] }}</div>
+                    @else
+                        <div class="tool-missing">Not found. Set MYSQLDUMP_PATH to your mysqldump.exe.</div>
+                    @endif
+                    <div class="tool-checked">Checked: {{ !empty($tooling['mysqldump']['checked']) ? implode(', ', $tooling['mysqldump']['checked']) : 'No paths tested' }}</div>
+                </div>
+                <div class="tool-line">
+                    <div class="tool-label">Restore binary (mysql)</div>
+                    @if(($tooling['mysql']['found'] ?? false) && !empty($tooling['mysql']['path']))
+                        <div class="tool-ok">Found: {{ $tooling['mysql']['path'] }}</div>
+                    @else
+                        <div class="tool-missing">Not found. Set MYSQL_PATH to your mysql.exe.</div>
+                    @endif
+                    <div class="tool-checked">Checked: {{ !empty($tooling['mysql']['checked']) ? implode(', ', $tooling['mysql']['checked']) : 'No paths tested' }}</div>
+                </div>
+            </div>
             @if(empty($backups))
                 <p class="muted">No backup files found.</p>
             @else
@@ -65,14 +90,15 @@
                         <span>Name</span>
                         <span>Size</span>
                         <span>Modified</span>
+                        <span style="text-align:right;">Actions</span>
                     </div>
                     @foreach($backups as $backup)
                         <div class="table-row">
                             <span class="truncate">{{ $backup['name'] }}</span>
                             <span>{{ $formatSize($backup['size']) }}</span>
-                            <span style="display: flex; justify-content: space-between; align-items: center;">
-                                <span>{{ $formatTime($backup['modified']) }}</span>
-                                <form method="POST" action="{{ route('admin.ops.restore') }}" style="margin: 0; display: inline;">
+                            <span>{{ $formatTime($backup['modified']) }}</span>
+                            <span class="backup-actions">
+                                <form method="POST" action="{{ route('admin.ops.restore') }}" style="margin: 0;">
                                     @csrf
                                     <input type="hidden" name="filename" value="{{ $backup['name'] }}">
                                     <button type="submit" class="btn-restore" onclick="return confirm('Restore to test database? This will create a new test DB.');">↻ Test</button>
@@ -101,6 +127,7 @@
                             </div>
                             <p class="log-message">{{ $log['message'] }}</p>
                             @if(!empty($log['context']))
+                                <div class="log-context-label">Context</div>
                                 <pre class="log-context">{{ json_encode($log['context'], JSON_PRETTY_PRINT) }}</pre>
                             @endif
                         </div>
@@ -129,16 +156,32 @@
             margin-bottom: 1.25rem;
             font-weight: 600;
         }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+        .summary-card {
+            background: #0c5894;
+            color: white;
+            border-radius: 10px;
+            padding: 1.1rem 1.3rem;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+        }
+        .summary-label { margin: 0; opacity: 0.85; font-weight: 600; }
+        .summary-value { margin: 0.2rem 0 0.1rem; font-size: 1.6rem; font-weight: 800; }
+        .summary-hint { margin: 0; opacity: 0.85; font-size: 0.95rem; }
         .ops-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.25rem;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
         }
         .ops-card {
             background: #fdfbfb;
             border: 1px solid #ddd;
             border-radius: 12px;
-            padding: 1.25rem;
+            padding: 1.5rem;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
         }
         .ops-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
@@ -181,6 +224,7 @@
         }
         .health-list { display: flex; flex-direction: column; gap: 0.75rem; }
         .health-item { border: 1px solid #e5e7eb; border-radius: 10px; padding: 0.75rem; background: #fff; }
+        .health-row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
         .health-name { font-weight: 700; color: #0c5894; }
         .health-chip { padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; color: #fff; margin-left: 0.5rem; }
         .health-chip.ok { background: #16a34a; }
@@ -188,10 +232,11 @@
         .health-chip.fail { background: #dc2626; }
         .health-detail { margin: 0.35rem 0 0; color: #374151; }
         .table { display: flex; flex-direction: column; gap: 0.35rem; }
-        .table-head, .table-row { display: grid; grid-template-columns: 2fr 0.8fr 1.2fr; gap: 0.5rem; align-items: center; }
+        .table-head, .table-row { display: grid; grid-template-columns: 2.4fr 1fr 1.3fr 1fr; gap: 0.65rem; align-items: center; }
         .table-head { font-weight: 700; color: #0c5894; }
         .table-row { padding: 0.65rem; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; }
         .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .backup-actions { display: flex; justify-content: flex-end; }
         .logs-card { grid-column: 1 / -1; }
         .logs-list { display: flex; flex-direction: column; gap: 0.75rem; max-height: 520px; overflow: auto; }
         .log-item { border: 1px solid #e5e7eb; border-radius: 10px; padding: 0.75rem; background: #fff; }
@@ -203,10 +248,17 @@
         .log-level.level-info { background: #2563eb; }
         .log-level.level-debug, .log-level.level-notice { background: #6b21a8; }
         .log-message { margin: 0 0 0.35rem 0; color: #111827; }
+        .log-context-label { font-weight: 700; color: #0c5894; margin-bottom: 0.25rem; }
         .log-context { background: #f3f4f6; border-radius: 8px; padding: 0.65rem; margin: 0; font-size: 0.9rem; overflow-x: auto; }
         .muted { color: #6b7280; }
+        .tooling-status { display: grid; gap: 0.75rem; padding: 0.9rem 1rem; border: 1px dashed #cbd5e1; border-radius: 10px; background: #f8fafc; margin-bottom: 1rem; }
+        .tool-line { display: grid; gap: 0.15rem; }
+        .tool-label { font-weight: 700; color: #0c5894; }
+        .tool-ok { color: #166534; font-weight: 700; }
+        .tool-missing { color: #b91c1c; font-weight: 700; }
+        .tool-checked { color: #475569; font-size: 0.93rem; }
         @media (max-width: 768px) {
-            .table-head, .table-row { grid-template-columns: 1.5fr 0.6fr 1fr; }
+            .table-head, .table-row { grid-template-columns: 1.4fr 0.8fr 1fr 0.9fr; }
             .logs-card { grid-column: auto; }
         }
     </style>
