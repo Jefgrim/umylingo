@@ -2,11 +2,38 @@
     <div class="logs-container">
         <h1 class="dashboard-title">System Activity Logs</h1>
 
+        <!-- Date/Time Filter Form -->
+        <div class="logs-filter-section">
+            <form method="GET" action="{{ route('admin.logs') }}" class="logs-date-filter">
+                <div class="date-filter-inputs">
+                    <div class="date-input-group">
+                        <label for="date_from">From Date:</label>
+                        <input type="date" id="date_from" name="date_from" value="{{ $dateFrom }}" class="date-input">
+                    </div>
+                    <div class="date-input-group">
+                        <label for="time_from">Time:</label>
+                        <input type="time" id="time_from" name="time_from" value="{{ $timeFrom }}" class="date-input">
+                    </div>
+                    <div class="date-input-group">
+                        <label for="date_to">To Date:</label>
+                        <input type="date" id="date_to" name="date_to" value="{{ $dateTo }}" class="date-input">
+                    </div>
+                    <div class="date-input-group">
+                        <label for="time_to">Time:</label>
+                        <input type="time" id="time_to" name="time_to" value="{{ $timeTo }}" class="date-input">
+                    </div>
+                    <input type="hidden" name="type" value="{{ $type }}">
+                    <button type="submit" class="btn-filter">Filter</button>
+                    <a href="{{ route('admin.logs') }}?type={{ $type }}" class="btn-clear">Clear</a>
+                </div>
+            </form>
+        </div>
+
         <!-- Filter Tabs -->
         <div class="logs-filter-section">
             <div class="logs-filter-tabs">
                 @foreach($types as $key => $label)
-                    <a href="{{ route('admin.logs') }}?type={{ $key }}"
+                    <a href="{{ route('admin.logs') }}?type={{ $key }}{{ $dateFrom ? '&date_from='.$dateFrom : '' }}{{ $dateTo ? '&date_to='.$dateTo : '' }}{{ $timeFrom ? '&time_from='.$timeFrom : '' }}{{ $timeTo ? '&time_to='.$timeTo : '' }}"
                        class="logs-filter-tab {{ $type === $key ? 'active' : '' }}">
                         {{ $label }}
                     </a>

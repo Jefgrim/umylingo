@@ -13,12 +13,16 @@ class LogController extends Controller
     private const MAX_LINES = 2000;
 
     /**
-     * Display logs with filtering by type.
+     * Display logs with filtering by type and date/time.
      */
     public function index(Request $request)
     {
         $user = $request->user();
         $type = $request->get('type', 'all');
+        $dateFrom = $request->get('date_from');
+        $dateTo = $request->get('date_to');
+        $timeFrom = $request->get('time_from');
+        $timeTo = $request->get('time_to');
         $path = storage_path('logs/laravel.log');
 
         // Require 2FA to be enabled
@@ -40,6 +44,10 @@ class LogController extends Controller
                 'source' => $path,
                 'type' => $type,
                 'types' => $this->getAvailableTypes(),
+                'dateFrom' => $dateFrom,
+                'dateTo' => $dateTo,
+                'timeFrom' => $timeFrom,
+                'timeTo' => $timeTo,
             ]);
         }
 
@@ -48,7 +56,7 @@ class LogController extends Controller
             -self::MAX_LINES
         );
 
-        $logs = $this->parseLogs($rawLines, $type);
+        $logs = $this->parseLogs($rawLines, $type, $dateFrom, $dateTo, $timeFrom, $timeTo);
 
         return view('admin.logs', [
             'logs' => $logs,
@@ -56,6 +64,10 @@ class LogController extends Controller
             'type' => $type,
             'types' => $this->getAvailableTypes(),
             'levelColor' => fn($level) => $this->getLevelColor($level),
+            'dateFrom' => $dateFrom,
+            'dateTo' => $dateTo,
+            'timeFrom' => $timeFrom,
+            'timeTo' => $timeTo,
         ]);
     }
 
@@ -129,7 +141,7 @@ class LogController extends Controller
     /**
      * Parse log lines and extract structured data.
      */
-    private function parseLogs(array $lines, string $type = 'all'): array
+    private function parseLogs(array $lines, string $type = 'all', ?string $dateFrom = null, ?string $dateTo = null, ?string $timeFrom = null, ?string $timeTo = null): array
     {
         $logs = [];
 
@@ -142,6 +154,27 @@ class LogController extends Controller
             if (!$parsed) {
                 // Skip unparseable lines instead of failing
                 continue;
+            }
+
+            // Filter by date/time range if provided
+            if ($dateFrom || $dateTo || $timeFrom || $timeTo) {
+                $logTimestamp = strtotime($parsed['timestamp']);
+                
+                // Build from datetime
+                if ($dateFrom) {
+                    $fromDateTime = $dateFrom . ($timeFrom ? ' ' . $timeFrom : ' 00:00:00');
+                    if ($logTimestamp < strtotime($fromDateTime)) {
+                        continue;
+                    }
+                }
+                
+                // Build to datetime
+                if ($dateTo) {
+                    $toDateTime = $dateTo . ($timeTo ? ' ' . $timeTo : ' 23:59:59');
+                    if ($logTimestamp > strtotime($toDateTime)) {
+                        continue;
+                    }
+                }
             }
 
             // Filter by type if not 'all'
