@@ -17,6 +17,19 @@
         </div>
 
         <div class="menu-container">
+            <button class="dropdown-btn">Menu</button>
+            <div class="dropdown-content">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/dashboard/decks">Decks</a>
+                <a href="/dashboard/profile">Profile</a>
+                <form class="profile-icon" style="display: block;" method="POST"
+                    action="/logout">
+                    @csrf
+                    <button style="width: 100%; padding: 12px 16px;">
+                        Logout
+                    </button>
+                </form>
+            </div>
             <form class="profile-icon" method="POST" action="/logout">
                 @csrf
                 <button><svg xmlns="http://www.w3.org/2000/svg"
@@ -40,5 +53,15 @@
         </div>
     </div>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dropdownBtn = document.querySelector('.dropdown-btn');
+        const dropdownContent = document.querySelector('.dropdown-content');
+
+        dropdownBtn.addEventListener('click', function() {
+            dropdownContent.classList.toggle('show');
+        });
+    });
+</script>
 
 </html>

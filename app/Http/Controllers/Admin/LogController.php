@@ -30,7 +30,8 @@ class LogController extends Controller
         $lastVerified = (int) $request->session()->get('logs_2fa_passed_at');
         $freshWindowSeconds = 10 * 60;
         if (!$lastVerified || (time() - $lastVerified) > $freshWindowSeconds) {
-            return view('admin.logs-verify');
+            $request->session()->put('2fa_intended_route', 'admin.logs');
+            return view('admin.logs-verify', ['intendedPage' => 'Logs']);
         }
 
         if (!file_exists($path)) {
@@ -112,7 +113,8 @@ class LogController extends Controller
 
         $request->session()->put('logs_2fa_passed_at', time());
 
-        return redirect()->route('admin.logs');
+        $intendedRoute = $request->session()->pull('2fa_intended_route', 'admin.logs');
+        return redirect()->route($intendedRoute);
     }
 
     private function recoveryCodes(User $user): array

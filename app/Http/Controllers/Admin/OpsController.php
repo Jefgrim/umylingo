@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class OpsController extends Controller
 {
-    private const MAX_LOG_LINES = 150;
+    private const MAX_LOG_LINES = 10;
     private const FRESH_WINDOW_SECONDS = 600; // 10 minutes
     private const BACKUP_DIR = 'backups'; // storage/app/backups
 
@@ -24,7 +24,8 @@ class OpsController extends Controller
 
         $lastVerified = (int) $request->session()->get('logs_2fa_passed_at');
         if (!$lastVerified || (time() - $lastVerified) > self::FRESH_WINDOW_SECONDS) {
-            return view('admin.logs-verify');
+            $request->session()->put('2fa_intended_route', 'admin.ops');
+            return view('admin.logs-verify', ['intendedPage' => 'Operations']);
         }
 
         return view('admin.ops', [
@@ -45,6 +46,7 @@ class OpsController extends Controller
 
         $lastVerified = (int) $request->session()->get('logs_2fa_passed_at');
         if (!$lastVerified || (time() - $lastVerified) > self::FRESH_WINDOW_SECONDS) {
+            $request->session()->put('2fa_intended_route', 'admin.ops');
             return redirect()->route('admin.ops')->with('error', '2FA verification expired.');
         }
 
@@ -219,6 +221,7 @@ class OpsController extends Controller
 
         $lastVerified = (int) $request->session()->get('logs_2fa_passed_at');
         if (!$lastVerified || (time() - $lastVerified) > self::FRESH_WINDOW_SECONDS) {
+            $request->session()->put('2fa_intended_route', 'admin.ops');
             return redirect()->route('admin.ops')->with('error', '2FA verification expired.');
         }
 

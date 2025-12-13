@@ -1,7 +1,7 @@
-<x-layouts.admin title="Verify 2FA for Logs">
+<x-layouts.admin title="Verify 2FA for {{ $intendedPage ?? 'Logs' }}">
     <div class="logs-verify">
         <div class="verify-card">
-            <h1>Verify Two-Factor to View Logs</h1>
+            <h1>Verify Two-Factor to View {{ $intendedPage ?? 'Logs' }}</h1>
             <p class="subtitle">Enter an authenticator code or a recovery code to continue.</p>
 
             @if(session('status'))
