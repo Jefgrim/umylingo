@@ -10,7 +10,7 @@ use Laravel\Fortify\Contracts\TwoFactorAuthenticationProvider;
 
 class LogController extends Controller
 {
-    private const MAX_LINES = 500;
+    private const MAX_LINES = 2000;
 
     /**
      * Display logs with filtering by type.
@@ -228,42 +228,47 @@ class LogController extends Controller
         }
         
         // PRIORITY 2: Content-based categorization
+        // Check message first (more specific), then context (broader)
         
         // Check for authentication/login related
         if (stripos($messageLower, 'login') !== false || 
             stripos($messageLower, 'auth') !== false ||
             stripos($messageLower, 'logout') !== false ||
-            stripos($messageLower, 'authenticated') !== false) {
+            stripos($messageLower, 'authenticated') !== false ||
+            stripos($messageLower, 'two-factor') !== false) {
             return 'login';
         }
         
-        // Check for deck operations
-        if (stripos($messageLower, 'deck') !== false ||
-            stripos($contextString, 'deck') !== false) {
-            return 'deck';
+        // Check for HTTP requests (before user check since requests have user context)
+        if (stripos($messageLower, 'http request') !== false ||
+            stripos($messageLower, 'request failed') !== false) {
+            return 'request';
         }
         
-        // Check for card operations
-        if (stripos($messageLower, 'card') !== false ||
-            stripos($contextString, 'card') !== false) {
+        // Check for card operations (before deck check since cards have deck context)
+        if (stripos($messageLower, 'card') !== false) {
             return 'card';
         }
         
-        // Check for user operations
-        if (stripos($messageLower, 'user') !== false ||
-            stripos($contextString, 'user') !== false) {
+        // Check for deck operations
+        if (stripos($messageLower, 'deck') !== false) {
+            return 'deck';
+        }
+        
+        // Check for user operations (check message first, then context)
+        if (stripos($messageLower, 'user created') !== false ||
+            stripos($messageLower, 'user updated') !== false ||
+            stripos($messageLower, 'user deleted') !== false) {
             return 'user';
         }
         
-        // Check for HTTP requests
-        if (stripos($messageLower, 'request') !== false ||
-            stripos($messageLower, 'http') !== false ||
-            stripos($messageLower, 'get ') !== false ||
-            stripos($messageLower, 'post ') !== false ||
-            stripos($messageLower, 'put ') !== false ||
-            stripos($messageLower, 'delete ') !== false ||
-            stripos($messageLower, 'patch ') !== false) {
-            return 'request';
+        // Fallback: check context for remaining categories
+        if (stripos($contextString, 'card_id') !== false) {
+            return 'card';
+        }
+        
+        if (stripos($contextString, 'deck_id') !== false) {
+            return 'deck';
         }
         
         // PRIORITY 3: Default to 'other' for info, debug, notice logs
