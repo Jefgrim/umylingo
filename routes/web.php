@@ -7,6 +7,7 @@ use App\Http\Controllers\TwoFactorChallengeController;
 use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\Admin\LogController as AdminLogController;
+use App\Http\Controllers\Admin\OpsController as AdminOpsController;
 use App\Livewire\Achievements;
 use App\Livewire\AdminProfile;
 use App\Livewire\Assessment;
@@ -73,6 +74,21 @@ Route::post('/dashboard/logs/verify', [AdminLogController::class, 'verify'])
     ->middleware('auth')
     ->can('administrate')
     ->name('admin.logs.verify');
+
+Route::get('/dashboard/ops', [AdminOpsController::class, 'index'])
+    ->middleware('auth')
+    ->can('administrate')
+    ->name('admin.ops');
+
+Route::post('/dashboard/ops/backup', [AdminOpsController::class, 'createBackup'])
+    ->middleware('auth')
+    ->can('administrate')
+    ->name('admin.ops.backup');
+
+Route::post('/dashboard/ops/restore', [AdminOpsController::class, 'restoreBackup'])
+    ->middleware('auth')
+    ->can('administrate')
+    ->name('admin.ops.restore');
 
 Route::get('/deck/{deck}/edit', EditDeck::class)
     ->middleware('auth')

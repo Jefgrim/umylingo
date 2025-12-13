@@ -163,13 +163,17 @@
                         @endif
                     </div>
                     <div class="security-action">
-                        <a href="/two-factor" class="btn-secondary" style="margin-top: 0.5rem;">
+                        <a href="/two-factor" class="btn-secondary">
                             <span class="btn-icon">⚙</span>
                             Manage 2FA
                         </a>
-                        <a href="{{ route('admin.logs') }}" class="btn-secondary" style="margin-top: 0.5rem; background-color: #ad3324; margin-left: 1rem;">
+                        <a href="{{ route('admin.logs') }}" class="btn-secondary" style="background-color: #ad3324;">
                             <span class="btn-icon">📜</span>
-                            View Logs (2FA Required)
+                            View Logs
+                        </a>
+                        <a href="{{ route('admin.ops') }}" class="btn-secondary" style="background-color: #6d28d9;">
+                            <span class="btn-icon">⚙️</span>
+                            Operations
                         </a>
                     </div>
                 </div>
@@ -394,6 +398,8 @@
             flex-shrink: 0;
             display: flex;
             align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .btn-secondary {
@@ -407,7 +413,7 @@
             border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s ease;
-            max-width: 100%;
+            white-space: nowrap;
         }
 
         .btn-secondary:hover {
@@ -436,7 +442,11 @@
             .security-card {
                 flex-direction: column;
                 align-items: stretch;
+            }security-action {
+                gap: 0.75rem;
             }
+
+            .
 
             .btn-secondary {
                 width: 100%;
