@@ -258,13 +258,13 @@ class OpsController extends Controller
             }
 
             $createDbCmd = sprintf(
-                '"%s" -h %s -P %s -u %s -p%s -e "CREATE DATABASE %s;"',
+                '"%s" --host=%s --port=%s --user=%s --password=%s --execute=%s',
                 $mysql,
                 escapeshellarg($host),
                 escapeshellarg($port),
                 escapeshellarg($username),
                 escapeshellarg($password),
-                escapeshellarg($testDb)
+                escapeshellarg(sprintf('CREATE DATABASE `%s`;', $testDb))
             );
 
             $descriptorspec = array(
@@ -274,9 +274,18 @@ class OpsController extends Controller
             );
 
             $process = proc_open($createDbCmd, $descriptorspec, $pipes);
-            $error = stream_get_contents($pipes[2]);
-            fclose($pipes[1]);
-            fclose($pipes[2]);
+            if (!is_resource($process)) {
+                Log::error('proc_open failed for create database', ['cmd' => $createDbCmd]);
+                return redirect()->route('admin.ops')->with('error', 'Failed to create test database: unable to start mysql process.');
+            }
+
+            $error = isset($pipes[2]) && is_resource($pipes[2]) ? stream_get_contents($pipes[2]) : '';
+            if (isset($pipes[1]) && is_resource($pipes[1])) {
+                fclose($pipes[1]);
+            }
+            if (isset($pipes[2]) && is_resource($pipes[2])) {
+                fclose($pipes[2]);
+            }
             $returnCode = proc_close($process);
 
             if ($returnCode !== 0) {
@@ -286,38 +295,55 @@ class OpsController extends Controller
 
             Log::info('Test database created', ['database' => $testDb]);
 
+            // Use mysql --execute with a fully quoted SQL string; avoid nesting quotes around the file path to prevent "failed to open file''" errors
             $restoreCmd = sprintf(
-                '"%s" -h %s -P %s -u %s -p%s %s < "%s"',
+                '"%s" --host=%s --port=%s --user=%s --password=%s --database=%s --execute=%s',
                 $mysql,
-                $host,
-                $port,
-                $username,
-                $password,
+                escapeshellarg($host),
+                escapeshellarg($port),
+                escapeshellarg($username),
+                escapeshellarg($password),
                 $testDb,
-                $filepath
+                escapeshellarg('source ' . $filepath)
             );
 
             $process = proc_open($restoreCmd, $descriptorspec, $pipes);
-            $output = stream_get_contents($pipes[1]);
-            $error = stream_get_contents($pipes[2]);
-            fclose($pipes[1]);
-            fclose($pipes[2]);
+            if (!is_resource($process)) {
+                Log::error('proc_open failed for restore', ['cmd' => $restoreCmd]);
+                return redirect()->route('admin.ops')->with('error', 'Restore failed: unable to start mysql process.');
+            }
+
+            $output = isset($pipes[1]) && is_resource($pipes[1]) ? stream_get_contents($pipes[1]) : '';
+            $error = isset($pipes[2]) && is_resource($pipes[2]) ? stream_get_contents($pipes[2]) : '';
+            if (isset($pipes[1]) && is_resource($pipes[1])) {
+                fclose($pipes[1]);
+            }
+            if (isset($pipes[2]) && is_resource($pipes[2])) {
+                fclose($pipes[2]);
+            }
             $returnCode = proc_close($process);
 
             if ($returnCode !== 0) {
                 $dropCmd = sprintf(
-                    '"%s" -h %s -P %s -u %s -p%s -e "DROP DATABASE %s;"',
+                    '"%s" --host=%s --port=%s --user=%s --password=%s --execute=%s',
                     $mysql,
-                    $host,
-                    $port,
-                    $username,
-                    $password,
-                    escapeshellarg($testDb)
+                    escapeshellarg($host),
+                    escapeshellarg($port),
+                    escapeshellarg($username),
+                    escapeshellarg($password),
+                    escapeshellarg(sprintf('DROP DATABASE `%s`;', $testDb))
                 );
-                proc_open($dropCmd, $descriptorspec, $pipes);
-                fclose($pipes[1]);
-                fclose($pipes[2]);
-                proc_close($process);
+
+                $dropProcess = proc_open($dropCmd, $descriptorspec, $dropPipes);
+                if (is_resource($dropProcess)) {
+                    if (isset($dropPipes[1]) && is_resource($dropPipes[1])) {
+                        fclose($dropPipes[1]);
+                    }
+                    if (isset($dropPipes[2]) && is_resource($dropPipes[2])) {
+                        fclose($dropPipes[2]);
+                    }
+                    proc_close($dropProcess);
+                }
 
                 Log::error('Restore failed', ['error' => $error, 'db' => $testDb]);
                 return redirect()->route('admin.ops')->with('error', 'Restore failed: ' . $error);
@@ -466,28 +492,74 @@ class OpsController extends Controller
 
     private function mysqldumpPaths(): array
     {
-        return [
-            'C:\\ServBay\\service\\mysql\\bin\\mysqldump.exe',
-            'C:\\ServBay\\service\\mariadb\\bin\\mysqldump.exe',
-            'C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe',
-            'C:\\Program Files (x86)\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe',
-            'C:\\xampp\\mysql\\bin\\mysqldump.exe',
-            'C:\\wamp64\\bin\\mysql\\mysql8.0.32\\bin\\mysqldump.exe',
-            env('MYSQLDUMP_PATH', ''),
-        ];
+        $paths = [];
+
+        // Env override first
+        if ($env = env('MYSQLDUMP_PATH', '')) {
+            $paths[] = $env;
+        }
+
+        $os = PHP_OS_FAMILY;
+
+        if ($os === 'Windows') {
+            $paths = array_merge($paths, [
+                'C:\\ServBay\\service\\mysql\\bin\\mysqldump.exe',
+                'C:\\ServBay\\service\\mariadb\\bin\\mysqldump.exe',
+                'C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe',
+                'C:\\Program Files (x86)\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe',
+                'C:\\xampp\\mysql\\bin\\mysqldump.exe',
+                'C:\\wamp64\\bin\\mysql\\mysql8.0.32\\bin\\mysqldump.exe',
+            ]);
+        } elseif ($os === 'Darwin') {
+            $paths = array_merge($paths, [
+                '/Applications/ServBay/package/mysql/8.4/8.4.7/bin/mysqldump',
+                '/opt/homebrew/bin/mysqldump',
+                '/usr/local/bin/mysqldump',
+            ]);
+        } else {
+            $paths = array_merge($paths, [
+                '/usr/bin/mysqldump',
+                '/usr/local/bin/mysqldump',
+            ]);
+        }
+
+        return array_values(array_filter(array_unique($paths)));
     }
 
     private function mysqlPaths(): array
     {
-        return [
-            'C:\\ServBay\\service\\mysql\\bin\\mysql.exe',
-            'C:\\ServBay\\service\\mariadb\\bin\\mysql.exe',
-            'C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe',
-            'C:\\Program Files (x86)\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe',
-            'C:\\xampp\\mysql\\bin\\mysql.exe',
-            'C:\\wamp64\\bin\\mysql\\mysql8.0.32\\bin\\mysql.exe',
-            env('MYSQL_PATH', ''),
-        ];
+        $paths = [];
+
+        // Env override first
+        if ($env = env('MYSQL_PATH', '')) {
+            $paths[] = $env;
+        }
+
+        $os = PHP_OS_FAMILY;
+
+        if ($os === 'Windows') {
+            $paths = array_merge($paths, [
+                'C:\\ServBay\\service\\mysql\\bin\\mysql.exe',
+                'C:\\ServBay\\service\\mariadb\\bin\\mysql.exe',
+                'C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe',
+                'C:\\Program Files (x86)\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe',
+                'C:\\xampp\\mysql\\bin\\mysql.exe',
+                'C:\\wamp64\\bin\\mysql\\mysql8.0.32\\bin\\mysql.exe',
+            ]);
+        } elseif ($os === 'Darwin') {
+            $paths = array_merge($paths, [
+                '/Applications/ServBay/package/mysql/8.4/8.4.7/bin/mysql',
+                '/opt/homebrew/bin/mysql',
+                '/usr/local/bin/mysql',
+            ]);
+        } else {
+            $paths = array_merge($paths, [
+                '/usr/bin/mysql',
+                '/usr/local/bin/mysql',
+            ]);
+        }
+
+        return array_values(array_filter(array_unique($paths)));
     }
 
     private function healthSnapshot(): array

@@ -41,6 +41,7 @@ class AdminProfile extends AdminComponent
                 'required',
                 'string',
                 'max:255',
+                'regex:/^[A-Za-z0-9]+$/',
                 Rule::unique('users', 'username')->ignore(Auth::id()),
             ],
             'email' => [
@@ -49,6 +50,8 @@ class AdminProfile extends AdminComponent
                 'max:255',
                 Rule::unique('users', 'email')->ignore(Auth::id()),
             ],
+        ],[
+            'username.regex' => 'Username may only contain letters and numbers.',
         ]);
 
         // Update the user's profile

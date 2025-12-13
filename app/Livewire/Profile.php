@@ -40,6 +40,7 @@ class Profile extends Component
             'username' => [
                 'required',
                 'string',
+                'regex:/^[A-Za-z0-9]+$/',
                 'max:255',
                 Rule::unique('users', 'username')->ignore(Auth::id()),
             ],
@@ -49,6 +50,9 @@ class Profile extends Component
                 'max:255',
                 Rule::unique('users', 'email')->ignore(Auth::id()),
             ],
+        ],
+            [
+            'username.regex' => 'Username may only contain letters and numbers.',
         ]);
 
         // Update the user's profile
