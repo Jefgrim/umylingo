@@ -31,8 +31,10 @@ class SessionController extends Controller
     {
         // Validate input
         $attributes = request()->validate([
-            'username' => ['required'],
+            'username' => ['required', 'regex:/^[A-Za-z0-9]+$/'],
             'password' => ['required', Password::min(12)],
+        ], [
+            'username.regex' => 'Username may only contain letters and numbers.',
         ]);
 
         $ipAddress = request()->ip();

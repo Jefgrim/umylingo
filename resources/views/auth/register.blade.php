@@ -5,64 +5,153 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Signup - UMYLINGO</title>
-    <link rel="icon" type="image/png" sizes="500x500" href="assets/img/logo.png">
-    <link rel="icon" type="image/png" sizes="500x500" href="assets/img/logo.png">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="icon" type="image/png" sizes="500x500" href="/assets/img/logo.png">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; }
+        .auth-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+        .auth-card {
+            background-color: #fdfbfb;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .auth-title {
+            color: #ad3324;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label {
+            display: block;
+            color: #0c5894;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .form-input {
+            width: 100%;
+            max-width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-input:focus { outline: none; border-color: #0c5894; }
+        .btn-primary {
+            background-color: #0c5894;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            max-width: 100%;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover { background-color: #094270; }
+        .error-message {
+            background-color: #f8d7da;
+            border: 1px solid #f1aeb5;
+            color: #ad3324;
+            padding: 0.85rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+        .link-row { text-align: center; margin-top: 1rem; }
+        .link-row a { color: #0c5894; font-weight: 600; text-decoration: none; }
+        .link-row a:hover { text-decoration: underline; }
+        @media (max-width: 768px) {
+            .auth-container { padding: 0.5rem; }
+            .auth-card { padding: 1.5rem; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 
 <body>
-    <!-- navbar -->
-    <div class="container auth-layout" style="gap: 24px;">
-        <div class="auth-brand" style="flex:0 0 180px; display:flex; align-items:center; justify-content:center;">
-            <a href="/"><img src="assets/img/logo.png" alt="UMYLINGO" style="max-width: 160px; height:auto;"></a>
-        </div>
-        <div class="form-container" style="width: 100%; max-width: 560px; margin: 0 auto;">
-            <form method="POST" action="/register" class="login-form" style="width:100%; max-width: 100%;">
+    <div style="text-align: center; padding: 1rem;">
+        <a href="/"><img src="/assets/img/logo.png" alt="UMYLINGO" style="max-width: 150px;"></a>
+    </div>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1 class="auth-title">📝 Sign Up</h1>
+
+            <form method="POST" action="/register">
                 @csrf
-                
-                    <h2>Sign up</h2>
-                    <div class="signup-input-container" style="width: 100%; max-width: 100%;">
-                        <input type="text" placeholder="First Name" name="firstname" value="{{ old('firstname') }}"
-                            required style="max-width: 100%;">
-                        <input type="text" placeholder="Last Name" name="lastname" value="{{ old('lastname') }}"
-                            required style="max-width: 100%;">
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="firstname">First Name</label>
+                        <input type="text" id="firstname" name="firstname" class="form-input" value="{{ old('firstname') }}" required>
+                        @error('firstname')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
                     </div>
-
-                    <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-                        @error('username')
-                        <p style="color: #ad3324; margin: 0; font-size: 10px; text-align: start; width: 70%;">
-                            {{ $message }}
-                        </p>
+                    <div class="form-group">
+                        <label class="form-label" for="lastname">Last Name</label>
+                        <input type="text" id="lastname" name="lastname" class="form-input" value="{{ old('lastname') }}" required>
+                        @error('lastname')
+                            <div class="error-message">{{ $message }}</div>
                         @enderror
-                        <input type="text" placeholder="Username" name="username" value="{{ old('username') }}"
-                            required style="width: 100%; max-width: 100%;">
+                    </div>
+                </div>
 
-                        @error('email')
-                        <p style="color: #ad3324; margin: 0; font-size: 10px; text-align: start; width: 70%;">
-                            {{ $message }}
-                        </p>
-                        @enderror
-                        <input type="email" placeholder="Email" name="email" value="{{ old('email') }}" required style="width: 100%; max-width: 100%;">
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-input" value="{{ old('username') }}" required>
+                    @error('username')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" value="{{ old('email') }}" required>
+                    @error('email')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-input" required>
                         @error('password')
-                        <p style="color: #ad3324; margin: 0; font-size: 10px; text-align: start; width: 70%;">
-                            {{ $message }}
-                        </p>
+                            <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
-
-                    <div class="signup-input-container" style="width: 100%; max-width: 100%;">
-                        <input type="password" placeholder="Password" name="password" required style="max-width: 100%;">
-                        <input type="password" placeholder="Confirm Password" name="password_confirmation" required style="max-width: 100%;">
+                    <div class="form-group">
+                        <label class="form-label" for="password_confirmation">Confirm Password</label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" class="form-input" required>
                     </div>
-                    <button style="width: 100%; max-width: 100%;">Register</button>
-                    <p>Already Have an Account? </p><a href="/login" style="color: black">Log in</a>
-                
+                </div>
+
+                <button type="submit" class="btn-primary">Register</button>
             </form>
+
+            <div class="link-row" style="margin-top: 1rem;">
+                <span>Already have an account? </span><a href="/login">Log in</a>
+            </div>
         </div>
     </div>
-    <!-- footer -->
 </body>
 
 </html>

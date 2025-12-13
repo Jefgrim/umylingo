@@ -29,11 +29,13 @@ class RegisteredUserController extends Controller
         //validate
 
         $attributes = request()->validate([
-            'username' => ['required', 'unique:users'],
+            'username' => ['required', 'unique:users', 'regex:/^[A-Za-z0-9]+$/'],
             'password' => ['required', Password::min(12)->letters()->symbols(), 'confirmed'],
             'email' => ['required', 'email', 'unique:users'],
             'firstname' => ['required'],
             'lastname' => ['required'],
+        ], [
+            'username.regex' => 'Username may only contain letters and numbers.',
         ]);
 
         //create the user
