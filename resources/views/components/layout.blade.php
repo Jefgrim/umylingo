@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Home - UMYLINGO</title>
+    <title>{{ isset($title) && $title !== '' ? $title . ' - ' . config('app.name', 'UMYLINGO') : config('app.name', 'UMYLINGO') }}</title>
     <link rel="icon" type="image/png" sizes="500x500" href="assets/img/logo.png">
     <link rel="icon" type="image/png" sizes="500x500" href="assets/img/logo.png">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">

@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout title="Home">
 
     <header id="home">
         <div class="container pt-4 pt-xl-5">

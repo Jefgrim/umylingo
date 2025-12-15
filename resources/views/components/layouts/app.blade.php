@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="500x500" href="{{ asset('assets/img/logo.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
-    <title>{{ $title ?? 'Page Title' }}</title>
+    <title>{{ isset($title) && $title !== '' ? $title . ' - ' . config('app.name', 'UMYLINGO') : config('app.name', 'UMYLINGO') }}</title>
 </head>
 
 <body>
