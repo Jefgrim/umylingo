@@ -23,6 +23,7 @@ class LogController extends Controller
         $dateTo = $request->get('date_to');
         $timeFrom = $request->get('time_from');
         $timeTo = $request->get('time_to');
+        $ipFilter = trim((string) $request->get('ip_filter', ''));
         $path = storage_path('logs/laravel.log');
 
         // Require 2FA to be enabled
@@ -48,6 +49,7 @@ class LogController extends Controller
                 'dateTo' => $dateTo,
                 'timeFrom' => $timeFrom,
                 'timeTo' => $timeTo,
+                'ipFilter' => $ipFilter,
             ]);
         }
 
@@ -56,7 +58,7 @@ class LogController extends Controller
             -self::MAX_LINES
         );
 
-        $logs = $this->parseLogs($rawLines, $type, $dateFrom, $dateTo, $timeFrom, $timeTo);
+        $logs = $this->parseLogs($rawLines, $type, $dateFrom, $dateTo, $timeFrom, $timeTo, $ipFilter);
 
         return view('admin.logs', [
             'logs' => $logs,
@@ -68,6 +70,7 @@ class LogController extends Controller
             'dateTo' => $dateTo,
             'timeFrom' => $timeFrom,
             'timeTo' => $timeTo,
+            'ipFilter' => $ipFilter,
         ]);
     }
 
@@ -141,7 +144,7 @@ class LogController extends Controller
     /**
      * Parse log lines and extract structured data.
      */
-    private function parseLogs(array $lines, string $type = 'all', ?string $dateFrom = null, ?string $dateTo = null, ?string $timeFrom = null, ?string $timeTo = null): array
+    private function parseLogs(array $lines, string $type = 'all', ?string $dateFrom = null, ?string $dateTo = null, ?string $timeFrom = null, ?string $timeTo = null, ?string $ipFilter = null): array
     {
         $logs = [];
 
@@ -154,6 +157,14 @@ class LogController extends Controller
             if (!$parsed) {
                 // Skip unparseable lines instead of failing
                 continue;
+            }
+
+            // Filter by IP if provided - partial/contains match
+            if ($ipFilter !== '') {
+                $ctxIp = isset($parsed['context']['ip']) ? trim((string) $parsed['context']['ip']) : null;
+                if (!$ctxIp || strpos($ctxIp, $ipFilter) === false) {
+                    continue;
+                }
             }
 
             // Filter by date/time range if provided
@@ -227,6 +238,18 @@ class LogController extends Controller
                 }
             } catch (\Exception $e) {
                 // If JSON decode fails, just leave context empty
+            }
+        }
+
+        // Fallback: if context was not captured by the regex, try grabbing the last JSON block manually
+        if (empty($context) && str_contains($line, '{')) {
+            $jsonStart = strrpos($line, '{');
+            if ($jsonStart !== false) {
+                $candidate = trim(substr($line, $jsonStart));
+                $decoded = json_decode($candidate, true);
+                if (is_array($decoded)) {
+                    $context = $decoded;
+                }
             }
         }
 
