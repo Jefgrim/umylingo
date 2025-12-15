@@ -257,7 +257,13 @@ class OpsController extends Controller
                 return redirect()->route('admin.ops')->with('error', 'mysql executable not found. Set MYSQL_PATH env var.');
             }
 
-            $createDbCmd = '"' . $mysql . '" -h' . escapeshellarg($host) . ' -P' . escapeshellarg($port) . ' -u' . escapeshellarg($username) . ' -p' . escapeshellarg($password);
+            $createDbCmd = [
+                $mysql,
+                '-h' . $host,
+                '-P' . $port,
+                '-u' . $username,
+                '-p' . $password,
+            ];
 
             $descriptorspec = array(
                 0 => array("pipe", "r"),
@@ -267,7 +273,7 @@ class OpsController extends Controller
 
             $process = proc_open($createDbCmd, $descriptorspec, $pipes);
             if (!is_resource($process)) {
-                Log::error('proc_open failed for create database', ['cmd' => $createDbCmd]);
+                Log::error('proc_open failed for create database', ['cmd' => json_encode($createDbCmd)]);
                 return redirect()->route('admin.ops')->with('error', 'Failed to create test database: unable to start mysql process.');
             }
 
@@ -298,11 +304,18 @@ class OpsController extends Controller
                 return redirect()->route('admin.ops')->with('error', 'Failed to read backup file.');
             }
 
-            $restoreCmd = '"' . $mysql . '" -h' . escapeshellarg($host) . ' -P' . escapeshellarg($port) . ' -u' . escapeshellarg($username) . ' -p' . escapeshellarg($password) . ' -D' . escapeshellarg($testDb);
+            $restoreCmd = [
+                $mysql,
+                '-h' . $host,
+                '-P' . $port,
+                '-u' . $username,
+                '-p' . $password,
+                '-D' . $testDb,
+            ];
 
             $process = proc_open($restoreCmd, $descriptorspec, $pipes);
             if (!is_resource($process)) {
-                Log::error('proc_open failed for restore', ['cmd' => $restoreCmd]);
+                Log::error('proc_open failed for restore', ['cmd' => json_encode($restoreCmd)]);
                 return redirect()->route('admin.ops')->with('error', 'Restore failed: unable to start mysql process.');
             }
 
@@ -321,7 +334,13 @@ class OpsController extends Controller
             $returnCode = proc_close($process);
 
             if ($returnCode !== 0) {
-                $dropCmd = '"' . $mysql . '" -h' . escapeshellarg($host) . ' -P' . escapeshellarg($port) . ' -u' . escapeshellarg($username) . ' -p' . escapeshellarg($password);
+                $dropCmd = [
+                    $mysql,
+                    '-h' . $host,
+                    '-P' . $port,
+                    '-u' . $username,
+                    '-p' . $password,
+                ];
 
                 $dropProcess = proc_open($dropCmd, $descriptorspec, $dropPipes);
                 if (is_resource($dropProcess)) {
