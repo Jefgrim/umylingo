@@ -50,6 +50,119 @@
         </div>
     </div>
 
+    <!-- Comprehensive Metrics Section -->
+    <div style="margin-top: 2rem;">
+        <h2 style="margin: 0 0 1.5rem 0; color: #1f2937; font-size: 1.3rem; font-weight: 700;">📊 Comprehensive Analytics</h2>
+        
+        <!-- User Engagement -->
+        <div style="margin-bottom: 2rem;">
+            <h3 style="margin: 0 0 1rem 0; color: #0c5894; font-size: 1rem; font-weight: 600;">👥 User Engagement</h3>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                <div style="background: #f0f4f8; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #0c5894;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Quiz Completion Rate</p>
+                    <p style="margin: 0; color: #0c5894; font-size: 1.8rem; font-weight: 700;">{{ $quizCompletionRate }}%</p>
+                </div>
+                <div style="background: #f0f4f8; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #0c5894;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Avg Session (mins)</p>
+                    <p style="margin: 0; color: #0c5894; font-size: 1.8rem; font-weight: 700;">{{ $avgSessionDuration }}</p>
+                </div>
+                <div style="background: #f0f4f8; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #0c5894;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Avg Learning Streak</p>
+                    <p style="margin: 0; color: #0c5894; font-size: 1.8rem; font-weight: 700;">{{ $learningStreakAvg }} days</p>
+                </div>
+                <div style="background: #f0f4f8; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #0c5894;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Cards Mastered</p>
+                    <p style="margin: 0; color: #0c5894; font-size: 1.8rem; font-weight: 700;">{{ $cardsMastered }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Performance -->
+        <div style="margin-bottom: 2rem;">
+            <h3 style="margin: 0 0 1rem 0; color: #059669; font-size: 1rem; font-weight: 600;">📚 Learning Performance</h3>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                <div style="background: #ecfdf5; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #059669;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Avg Quiz Score</p>
+                    <p style="margin: 0; color: #059669; font-size: 1.8rem; font-weight: 700;">{{ $avgQuizScore }}%</p>
+                </div>
+                <div style="background: #ecfdf5; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #059669;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Deck Completion (mins)</p>
+                    <p style="margin: 0; color: #059669; font-size: 1.8rem; font-weight: 700;">{{ $timeToDeckCompletion }}</p>
+                </div>
+                <div style="background: #ecfdf5; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #059669;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Learning Velocity (Weekly)</p>
+                    <p style="margin: 0; color: #059669; font-size: 1.8rem; font-weight: 700;">{{ $learningVelocity }}</p>
+                    <p style="margin: 0.5rem 0 0 0; color: #6b7280; font-size: 0.75rem;">cards per user</p>
+                </div>
+                <div style="background: #ecfdf5; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #059669;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Card Error Rate</p>
+                    <p style="margin: 0; color: #059669; font-size: 1.8rem; font-weight: 700;">{{ $cardErrorRate }}%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Insights -->
+        <div style="margin-bottom: 2rem;">
+            <h3 style="margin: 0 0 1rem 0; color: #d97706; font-size: 1rem; font-weight: 600;">📈 Content Insights</h3>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                <div style="background: #fffbeb; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #d97706;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Deck Completion Rate</p>
+                    <p style="margin: 0; color: #d97706; font-size: 1.8rem; font-weight: 700;">{{ $deckCompletionRate }}%</p>
+                </div>
+                <div style="background: #fffbeb; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #d97706;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Active Decks (30d)</p>
+                    <p style="margin: 0; color: #d97706; font-size: 1.8rem; font-weight: 700;">{{ $contentEngagement }}%</p>
+                </div>
+                <div style="background: #fffbeb; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #d97706;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Most Challenging</p>
+                    @if(count($mostChallengingCards) > 0)
+                        <p style="margin: 0; color: #d97706; font-size: 0.9rem;">{{ $mostChallengingCards[0]['word'] }} ({{ $mostChallengingCards[0]['accuracy'] }}%)</p>
+                    @else
+                        <p style="margin: 0; color: #d97706; font-size: 0.9rem;">N/A</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- User Health -->
+        <div style="margin-bottom: 2rem;">
+            <h3 style="margin: 0 0 1rem 0; color: #dc2626; font-size: 1rem; font-weight: 600;">❤️ User Health</h3>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                <div style="background: #fef2f2; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #dc2626;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Churn Rate (30d)</p>
+                    <p style="margin: 0; color: #dc2626; font-size: 1.8rem; font-weight: 700;">{{ $churnRate }}%</p>
+                </div>
+                <div style="background: #fef2f2; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #dc2626;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">New User Engagement</p>
+                    <p style="margin: 0; color: #dc2626; font-size: 1.8rem; font-weight: 700;">{{ $newUserQuality }}%</p>
+                </div>
+                <div style="background: #fef2f2; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #dc2626;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Time to First Quiz</p>
+                    <p style="margin: 0; color: #dc2626; font-size: 1.8rem; font-weight: 700;">{{ $timeToFirstQuiz }} min</p>
+                </div>
+                <div style="background: #fef2f2; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #dc2626;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Feature Adoption</p>
+                    <p style="margin: 0; color: #dc2626; font-size: 0.9rem;">Quiz: {{ $featureAdoption['quiz_mode'] }}% | Learn: {{ $featureAdoption['learn_mode'] }}%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Growth -->
+        <div style="margin-bottom: 2rem;">
+            <h3 style="margin: 0 0 1rem 0; color: #7c3aed; font-size: 1rem; font-weight: 600;">🚀 Growth</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="background: #f5f3ff; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #7c3aed;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Week-over-Week Growth</p>
+                    <p style="margin: 0; color: #7c3aed; font-size: 1.8rem; font-weight: 700;">{{ $weekOverWeekGrowth }}%</p>
+                </div>
+                <div style="background: #f5f3ff; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #7c3aed;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">User Segmentation</p>
+                    <p style="margin: 0; color: #7c3aed; font-size: 0.9rem;">Active: {{ $userSegmentation['active']['count'] }} ({{ $userSegmentation['active']['percent'] }}%) | Inactive: {{ $userSegmentation['inactive']['count'] }} ({{ $userSegmentation['inactive']['percent'] }}%)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="tables-container" style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
         <div class="table-card" style="background: linear-gradient(135deg, #f8fafb 0%, #f0f4f8 100%); border-radius: 8px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
             <h3 style="margin: 0 0 1.5rem 0; color: #0c5894; font-size: 1.1rem; font-weight: 600;">✓ Top Performing Decks</h3>
