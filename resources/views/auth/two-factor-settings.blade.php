@@ -235,7 +235,7 @@
        
         <div class="two-factor-container">
             <div class="two-factor-card">
-                <h1 class="two-factor-title">🔐 Two-Factor Authentication</h1>
+                <h1 class="two-factor-title">Two-Factor Authentication</h1>
                 
                 @if (session('status'))
                     <div class="success-message">{{ session('status') }}</div>
@@ -256,7 +256,7 @@
                     </div>
                     
                     <div class="warning-box">
-                        <strong>📱 Recommended Apps:</strong> Google Authenticator, Microsoft Authenticator, Authy, or any compatible TOTP app
+                        <strong>Recommended Apps:</strong> Google Authenticator, Microsoft Authenticator, Authy, or any compatible TOTP app
                     </div>
 
                     <form method="POST" action="/two-factor/confirm" class="two-factor-form">
@@ -269,7 +269,7 @@
                         @enderror
                         <input type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*"
                             placeholder="Enter 6-digit code" name="code" required class="two-factor-input" maxlength="6">
-                        <button type="submit" class="btn-primary">✓ Verify & Enable 2FA</button>
+                        <button type="submit" class="btn-primary">Verify & Enable 2FA</button>
                     </form>
                     
                     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -287,17 +287,17 @@
                     </script>
                 @else
                     <div style="text-align: center;">
-                        <span class="status-badge">✓ Two-Factor Authentication is Active</span>
+                        <span class="status-badge">Two-Factor Authentication is Active</span>
                     </div>
 
                     @if($showRecoveryCodes)
                         <div class="warning-box" style="background-color: #dc3545; border-color: #dc3545; color: white; padding: 1.5rem; margin: 1.5rem 0;">
-                            <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem;">⚠️ CRITICAL: Save These Codes NOW!</h3>
+                            <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem;">CRITICAL: Save These Codes NOW!</h3>
                             <p style="margin: 0; font-size: 1rem; line-height: 1.6;"><strong>These recovery codes will ONLY be shown this ONE TIME and cannot be retrieved later.</strong> Save them in a secure password manager or write them down and store them safely. You will need one of these codes if you lose access to your authenticator app.</p>
                         </div>
                         
                         <div class="recovery-codes-box">
-                            <h3 class="two-factor-subtitle" style="margin-top: 0;">🔑 Your Recovery Codes (One-Time Display)</h3>
+                            <h3 class="two-factor-subtitle" style="margin-top: 0;">Your Recovery Codes (One-Time Display)</h3>
                             <ul class="recovery-codes-list">
                                 @foreach ($recoveryCodes as $code)
                                     <li class="recovery-code-item">{{ $code }}</li>
@@ -307,14 +307,14 @@
                         </div>
                     @else
                         <div class="warning-box" style="border: 2px solid #ffc107; padding: 1.5rem;">
-                            <h3 style="color: #856404; margin-top: 0; font-size: 1.1rem;">🔑 Recovery Codes</h3>
+                            <h3 style="color: #856404; margin-top: 0; font-size: 1.1rem;">Recovery Codes</h3>
                             <p style="color: #856404; margin-bottom: 0.5rem;"><strong>Your recovery codes are securely stored.</strong> They were shown once when you first enabled 2FA and cannot be viewed again for security reasons.</p>
                             <p style="color: #856404; margin-bottom: 0;"><strong>Important:</strong> If you've lost access to your recovery codes, you will need to disable and re-enable 2FA to get new codes. Keep your codes in a secure location.</p>
                         </div>
                     @endif
 
                     <div class="two-factor-card" style="border: 2px solid #ad3324;">
-                        <h3 class="two-factor-subtitle" style="color: #ad3324;">⚠️ Disable Two-Factor Authentication</h3>
+                        <h3 class="two-factor-subtitle" style="color: #ad3324;">Disable Two-Factor Authentication</h3>
                         <p class="info-text">To disable 2FA, enter a current verification code from your authenticator app or use one of your recovery codes.</p>
                         <form method="POST" action="/two-factor" class="two-factor-form">
                             @csrf
@@ -324,7 +324,7 @@
                             @enderror
                             <input type="text" autocomplete="one-time-code"
                                 placeholder="Enter 6-digit code or recovery code" name="code" required class="two-factor-input">
-                            <button type="submit" class="btn-danger">🔓 Disable Two-Factor Authentication</button>
+                            <button type="submit" class="btn-danger">Disable Two-Factor Authentication</button>
                         </form>
                     </div>
                 @endif

@@ -86,7 +86,7 @@
 
     <div class="auth-container">
         <div class="auth-card">
-            <h1 class="auth-title">🔐 Login</h1>
+            <h1 class="auth-title">Login</h1>
 
             @if (session('status'))
                 <div class="error-message" style="background-color:#d1e7dd; border-color:#a3cfbb; color:#0f5132;">

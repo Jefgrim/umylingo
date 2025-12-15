@@ -58,10 +58,7 @@
                 </div>
                 <form method="POST" action="{{ route('admin.ops.backup') }}" style="margin: 0;">
                     @csrf
-                    <button type="submit" class="btn-backup">
-                        <span>💾</span>
-                        Create Backup Now
-                    </button>
+                    <button type="submit" class="btn-backup">Create Backup Now</button>
                 </form>
             </div>
             @if(empty($backups))

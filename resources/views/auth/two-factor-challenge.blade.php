@@ -212,7 +212,7 @@
             <form method="POST" action="/two-factor-challenge">
                 @csrf
                 <div class="challenge-card">
-                    <div class="challenge-icon">🔐</div>
+                    <div class="challenge-icon"></div>
                     <h1 class="challenge-title">Verification Required</h1>
                     <p class="challenge-subtitle">Enter the code from your authenticator app to continue</p>
 
@@ -227,7 +227,7 @@
                     @enderror
 
                     <div class="input-group">
-                        <label class="input-label">📱 Authenticator Code</label>
+                        <label class="input-label">Authenticator Code</label>
                         <input type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*"
                             placeholder="000000" name="code" value="{{ old('code') }}" class="challenge-input"
                             maxlength="6">
@@ -238,15 +238,15 @@
                     </div>
 
                     <div class="input-group">
-                        <label class="input-label">🔑 Recovery Code</label>
+                        <label class="input-label">Recovery Code</label>
                         <input type="text" placeholder="Enter recovery code" name="recovery_code"
                             value="{{ old('recovery_code') }}" class="challenge-input" style="letter-spacing: normal;">
                     </div>
 
-                    <button type="submit" class="btn-verify">✓ Verify & Continue</button>
+                    <button type="submit" class="btn-verify">Verify & Continue</button>
 
                     <div class="help-text">
-                        <strong>💡 Tip:</strong> If you've lost access to your authenticator app, use one of your
+                        <strong>Tip:</strong> If you've lost access to your authenticator app, use one of your
                         recovery codes instead.
                     </div>
                 </div>

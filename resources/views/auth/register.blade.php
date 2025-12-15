@@ -92,7 +92,7 @@
 
     <div class="auth-container">
         <div class="auth-card">
-            <h1 class="auth-title">📝 Sign Up</h1>
+            <h1 class="auth-title">Sign Up</h1>
 
             <form method="POST" action="/register">
                 @csrf

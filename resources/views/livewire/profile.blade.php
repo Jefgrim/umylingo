@@ -2,54 +2,37 @@
 <div class="profile-page">
     <div class="profile-container">
         <div class="profile-header">
-            <div class="profile-icon">👤</div>
             <h1>My Profile</h1>
             <p class="profile-subtitle">Update your personal information and security settings</p>
         </div>
 
         @if (session()->has('success'))
             <div class="alert alert-success">
-                <span class="alert-icon">✓</span>
                 <span>{{ session('success') }}</span>
             </div>
         @endif
 
         <div class="profile-section">
-            <h2 class="section-title">
-                <span class="section-icon">📝</span>
-                Personal Information
-            </h2>
+            <h2 class="section-title">Personal Information</h2>
             <form wire:submit.prevent='updateProfile'>
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="first-name">
-                            <span class="label-icon">👤</span>
-                            First Name
-                        </label>
+                        <label for="first-name">First Name</label>
                         <input type="text" id="first-name" wire:model="firstname" placeholder="Enter your first name">
                     </div>
                     <div class="form-group">
-                        <label for="last-name">
-                            <span class="label-icon">👤</span>
-                            Last Name
-                        </label>
+                        <label for="last-name">Last Name</label>
                         <input type="text" id="last-name" wire:model="lastname" placeholder="Enter your last name">
                     </div>
                     <div class="form-group">
-                        <label for="username">
-                            <span class="label-icon">@</span>
-                            Username
-                        </label>
+                        <label for="username">Username</label>
                         <input type="text" id="username" wire:model="username" placeholder="Enter your username">
                         @error('username')
                             <span class="error-text">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="email">
-                            <span class="label-icon">✉</span>
-                            Email
-                        </label>
+                        <label for="email">Email</label>
                         <input type="email" id="email" wire:model="email" placeholder="Enter your email">
                         @error('email')
                             <span class="error-text">{{ $message }}</span>
@@ -58,7 +41,6 @@
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn-submit" disabled wire:dirty.remove.attr='disabled'>
-                        <span class="btn-icon">💾</span>
                         Save Changes
                     </button>
                 </div>
@@ -66,37 +48,25 @@
         </div>
 
         <div class="profile-section password-section">
-            <h2 class="section-title">
-                <span class="section-icon">🔑</span>
-                Password & Security
-            </h2>
+            <h2 class="section-title">Password & Security</h2>
             <form wire:submit.prevent="updatePassword">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="current-password">
-                            <span class="label-icon">🔒</span>
-                            Current Password
-                        </label>
+                        <label for="current-password">Current Password</label>
                         <input type="password" id="current-password" wire:model="current_password" placeholder="Enter current password">
                         @error('current_password')
                             <span class="error-text">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="new-password">
-                            <span class="label-icon">✨</span>
-                            New Password
-                        </label>
+                        <label for="new-password">New Password</label>
                         <input type="password" id="new-password" wire:model="password" placeholder="Enter new password">
                         @error('password')
                             <span class="error-text">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="confirm-password">
-                            <span class="label-icon">✅</span>
-                            Confirm New Password
-                        </label>
+                        <label for="confirm-password">Confirm New Password</label>
                         <input type="password" id="confirm-password" wire:model="password_confirmation" placeholder="Confirm new password">
                         @error('password_confirmation')
                             <span class="error-text">{{ $message }}</span>
@@ -110,20 +80,14 @@
                     </div>
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="twofactor-code">
-                                <span class="label-icon">📱</span>
-                                Authenticator Code
-                            </label>
+                            <label for="twofactor-code">Authenticator Code</label>
                             <input type="text" id="twofactor-code" wire:model="two_factor_code" inputmode="numeric" pattern="[0-9]*" placeholder="6-digit code">
                             @error('two_factor_code')
                                 <span class="error-text">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="recovery-code">
-                                <span class="label-icon">🔑</span>
-                                Recovery Code
-                            </label>
+                            <label for="recovery-code">Recovery Code</label>
                             <input type="text" id="recovery-code" wire:model="recovery_code" placeholder="Recovery code">
                             @error('recovery_code')
                                 <span class="error-text">{{ $message }}</span>
@@ -134,7 +98,6 @@
 
                 <div class="form-actions">
                     <button type="submit" class="btn-submit" disabled wire:dirty.remove.attr='disabled'>
-                        <span class="btn-icon">🔄</span>
                         Update Password
                     </button>
                 </div>
@@ -142,31 +105,19 @@
         </div>
 
         <div class="profile-section security-section">
-            <h2 class="section-title">
-                <span class="section-icon">🔐</span>
-                Security Settings
-            </h2>
+            <h2 class="section-title">Security Settings</h2>
             <div class="security-card">
                 <div class="security-content">
                     <h3>Two-Factor Authentication</h3>
                     <p>Add an extra layer of security to your account. You'll need a one-time code from your authenticator app when signing in.</p>
                     @if(auth()->user()->two_factor_confirmed_at)
-                        <div class="status-badge active">
-                            <span class="badge-icon">✓</span>
-                            2FA Enabled
-                        </div>
+                        <div class="status-badge active">2FA Enabled</div>
                     @else
-                        <div class="status-badge inactive">
-                            <span class="badge-icon">○</span>
-                            2FA Disabled
-                        </div>
+                        <div class="status-badge inactive">2FA Disabled</div>
                     @endif
                 </div>
                 <div class="security-action">
-                    <a href="/two-factor" class="btn-secondary">
-                        <span class="btn-icon">⚙</span>
-                        Manage 2FA
-                    </a>
+                    <a href="/two-factor" class="btn-secondary">Manage 2FA</a>
                 </div>
             </div>
 
@@ -175,22 +126,13 @@
                     <h3>Security Questions</h3>
                     <p>Set up security questions for password recovery when you forget your password.</p>
                     @if(auth()->user()->securityQuestions->count() > 0)
-                        <div class="status-badge active">
-                            <span class="badge-icon">✓</span>
-                            {{ auth()->user()->securityQuestions->count() }} Question(s) Configured
-                        </div>
+                        <div class="status-badge active">{{ auth()->user()->securityQuestions->count() }} Question(s) Configured</div>
                     @else
-                        <div class="status-badge inactive">
-                            <span class="badge-icon">○</span>
-                            Not Configured
-                        </div>
+                        <div class="status-badge inactive">Not Configured</div>
                     @endif
                 </div>
                 <div class="security-action">
-                    <a href="/security-questions" class="btn-secondary">
-                        <span class="btn-icon">❓</span>
-                        Manage Questions
-                    </a>
+                    <a href="/security-questions" class="btn-secondary">Manage Questions</a>
                 </div>
             </div>
         </div>

@@ -142,7 +142,7 @@
 
     <div class="reset-container">
         <div class="reset-card">
-            <h1 class="reset-title">🔐 Reset Password</h1>
+            <h1 class="reset-title">Reset Password</h1>
             
             @if ($errors->any())
                 <div class="error-message">
@@ -161,7 +161,7 @@
                 <input type="hidden" name="username" value="{{ $username }}">
 
                 @if ($has2FA)
-                    <h3 class="section-title">🔑 Recovery Code Verification</h3>
+                    <h3 class="section-title">Recovery Code Verification</h3>
                     <div class="warning-box">
                         Enter one of your recovery codes to verify your identity. The code will be consumed after use.
                     </div>
@@ -177,7 +177,7 @@
                 @endif
 
                 @if ($hasSecurityQuestions)
-                    <h3 class="section-title">❓ Security Questions</h3>
+                    <h3 class="section-title">Security Questions</h3>
                     <div class="info-box">
                         Answer your security questions to verify your identity.
                     </div>
@@ -190,7 +190,7 @@
                     @endforeach
                 @endif
 
-                <h3 class="section-title">🔒 New Password</h3>
+                <h3 class="section-title">New Password</h3>
                 <div class="info-box">
                     Password must be at least 12 characters and contain letters and symbols.
                 </div>
@@ -207,7 +207,7 @@
                            class="form-input" placeholder="Confirm new password" required>
                 </div>
 
-                <button type="submit" class="btn-primary">✓ Reset Password</button>
+                <button type="submit" class="btn-primary">Reset Password</button>
             </form>
 
             <div class="back-link">

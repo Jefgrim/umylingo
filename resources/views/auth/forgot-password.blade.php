@@ -116,7 +116,7 @@
 
     <div class="forgot-container">
         <div class="forgot-card">
-            <h1 class="forgot-title">🔑 Forgot Password</h1>
+            <h1 class="forgot-title">Forgot Password</h1>
             
             @if (session('error'))
                 <div class="error-message">{{ session('error') }}</div>
