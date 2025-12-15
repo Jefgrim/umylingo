@@ -52,11 +52,11 @@
 
     <!-- Comprehensive Metrics Section -->
     <div style="margin-top: 2rem;">
-        <h2 style="margin: 0 0 1.5rem 0; color: #1f2937; font-size: 1.3rem; font-weight: 700;">📊 Comprehensive Analytics</h2>
+        <h2 style="margin: 0 0 1.5rem 0; color: #1f2937; font-size: 1.3rem; font-weight: 700;">Comprehensive Analytics</h2>
         
         <!-- User Engagement -->
         <div style="margin-bottom: 2rem;">
-            <h3 style="margin: 0 0 1rem 0; color: #0c5894; font-size: 1rem; font-weight: 600;">👥 User Engagement</h3>
+            <h3 style="margin: 0 0 1rem 0; color: #0c5894; font-size: 1rem; font-weight: 600;">User Engagement</h3>
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
                 <div style="background: #f0f4f8; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #0c5894;">
                     <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Quiz Completion Rate</p>
@@ -79,7 +79,7 @@
 
         <!-- Learning Performance -->
         <div style="margin-bottom: 2rem;">
-            <h3 style="margin: 0 0 1rem 0; color: #059669; font-size: 1rem; font-weight: 600;">📚 Learning Performance</h3>
+            <h3 style="margin: 0 0 1rem 0; color: #059669; font-size: 1rem; font-weight: 600;">Learning Performance</h3>
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
                 <div style="background: #ecfdf5; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #059669;">
                     <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Avg Quiz Score</p>
@@ -103,7 +103,7 @@
 
         <!-- Content Insights -->
         <div style="margin-bottom: 2rem;">
-            <h3 style="margin: 0 0 1rem 0; color: #d97706; font-size: 1rem; font-weight: 600;">📈 Content Insights</h3>
+            <h3 style="margin: 0 0 1rem 0; color: #d97706; font-size: 1rem; font-weight: 600;">Content Insights</h3>
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
                 <div style="background: #fffbeb; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #d97706;">
                     <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Deck Completion Rate</p>
@@ -126,7 +126,7 @@
 
         <!-- User Health -->
         <div style="margin-bottom: 2rem;">
-            <h3 style="margin: 0 0 1rem 0; color: #dc2626; font-size: 1rem; font-weight: 600;">❤️ User Health</h3>
+            <h3 style="margin: 0 0 1rem 0; color: #dc2626; font-size: 1rem; font-weight: 600;">User Health</h3>
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
                 <div style="background: #fef2f2; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #dc2626;">
                     <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Churn Rate (30d)</p>
@@ -149,7 +149,7 @@
 
         <!-- Growth -->
         <div style="margin-bottom: 2rem;">
-            <h3 style="margin: 0 0 1rem 0; color: #7c3aed; font-size: 1rem; font-weight: 600;">🚀 Growth</h3>
+            <h3 style="margin: 0 0 1rem 0; color: #7c3aed; font-size: 1rem; font-weight: 600;">Growth</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div style="background: #f5f3ff; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #7c3aed;">
                     <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Week-over-Week Growth</p>
@@ -161,11 +161,38 @@
                 </div>
             </div>
         </div>
+
+        <!-- Additional Advanced Metrics -->
+        <div style="margin-bottom: 2rem;">
+            <h3 style="margin: 0 0 1rem 0; color: #0891b2; font-size: 1rem; font-weight: 600;">Advanced Insights</h3>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                <div style="background: #ecfeff; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #0891b2;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">First Attempt Success</p>
+                    <p style="margin: 0; color: #0891b2; font-size: 1.8rem; font-weight: 700;">{{ $firstAttemptSuccess }}%</p>
+                    <p style="margin: 0.5rem 0 0 0; color: #6b7280; font-size: 0.75rem;">Cards correct on first try</p>
+                </div>
+                <div style="background: #ecfeff; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #0891b2;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Review Compliance</p>
+                    <p style="margin: 0; color: #0891b2; font-size: 1.8rem; font-weight: 700;">{{ $reviewCompliance }}%</p>
+                    <p style="margin: 0.5rem 0 0 0; color: #6b7280; font-size: 0.75rem;">Users reviewing cards</p>
+                </div>
+                <div style="background: #ecfeff; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #0891b2;">
+                    <p style="margin: 0 0 0.5rem 0; color: #6b7280; font-size: 0.85rem; font-weight: 600;">Deck Popularity Trend</p>
+                    @if(count($deckPopularityTrend) > 0)
+                        <p style="margin: 0; color: #0891b2; font-size: 0.9rem; font-weight: 600;">{{ $deckPopularityTrend[0]['deck'] }}</p>
+                        <p style="margin: 0.25rem 0 0 0; color: {{ $deckPopularityTrend[0]['change'] >= 0 ? '#10b981' : '#ef4444' }}; font-size: 1.2rem; font-weight: 700;">{{ $deckPopularityTrend[0]['change'] > 0 ? '+' : '' }}{{ $deckPopularityTrend[0]['change'] }}%</p>
+                        <p style="margin: 0.25rem 0 0 0; color: #6b7280; font-size: 0.7rem;">vs previous week</p>
+                    @else
+                        <p style="margin: 0; color: #0891b2; font-size: 0.9rem;">N/A</p>
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="tables-container" style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
         <div class="table-card" style="background: linear-gradient(135deg, #f8fafb 0%, #f0f4f8 100%); border-radius: 8px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
-            <h3 style="margin: 0 0 1.5rem 0; color: #0c5894; font-size: 1.1rem; font-weight: 600;">✓ Top Performing Decks</h3>
+            <h3 style="margin: 0 0 1.5rem 0; color: #0c5894; font-size: 1.1rem; font-weight: 600;">Top Performing Decks</h3>
             @forelse($deckTop as $d)
                 <button onclick="openDeckModal('{{ $d->deck_id }}', '{{ $d->language }}', '{{ addslashes($d->deck_description) }}', {{ $d->accuracy }}, {{ $d->attempts }})" style="width: 100%; margin-bottom: 1.2rem; padding: 1rem; padding-bottom: 1.2rem; border: 2px solid #e5e7eb; border-radius: 6px; background: white; cursor: pointer; text-align: left; transition: all 0.2s ease; display: block;" onmouseover="this.style.borderColor='#10b981'; this.style.boxShadow='0 4px 12px rgba(16,185,129,0.15)';" onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none';">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
@@ -183,7 +210,7 @@
         </div>
 
         <div class="table-card" style="background: linear-gradient(135deg, #fef8f8 0%, #fef0f0 100%); border-radius: 8px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
-            <h3 style="margin: 0 0 1.5rem 0; color: #dc2626; font-size: 1.1rem; font-weight: 600;">⚠ Decks Needing Attention</h3>
+            <h3 style="margin: 0 0 1.5rem 0; color: #dc2626; font-size: 1.1rem; font-weight: 600;">Decks Needing Attention</h3>
             @forelse($deckBottom as $d)
                 <button onclick="openDeckModal('{{ $d->deck_id }}', '{{ $d->language }}', '{{ addslashes($d->deck_description) }}', {{ $d->accuracy }}, {{ $d->attempts }})" style="width: 100%; margin-bottom: 1.2rem; padding: 1rem; padding-bottom: 1.2rem; border: 2px solid #fee2e2; border-radius: 6px; background: white; cursor: pointer; text-align: left; transition: all 0.2s ease; display: block;" onmouseover="this.style.borderColor='#ef4444'; this.style.boxShadow='0 4px 12px rgba(239,68,68,0.15)';" onmouseout="this.style.borderColor='#fee2e2'; this.style.boxShadow='none';">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">

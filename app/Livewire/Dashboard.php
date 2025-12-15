@@ -58,6 +58,11 @@ class Dashboard extends AdminComponent
     public $weekOverWeekGrowth;
     public $userSegmentation = [];
     public $cohortComparison = [];
+    
+    // Additional Metrics
+    public $firstAttemptSuccess;
+    public $reviewCompliance;
+    public $deckPopularityTrend = [];
 
     public function mount()
     {
@@ -150,6 +155,11 @@ class Dashboard extends AdminComponent
         $this->weekOverWeekGrowth = $this->getWeekOverWeekGrowth();
         $this->userSegmentation = $this->getUserSegmentation();
         $this->cohortComparison = $this->getCohortComparison();
+        
+        // === Additional Metrics ===
+        $this->firstAttemptSuccess = $this->getFirstAttemptSuccess();
+        $this->reviewCompliance = $this->getReviewCompliance();
+        $this->deckPopularityTrend = $this->getDeckPopularityTrend();
     }
 
     public function render()
@@ -363,7 +373,7 @@ class Dashboard extends AdminComponent
             ->leftJoin('quizzes', 'cards.id', '=', 'quizzes.card_id')
             ->select('decks.id', DB::raw('COUNT(DISTINCT cards.id) as total_cards'), DB::raw('COUNT(DISTINCT CASE WHEN quizzes.isCorrect = 1 THEN cards.id END) as correct_cards'))
             ->groupBy('decks.id')
-            ->having(DB::raw('correct_cards'), '>=', DB::raw('total_cards * 0.8'))
+            ->havingRaw('correct_cards >= total_cards * 0.8')
             ->count();
         
         return round($completed / $decks * 100, 1);
@@ -495,4 +505,87 @@ class Dashboard extends AdminComponent
         }
         return $cohorts;
     }
-}
+    
+    // === Additional Metrics ===
+    
+    private function getFirstAttemptSuccess(): float
+    {
+        // Get the first quiz attempt for each card by each user
+        $firstAttempts = DB::table('quizzes')
+            ->select('card_id', 'user_id', DB::raw('MIN(created_at) as first_attempt'))
+            ->groupBy('card_id', 'user_id')
+            ->get();
+        
+        if ($firstAttempts->count() == 0) return 0;
+        
+        $correctFirstAttempts = 0;
+        foreach ($firstAttempts as $attempt) {
+            $wasCorrect = Quiz::where('card_id', $attempt->card_id)
+                ->where('user_id', $attempt->user_id)
+                ->where('created_at', $attempt->first_attempt)
+                ->where('isCorrect', true)
+                ->exists();
+            
+            if ($wasCorrect) $correctFirstAttempts++;
+        }
+        
+        return round($correctFirstAttempts / $firstAttempts->count() * 100, 1);
+    }
+    
+    private function getReviewCompliance(): float
+    {
+        // Users who review cards they've already seen (attempted same card 2+ times)
+        $totalUsers = User::where('isAdmin', false)->count();
+        if ($totalUsers == 0) return 0;
+        
+        $reviewingUsers = DB::table('quizzes')
+            ->select('user_id', 'card_id', DB::raw('COUNT(*) as attempts'))
+            ->groupBy('user_id', 'card_id')
+            ->having('attempts', '>=', 2)
+            ->distinct('user_id')
+            ->count('user_id');
+        
+        return round($reviewingUsers / $totalUsers * 100, 1);
+    }
+    
+    private function getDeckPopularityTrend(): array
+    {
+        // Compare last 7 days vs previous 7 days for top 5 decks
+        $lastWeekStart = now()->subDays(7);
+        $previousWeekStart = now()->subDays(14);
+        $previousWeekEnd = now()->subDays(7);
+        
+        $decks = Deck::limit(10)->get();
+        $trends = [];
+        
+        foreach ($decks as $deck) {
+            $lastWeek = DB::table('quizzes')
+                ->join('cards', 'quizzes.card_id', '=', 'cards.id')
+                ->where('cards.deck_id', $deck->id)
+                ->where('quizzes.created_at', '>=', $lastWeekStart)
+                ->count();
+            
+            $previousWeek = DB::table('quizzes')
+                ->join('cards', 'quizzes.card_id', '=', 'cards.id')
+                ->where('cards.deck_id', $deck->id)
+                ->whereBetween('quizzes.created_at', [$previousWeekStart, $previousWeekEnd])
+                ->count();
+            
+            if ($previousWeek > 0) {
+                $change = round(($lastWeek - $previousWeek) / $previousWeek * 100, 1);
+            } else {
+                $change = $lastWeek > 0 ? 100.0 : 0.0;
+            }
+            
+            $trends[] = [
+                'deck' => $deck->language,
+                'last_week' => $lastWeek,
+                'previous_week' => $previousWeek,
+                'change' => $change,
+            ];
+        }
+        
+        // Sort by absolute change to show most interesting trends
+        usort($trends, fn($a, $b) => abs($b['change']) <=> abs($a['change']));
+        return array_slice($trends, 0, 5);
+    }}
