@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(\App\Http\Middleware\TrustProxies::class);
         $middleware->append(\App\Http\Middleware\LogRequests::class);
         $middleware->append(\App\Http\Middleware\StrictTransportSecurity::class);
-        $middleware->append(\App\Http\Middleware\ContentSecurityPolicy::class);
+        // $middleware->append(\App\Http\Middleware\ContentSecurityPolicy::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
