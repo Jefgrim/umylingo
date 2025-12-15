@@ -15,41 +15,38 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        $admin1 = config('seeder.admin1');
+        $admin2 = config('seeder.admin2');
+        $users = config('seeder.users', []);
+
         User::create([
-            'firstname' => env('SEEDER_ADMIN1_FIRSTNAME'),
-            'lastname' => env('SEEDER_ADMIN1_LASTNAME'),
-            'username' => env('SEEDER_ADMIN1_USERNAME'),
-            'password' => env('SEEDER_ADMIN1_PASSWORD'),
+            'firstname' => $admin1['firstname'],
+            'lastname' => $admin1['lastname'],
+            'username' => $admin1['username'],
+            'password' => $admin1['password'],
             'isAdmin' => true,
-            'email' => env('SEEDER_ADMIN1_EMAIL'),
+            'email' => $admin1['email'],
         ]);
 
         User::create([
-            'firstname' => env('SEEDER_ADMIN2_FIRSTNAME'),
-            'lastname' => env('SEEDER_ADMIN2_LASTNAME'),
-            'username' => env('SEEDER_ADMIN2_USERNAME'),
-            'password' => env('SEEDER_ADMIN2_PASSWORD'),
+            'firstname' => $admin2['firstname'],
+            'lastname' => $admin2['lastname'],
+            'username' => $admin2['username'],
+            'password' => $admin2['password'],
             'isAdmin' => true,
-            'email' => env('SEEDER_ADMIN2_EMAIL'),
+            'email' => $admin2['email'],
         ]);
 
-        User::create([
-            'firstname' => 'test',
-            'lastname' => 'test',
-            'username' => 'test',
-            'password' => env('SEEDER_USER_PASSWORD'),
-            'isAdmin' => false,
-            'email' => env('SEEDER_TEST_EMAIL'),
-        ]);
-
-        User::create([
-            'firstname' => 'test2',
-            'lastname' => 'test2',
-            'username' => 'test2',
-            'password' => env('SEEDER_USER_PASSWORD'),
-            'isAdmin' => false,
-            'email' => env('SEEDER_TEST2_EMAIL'),
-        ]);
+        foreach ($users as $user) {
+            User::create([
+                'firstname' => $user['firstname'],
+                'lastname' => $user['lastname'],
+                'username' => $user['username'],
+                'password' => $user['password'],
+                'isAdmin' => false,
+                'email' => $user['email'],
+            ]);
+        }
 
         $this->call(DeckSeeder::class);
         $this->call(AchievementSeeder::class);

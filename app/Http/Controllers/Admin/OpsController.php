@@ -75,16 +75,8 @@ class OpsController extends Controller
         ]);
 
         try {
-            // Try to find mysqldump in common ServBay locations
-            $mysqldumpPaths = [
-                'C:\ServBay\service\mysql\bin\mysqldump.exe',
-                'C:\ServBay\service\mariadb\bin\mysqldump.exe',
-                'C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqldump.exe',
-                'C:\Program Files (x86)\MySQL\MySQL Server 8.0\bin\mysqldump.exe',
-                'C:\xampp\mysql\bin\mysqldump.exe',
-                'C:\wamp64\bin\mysql\mysql8.0.32\bin\mysqldump.exe',
-                env('MYSQLDUMP_PATH', ''),
-            ];
+            // Try to find mysqldump in configured/known locations
+            $mysqldumpPaths = $this->mysqldumpPaths();
 
             $mysqldump = null;
             foreach ($mysqldumpPaths as $path) {
@@ -504,35 +496,21 @@ class OpsController extends Controller
 
     private function mysqldumpPaths(): array
     {
+        $configPaths = (array) config('ops.mysqldump_paths', []);
         $paths = [];
 
-        // Env override first
-        if ($env = env('MYSQLDUMP_PATH', '')) {
-            $paths[] = $env;
+        if (!empty($configPaths['env'])) {
+            $paths[] = $configPaths['env'];
         }
 
         $os = PHP_OS_FAMILY;
 
         if ($os === 'Windows') {
-            $paths = array_merge($paths, [
-                'C:\\ServBay\\service\\mysql\\bin\\mysqldump.exe',
-                'C:\\ServBay\\service\\mariadb\\bin\\mysqldump.exe',
-                'C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe',
-                'C:\\Program Files (x86)\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe',
-                'C:\\xampp\\mysql\\bin\\mysqldump.exe',
-                'C:\\wamp64\\bin\\mysql\\mysql8.0.32\\bin\\mysqldump.exe',
-            ]);
+            $paths = array_merge($paths, $configPaths['windows'] ?? []);
         } elseif ($os === 'Darwin') {
-            $paths = array_merge($paths, [
-                '/Applications/ServBay/package/mysql/8.4/8.4.7/bin/mysqldump',
-                '/opt/homebrew/bin/mysqldump',
-                '/usr/local/bin/mysqldump',
-            ]);
+            $paths = array_merge($paths, $configPaths['darwin'] ?? []);
         } else {
-            $paths = array_merge($paths, [
-                '/usr/bin/mysqldump',
-                '/usr/local/bin/mysqldump',
-            ]);
+            $paths = array_merge($paths, $configPaths['linux'] ?? []);
         }
 
         return array_values(array_filter(array_unique($paths)));
@@ -540,35 +518,21 @@ class OpsController extends Controller
 
     private function mysqlPaths(): array
     {
+        $configPaths = (array) config('ops.mysql_paths', []);
         $paths = [];
 
-        // Env override first
-        if ($env = env('MYSQL_PATH', '')) {
-            $paths[] = $env;
+        if (!empty($configPaths['env'])) {
+            $paths[] = $configPaths['env'];
         }
 
         $os = PHP_OS_FAMILY;
 
         if ($os === 'Windows') {
-            $paths = array_merge($paths, [
-                'C:\\ServBay\\service\\mysql\\bin\\mysql.exe',
-                'C:\\ServBay\\service\\mariadb\\bin\\mysql.exe',
-                'C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe',
-                'C:\\Program Files (x86)\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe',
-                'C:\\xampp\\mysql\\bin\\mysql.exe',
-                'C:\\wamp64\\bin\\mysql\\mysql8.0.32\\bin\\mysql.exe',
-            ]);
+            $paths = array_merge($paths, $configPaths['windows'] ?? []);
         } elseif ($os === 'Darwin') {
-            $paths = array_merge($paths, [
-                '/Applications/ServBay/package/mysql/8.4/8.4.7/bin/mysql',
-                '/opt/homebrew/bin/mysql',
-                '/usr/local/bin/mysql',
-            ]);
+            $paths = array_merge($paths, $configPaths['darwin'] ?? []);
         } else {
-            $paths = array_merge($paths, [
-                '/usr/bin/mysql',
-                '/usr/local/bin/mysql',
-            ]);
+            $paths = array_merge($paths, $configPaths['linux'] ?? []);
         }
 
         return array_values(array_filter(array_unique($paths)));
