@@ -538,10 +538,9 @@ class Dashboard extends AdminComponent
         $totalUsers = User::where('isAdmin', false)->count();
         if ($totalUsers == 0) return 0;
         
+        // Count users who have any card with attempt_count >= 2
         $reviewingUsers = DB::table('quizzes')
-            ->select('user_id', 'card_id', DB::raw('COUNT(*) as attempts'))
-            ->groupBy('user_id', 'card_id')
-            ->having('attempts', '>=', 2)
+            ->where('attempt_count', '>=', 2)
             ->distinct('user_id')
             ->count('user_id');
         

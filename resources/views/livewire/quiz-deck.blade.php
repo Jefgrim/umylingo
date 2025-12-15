@@ -83,6 +83,12 @@
             <p class="stat-value">{{$correctPercentage}}%</p>
         </div>
     </div>
+    
+    <div style="text-align: center; margin: 2rem 0;">
+        <button class="quiz-btn quiz-btn-primary" wire:click="resetQuizForReview" style="font-size: 1rem; padding: 0.75rem 2rem;">
+            Take Quiz Again (Review)
+        </button>
+    </div>
 
     <div class="deck-view-grid">
         @foreach ($quizzes as $quiz)

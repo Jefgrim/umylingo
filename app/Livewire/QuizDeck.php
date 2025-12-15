@@ -29,6 +29,9 @@ class QuizDeck extends Component
     public $achievementTitle;
 
     public $assessment = false;
+    
+    public $isReview = false;
+    
     public function mount(QuizProgress $quizProgress)
     {
         if (Gate::denies('access-quiz-progress', $quizProgress)) {
@@ -45,6 +48,10 @@ class QuizDeck extends Component
 
         $this->quizProgress = $quizProgress;
         $this->quiz;
+        
+        // Check if this is a review (quiz already completed)
+        $this->isReview = $quizProgress->isCompleted;
+        
         $cards = $this->quizProgress->deck->cards;
         $shuffledCards = $cards->shuffle();
 
@@ -190,5 +197,39 @@ class QuizDeck extends Component
             'currentQuiz' => $currentQuiz,
             'quizProgress' => $quizProgress
         ]);
+    }
+    
+    public function resetQuizForReview()
+    {
+        // Reset all quiz answers to allow re-attempting
+        $this->quizzes->each(function ($quiz) {
+            // Increment attempts to reflect a new review pass
+            $quiz->increment('attempt_count');
+            $quiz->update([
+                'choice_id' => null,
+                'isCorrect' => 0,
+                'isAnswered' => 0,
+            ]);
+        });
+        
+        // Reset quiz progress
+        $this->quizProgress->update([
+            'currentIndex' => 0,
+            'correctItems' => 0,
+            'isCompleted' => 0,
+            'isStarted' => 1,
+            'completedAt' => null,
+            'startedAt' => now(),
+        ]);
+        
+        // Refresh the quizzes
+        $this->quizzes = Quiz::where('user_id', Auth::id())
+            ->where('quiz_progress_id', $this->quizProgress->id)
+            ->get();
+        
+        $this->currentIndex = 0;
+        $this->assessment = false;
+        $this->isReview = false;
+        $this->correctItems = 0;
     }
 }
