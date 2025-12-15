@@ -9,17 +9,27 @@ use Symfony\Component\HttpFoundation\Response;
 class ContentSecurityPolicy
 {
     public function handle(Request $request, Closure $next): Response
-    {
-        /** @var Response $response */
-        $response = $next($request);
+{
+    /** @var Response $response */
+    $response = $next($request);
 
-        // Add CSP header with appropriate policy based on environment
-        $policy = config('app.debug', false)
-            ? "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.cdnfonts.com https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.cdnfonts.com https://fonts.gstatic.com; connect-src 'self' https://cdn.jsdelivr.net;"
-            : "default-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.cdnfonts.com https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.cdnfonts.com https://fonts.gstatic.com; connect-src 'self' https://cdn.jsdelivr.net; frame-ancestors 'none'; base-uri 'self'; form-action 'self';";
+    // Common sources for both environments
+    $scripts = "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com";
+    $styles = "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.cdnfonts.com https://fonts.googleapis.com";
+    $fonts = "font-src 'self' data: https://cdn.jsdelivr.net https://fonts.cdnfonts.com https://fonts.gstatic.com";
+    $connect = "connect-src 'self' https://cdn.jsdelivr.net";
+    $imgs = "img-src 'self' data: https:;"; // Added 'data:' and 'https:' for QR codes/external images
 
-        $response->headers->set('Content-Security-Policy', $policy);
-
-        return $response;
+    if (config('app.debug', false)) {
+        // Debug Policy (Very loose)
+        $policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; $scripts; $styles; $imgs; $fonts; $connect;";
+    } else {
+        // Production Policy (Strict but corrected)
+        $policy = "default-src 'self'; $scripts; $styles; $imgs; $fonts; $connect; frame-ancestors 'none'; base-uri 'self'; form-action 'self';";
     }
+
+    $response->headers->set('Content-Security-Policy', $policy);
+
+    return $response;
+}
 }
