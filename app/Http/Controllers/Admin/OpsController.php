@@ -257,15 +257,7 @@ class OpsController extends Controller
                 return redirect()->route('admin.ops')->with('error', 'mysql executable not found. Set MYSQL_PATH env var.');
             }
 
-            $createDbCmd = sprintf(
-                '"%s" --host=%s --port=%s --user=%s --password=%s --execute=%s',
-                $mysql,
-                escapeshellarg($host),
-                escapeshellarg($port),
-                escapeshellarg($username),
-                escapeshellarg($password),
-                escapeshellarg(sprintf('CREATE DATABASE `%s`;', $testDb))
-            );
+            $createDbCmd = '"' . $mysql . '" -h' . escapeshellarg($host) . ' -P' . escapeshellarg($port) . ' -u' . escapeshellarg($username) . ' -p' . escapeshellarg($password);
 
             $descriptorspec = array(
                 0 => array("pipe", "r"),
@@ -278,6 +270,10 @@ class OpsController extends Controller
                 Log::error('proc_open failed for create database', ['cmd' => $createDbCmd]);
                 return redirect()->route('admin.ops')->with('error', 'Failed to create test database: unable to start mysql process.');
             }
+
+            // Send CREATE DATABASE via stdin
+            fwrite($pipes[0], sprintf('CREATE DATABASE `%s`;', $testDb));
+            fclose($pipes[0]);
 
             $error = isset($pipes[2]) && is_resource($pipes[2]) ? stream_get_contents($pipes[2]) : '';
             if (isset($pipes[1]) && is_resource($pipes[1])) {
@@ -295,23 +291,24 @@ class OpsController extends Controller
 
             Log::info('Test database created', ['database' => $testDb]);
 
-            // Use mysql --execute with a fully quoted SQL string; avoid nesting quotes around the file path to prevent "failed to open file''" errors
-            $restoreCmd = sprintf(
-                '"%s" --host=%s --port=%s --user=%s --password=%s --database=%s --execute=%s',
-                $mysql,
-                escapeshellarg($host),
-                escapeshellarg($port),
-                escapeshellarg($username),
-                escapeshellarg($password),
-                $testDb,
-                escapeshellarg('source ' . $filepath)
-            );
+            // Read the dump file and pipe it via stdin (avoids file path issues and command line length limits)
+            $sqlContent = file_get_contents($filepath);
+            if ($sqlContent === false) {
+                Log::error('Failed to read backup file', ['file' => $filepath]);
+                return redirect()->route('admin.ops')->with('error', 'Failed to read backup file.');
+            }
+
+            $restoreCmd = '"' . $mysql . '" -h' . escapeshellarg($host) . ' -P' . escapeshellarg($port) . ' -u' . escapeshellarg($username) . ' -p' . escapeshellarg($password) . ' -D' . escapeshellarg($testDb);
 
             $process = proc_open($restoreCmd, $descriptorspec, $pipes);
             if (!is_resource($process)) {
                 Log::error('proc_open failed for restore', ['cmd' => $restoreCmd]);
                 return redirect()->route('admin.ops')->with('error', 'Restore failed: unable to start mysql process.');
             }
+
+            // Pipe SQL content via stdin
+            fwrite($pipes[0], $sqlContent);
+            fclose($pipes[0]);
 
             $output = isset($pipes[1]) && is_resource($pipes[1]) ? stream_get_contents($pipes[1]) : '';
             $error = isset($pipes[2]) && is_resource($pipes[2]) ? stream_get_contents($pipes[2]) : '';
@@ -324,18 +321,14 @@ class OpsController extends Controller
             $returnCode = proc_close($process);
 
             if ($returnCode !== 0) {
-                $dropCmd = sprintf(
-                    '"%s" --host=%s --port=%s --user=%s --password=%s --execute=%s',
-                    $mysql,
-                    escapeshellarg($host),
-                    escapeshellarg($port),
-                    escapeshellarg($username),
-                    escapeshellarg($password),
-                    escapeshellarg(sprintf('DROP DATABASE `%s`;', $testDb))
-                );
+                $dropCmd = '"' . $mysql . '" -h' . escapeshellarg($host) . ' -P' . escapeshellarg($port) . ' -u' . escapeshellarg($username) . ' -p' . escapeshellarg($password);
 
                 $dropProcess = proc_open($dropCmd, $descriptorspec, $dropPipes);
                 if (is_resource($dropProcess)) {
+                    // Send DROP DATABASE via stdin
+                    fwrite($dropPipes[0], sprintf('DROP DATABASE `%s`;', $testDb));
+                    fclose($dropPipes[0]);
+                    
                     if (isset($dropPipes[1]) && is_resource($dropPipes[1])) {
                         fclose($dropPipes[1]);
                     }
