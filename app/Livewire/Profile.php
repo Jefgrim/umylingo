@@ -133,6 +133,11 @@ class Profile extends Component
             'recovery_code.required_without' => 'Enter an authenticator code or a recovery code.',
         ]);
 
+        if($this->password == $this->current_password){
+            $this->addError('password', 'The new password must be different from the current password.');
+            return;
+        }
+
         if (!Hash::check($this->current_password, $user->password)) {
             $this->addError('current_password', 'Current password is incorrect.');
             return;

@@ -138,6 +138,11 @@ class AdminProfile extends AdminComponent
             return;
         }
 
+        if($this->password == $this->current_password){
+            $this->addError('password', 'The new password must be different from the current password.');
+            return;
+        }
+
         if ($user->two_factor_secret && $user->two_factor_confirmed_at) {
             $passed = false;
             $code = trim(str_replace(' ', '', (string) $this->two_factor_code));
