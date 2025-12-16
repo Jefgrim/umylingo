@@ -14,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 class SessionController extends Controller
 {
     private const MAX_LOGIN_ATTEMPTS = 5;
-    private const LOCK_TIME_SECONDS = 900; // 15 minutes
+    private const LOCK_TIME_SECONDS = 60; // 15 minutes
 
     public function create()
     {
