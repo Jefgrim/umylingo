@@ -18,7 +18,8 @@ class StrictTransportSecurity
         $isSecure = $request->isSecure() || 
                    strtolower($request->header('X-Forwarded-Proto', '')) === 'https' ||
                    strtolower($request->header('CF-Visitor', '')) === '{"scheme":"https"}' ||
-                   config('session.secure', false);
+                   config('session.secure', false) ||
+                   app()->environment('production');
         
         if ($isSecure) {
             $response->headers->set(
