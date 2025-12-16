@@ -13,15 +13,9 @@ class StrictTransportSecurity
         /** @var Response $response */
         $response = $next($request);
 
-        // Add HSTS header for HTTPS requests
-        // Works with: direct HTTPS, AWS load balancer, Cloudflare Tunnel, etc.
-        $isSecure = $request->isSecure() || 
-                   strtolower($request->header('X-Forwarded-Proto', '')) === 'https' ||
-                   strtolower($request->header('CF-Visitor', '')) === '{"scheme":"https"}' ||
-                   config('session.secure', false) ||
-                   app()->environment('production');
-        
-        if ($isSecure) {
+        // Always add HSTS header when secure cookies are enabled
+        // This ensures the header is present even for local/internal requests
+        if (config('session.secure', false)) {
             $response->headers->set(
                 'Strict-Transport-Security',
                 'max-age=63072000; includeSubDomains; preload'
