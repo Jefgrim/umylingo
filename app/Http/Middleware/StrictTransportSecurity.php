@@ -13,8 +13,14 @@ class StrictTransportSecurity
         /** @var Response $response */
         $response = $next($request);
 
-        // Add HSTS header for all HTTPS requests
-        if ($request->isSecure() || config('session.secure', false)) {
+        // Add HSTS header for HTTPS requests
+        // Works with: direct HTTPS, AWS load balancer, Cloudflare Tunnel, etc.
+        $isSecure = $request->isSecure() || 
+                   strtolower($request->header('X-Forwarded-Proto', '')) === 'https' ||
+                   strtolower($request->header('CF-Visitor', '')) === '{"scheme":"https"}' ||
+                   config('session.secure', false);
+        
+        if ($isSecure) {
             $response->headers->set(
                 'Strict-Transport-Security',
                 'max-age=63072000; includeSubDomains; preload'
