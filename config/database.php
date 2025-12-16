@@ -47,8 +47,8 @@ return [
             'url' => env('DB_URL'),
             // For AWS EC2: Set DB_SOCKET=/var/run/mysqld/mysqld.sock for better performance
             // For Windows dev: Leave DB_SOCKET empty and use host/port
-            'host' => env('DB_SOCKET') ? null : env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_SOCKET') ? null : env('DB_PORT', '3306'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'laravel'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', ''),

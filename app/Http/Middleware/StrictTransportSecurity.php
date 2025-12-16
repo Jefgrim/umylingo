@@ -13,8 +13,8 @@ class StrictTransportSecurity
         /** @var Response $response */
         $response = $next($request);
 
-        // Add HSTS header if secure cookies are enabled (production setup)
-        if (config('session.secure', false)) {
+        // Add HSTS header for all HTTPS requests
+        if ($request->isSecure() || config('session.secure', false)) {
             $response->headers->set(
                 'Strict-Transport-Security',
                 'max-age=63072000; includeSubDomains; preload'
