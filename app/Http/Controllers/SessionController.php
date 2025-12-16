@@ -14,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 class SessionController extends Controller
 {
     private const MAX_LOGIN_ATTEMPTS = 5;
-    private const LOCK_TIME_SECONDS = 60; // 15 minutes
+    private const LOCK_TIME_SECONDS = 30; // 15 minutes
 
     public function create()
     {
@@ -50,7 +50,7 @@ class SessionController extends Controller
                 'retry_after_seconds' => $seconds,
             ]);
             throw ValidationException::withMessages([
-                'username' => "Too many login attempts. Please try again in {$minutesRemaining} minute(s)."
+                'username' => "Too many login attempts. Please try again in {$seconds} second(s)."
             ]);
         }
 
@@ -84,7 +84,7 @@ class SessionController extends Controller
                     'retry_after_seconds' => $seconds,
                 ]);
                 throw ValidationException::withMessages([
-                    'password' => "Too many failed login attempts. Please try again in {$minutesRemaining} minute(s)."
+                    'password' => "Too many failed login attempts. Please try again in {$seconds} second(s)."
                 ]);
             }
 

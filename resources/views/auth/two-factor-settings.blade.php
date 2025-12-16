@@ -272,7 +272,7 @@
                         <button type="submit" class="btn-primary">Verify & Enable 2FA</button>
                     </form>
                     
-                    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+                    <script src="/assets/js/qrcode.min.js"></script>
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             new QRCode(document.getElementById('qrcode'), {

@@ -39,6 +39,31 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="admin-profile-current-password">Current Password <span class="required">*</span></label>
+                            <input type="password" id="admin-profile-current-password" wire:model="current_password" placeholder="Enter current password" required>
+                            @error('current_password')
+                                <span class="error-text">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        @if(auth()->user()?->two_factor_confirmed_at)
+                            <div class="form-group">
+                                <label for="admin-profile-twofactor-code">Authenticator Code</label>
+                                <input type="text" id="admin-profile-twofactor-code" wire:model="two_factor_code" inputmode="numeric" pattern="[0-9]*" placeholder="6-digit code">
+                                @error('two_factor_code')
+                                    <span class="error-text">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="admin-profile-recovery-code">Recovery Code</label>
+                                <input type="text" id="admin-profile-recovery-code" wire:model="recovery_code" placeholder="Recovery code">
+                                @error('recovery_code')
+                                    <span class="error-text">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        @endif
+                    </div>
                     <div class="form-actions">
                         <button type="submit" class="btn-submit" disabled wire:dirty.remove.attr='disabled'>
                             Save Changes

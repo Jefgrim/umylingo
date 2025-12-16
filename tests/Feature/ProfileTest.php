@@ -22,6 +22,7 @@ class ProfileTest extends TestCase
             'lastname' => 'Doe',
             'username' => 'johndoe',
             'email' => 'john@example.com',
+            'password' => 'password',
             'isAdmin' => false,
         ]);
     }
@@ -43,6 +44,7 @@ class ProfileTest extends TestCase
             ->set('lastname', 'Smith')
             ->set('username', 'janesmith')
             ->set('email', 'jane@example.com')
+            ->set('current_password', 'password')
             ->call('updateProfile');
 
         $this->assertDatabaseHas('users', [
@@ -62,6 +64,7 @@ class ProfileTest extends TestCase
             ->assertSet('firstname', 'John')
             ->assertSet('lastname', 'Doe')
             ->assertSet('username', 'johndoe')
+            ->assertSet('password', '') // password field should be empty
             ->assertSet('email', 'john@example.com');
     }
 
@@ -75,6 +78,7 @@ class ProfileTest extends TestCase
 
         Livewire::test('profile')
             ->set('username', 'existinguser')
+            ->set('current_password', 'password')
             ->call('updateProfile')
             ->assertHasErrors(['username']);
     }
@@ -89,6 +93,7 @@ class ProfileTest extends TestCase
 
         Livewire::test('profile')
             ->set('email', 'existing@example.com')
+            ->set('current_password', 'password')
             ->call('updateProfile')
             ->assertHasErrors(['email']);
     }
@@ -100,6 +105,7 @@ class ProfileTest extends TestCase
         Livewire::test('profile')
             ->set('firstname', 'John Updated')
             ->set('username', 'johndoe') // Same username
+            ->set('current_password', 'password')
             ->call('updateProfile')
             ->assertHasNoErrors();
 
@@ -119,6 +125,7 @@ class ProfileTest extends TestCase
             ->set('lastname', '')
             ->set('username', '')
             ->set('email', '')
+            ->set('current_password', 'password')
             ->call('updateProfile')
             ->assertHasErrors(['firstname', 'lastname', 'username', 'email']);
     }
@@ -129,6 +136,7 @@ class ProfileTest extends TestCase
 
         Livewire::test('profile')
             ->set('email', 'invalid-email')
+            ->set('current_password', 'password')
             ->call('updateProfile')
             ->assertHasErrors(['email']);
     }

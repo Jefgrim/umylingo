@@ -1,4 +1,4 @@
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/assets/js/chart.js"></script>
 <script>
     const currentYear = "{{ now()->year }}";
 
