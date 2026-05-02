@@ -27,8 +27,10 @@ class UserManagement extends AdminComponent
 
     public $isModalOpen = false;
     public $isConfirmModalOpen = false;
+    public $isDetailsModalOpen = false;
     public $isEditMode = false;
     public $targetUserId;
+    public $selectedUser;
 
     protected $queryString = ['search', 'roleFilter'];
 
@@ -81,6 +83,18 @@ class UserManagement extends AdminComponent
         $this->openModal();
     }
 
+    public function openDetailsModal(User $user)
+    {
+        $this->selectedUser = $user;
+        $this->isDetailsModalOpen = true;
+    }
+
+    public function closeDetailsModal()
+    {
+        $this->isDetailsModalOpen = false;
+        $this->selectedUser = null;
+    }
+
     public function editUser(User $user)
     {
         $this->isEditMode = true;
@@ -92,6 +106,7 @@ class UserManagement extends AdminComponent
         $this->isAdmin = $user->isAdmin;
         $this->isActive = $user->isActive;
         $this->password = ''; // Don't show password
+        $this->isDetailsModalOpen = false; // Close details if coming from there
         $this->isModalOpen = true;
     }
 
