@@ -1,5 +1,7 @@
 [variables]
 NIXPACKS_PHP_VERSION = "8.3"
+LOG_CHANNEL = "stderr"
+LOG_LEVEL = "debug"
 
 [phases.setup]
 nixPkgs = [
