@@ -4,6 +4,7 @@ nixPkgs = [
     "php84Packages.composer",
     "php84Extensions.pdo",
     "php84Extensions.pdo_mysql",
+    "php84Extensions.mysqlnd",
     "php84Extensions.mbstring",
     "php84Extensions.xml",
     "php84Extensions.tokenizer",
