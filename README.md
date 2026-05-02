@@ -31,40 +31,39 @@ php artisan serve
 
 ### 3. Set Environment Variables
 
-In your **app service → Variables tab**, add the following:
+In your **app service → Variables tab → Raw Editor**, add the following:
 
-| Variable | Value |
-|---|---|
-| `APP_NAME` | `umylingo` |
-| `APP_ENV` | `production` |
-| `APP_KEY` | `base64:Xrh5EKXiL5TZ/ROQbWQlgAuCuvf3Ox+UIFpAC2h4RJI=` |
-| `APP_DEBUG` | `false` |
-| `APP_URL` | `https://<your-app>.railway.app` |
-| `DB_CONNECTION` | `mysql` |
-| `DB_HOST` | `${{MySQL.MYSQLHOST}}` |
-| `DB_PORT` | `${{MySQL.MYSQLPORT}}` |
-| `DB_DATABASE` | `${{MySQL.MYSQLDATABASE}}` |
-| `DB_USERNAME` | `${{MySQL.MYSQLUSER}}` |
-| `DB_PASSWORD` | `${{MySQL.MYSQLPASSWORD}}` |
-| `SESSION_DRIVER` | `database` |
-| `SESSION_LIFETIME` | `120` |
-| `SESSION_SECURE_COOKIE` | `true` |
-| `QUEUE_CONNECTION` | `sync` |
-| `CACHE_STORE` | `database` |
-| `FILESYSTEM_DISK` | `local` |
-| `LOG_CHANNEL` | `stderr` |
-| `LOG_LEVEL` | `error` |
-| `SEEDER_USER_PASSWORD` | `123456123456` |
-| `SEEDER_ADMIN1_FIRSTNAME` | `Glenn` |
-| `SEEDER_ADMIN1_LASTNAME` | `Oliva` |
-| `SEEDER_ADMIN1_USERNAME` | `admin` |
-| `SEEDER_ADMIN1_EMAIL` | `admin@umylingo` |
-| `SEEDER_ADMIN1_PASSWORD` | `123456123456` |
-| `SEEDER_ADMIN2_FIRSTNAME` | `Cyril` |
-| `SEEDER_ADMIN2_LASTNAME` | `Tomas` |
-| `SEEDER_ADMIN2_USERNAME` | `admin2` |
-| `SEEDER_ADMIN2_EMAIL` | `admin2@umylingo` |
-| `SEEDER_ADMIN2_PASSWORD` | `123456123456` |
+APP_NAME=umylingo
+APP_ENV=production
+APP_KEY=base64:Xrh5EKXiL5TZ/ROQbWQlgAuCuvf3Ox+UIFpAC2h4RJI=
+APP_DEBUG=false
+APP_URL=${{RAILWAY_PUBLIC_DOMAIN}}
+DB_CONNECTION=mysql
+DB_HOST=${{MySQL.MYSQLHOST}}
+DB_PORT=${{MySQL.MYSQLPORT}}
+DB_DATABASE=${{MySQL.MYSQLDATABASE}}
+DB_USERNAME=${{MySQL.MYSQLUSER}}
+DB_PASSWORD=${{MySQL.MYSQLPASSWORD}}
+SESSION_DRIVER=database
+SESSION_LIFETIME=120
+SESSION_SECURE_COOKIE=true
+QUEUE_CONNECTION=sync
+CACHE_STORE=database
+FILESYSTEM_DISK=local
+LOG_CHANNEL=stderr
+LOG_LEVEL=error
+SEEDER_USER_PASSWORD=123456123456
+SEEDER_ADMIN1_FIRSTNAME=Glenn
+SEEDER_ADMIN1_LASTNAME=Oliva
+SEEDER_ADMIN1_USERNAME=admin
+SEEDER_ADMIN1_EMAIL=admin@umylingo
+SEEDER_ADMIN1_PASSWORD=123456123456
+SEEDER_ADMIN2_FIRSTNAME=Cyril
+SEEDER_ADMIN2_LASTNAME=Tomas
+SEEDER_ADMIN2_USERNAME=admin2
+SEEDER_ADMIN2_EMAIL=admin2@umylingo
+SEEDER_ADMIN2_PASSWORD=123456123456
+
 
 > **Note:** `${{MySQL.MYSQLHOST}}` is Railway's reference variable syntax — it pulls the value automatically from your MySQL service.
 
