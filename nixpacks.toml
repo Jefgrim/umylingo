@@ -15,6 +15,9 @@ nixPkgs = [
     "php84Extensions.openssl",
     "php84Extensions.session",
     "php84Extensions.intl",
+    "php84Extensions.gd",
+    "php84Extensions.zip",
+    "php84Extensions.zlib",
     "nodejs_20",
     "nodePackages.npm"
 ]
@@ -28,11 +31,8 @@ cmds = [
 
 [phases.build]
 cmds = [
-    "php artisan config:cache",
-    "php artisan route:cache",
-    "php artisan view:cache",
-    "php artisan event:cache"
+    "php artisan view:cache"
 ]
 
 [start]
-cmd = "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"
+cmd = "php artisan migrate --force; php artisan config:cache; php artisan route:cache; php artisan serve --host=0.0.0.0 --port=$PORT"
