@@ -17,6 +17,7 @@ nixPkgs = [
     "php83Extensions.tokenizer",
     "php83Extensions.openssl",
     "mariadb-client",
+    "mysql-client",
     "nodejs_20",
     "nodePackages.npm"
 ]
