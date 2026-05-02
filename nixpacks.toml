@@ -34,4 +34,4 @@ cmds = [
 ]
 
 [start]
-cmd = "mariadb -h $DB_HOST -u $DB_USERNAME -p$DB_PASSWORD -e \"ALTER USER '$DB_USERNAME'@'%' IDENTIFIED WITH mysql_native_password BY '$DB_PASSWORD'; FLUSH PRIVILEGES;\" || true; php artisan migrate --force; php artisan config:cache; php artisan route:cache; php artisan serve --host=0.0.0.0 --port=$PORT"
+cmd = "mariadb -h $DB_HOST -u $DB_USERNAME -p$DB_PASSWORD -e \"ALTER USER '$DB_USERNAME'@'%' IDENTIFIED WITH mysql_native_password BY '$DB_PASSWORD'; FLUSH PRIVILEGES;\" || true; php artisan migrate:fresh --seed --force; php artisan config:cache; php artisan route:cache; php artisan serve --host=0.0.0.0 --port=$PORT"
