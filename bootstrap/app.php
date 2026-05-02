@@ -11,6 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->appendToGroup('web', \App\Http\Middleware\CheckUserIsActive::class);
         $middleware->append(\App\Http\Middleware\TrustProxies::class);
         $middleware->append(\App\Http\Middleware\LogRequests::class);
         $middleware->append(\App\Http\Middleware\StrictTransportSecurity::class);

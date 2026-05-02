@@ -70,6 +70,17 @@ class SessionController extends Controller
             ]);
         }
 
+        // Check if account is active
+        if (!$user->isActive) {
+            Log::warning('Login attempt for deactivated account', [
+                'username' => $attributes['username'],
+                'ip' => $ipAddress,
+            ]);
+            throw ValidationException::withMessages([
+                'username' => "Your account has been deactivated. Please contact an administrator."
+            ]);
+        }
+
         // Check password
         if (!Hash::check($attributes['password'], $user->password)) {
             RateLimiter::hit($key, self::LOCK_TIME_SECONDS);

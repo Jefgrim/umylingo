@@ -45,6 +45,13 @@ class TwoFactorChallengeController extends Controller
             return redirect('/login');
         }
 
+        if (!$user->isActive) {
+            $request->session()->forget(['login.id', 'login.remember']);
+            throw ValidationException::withMessages([
+                'code' => 'Your account has been deactivated. Please contact an administrator.',
+            ]);
+        }
+
         $challengeKey = $this->throttleKey($request->ip());
 
         if (RateLimiter::tooManyAttempts($challengeKey, self::MAX_CHALLENGE_ATTEMPTS)) {

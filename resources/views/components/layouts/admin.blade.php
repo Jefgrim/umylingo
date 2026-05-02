@@ -21,6 +21,7 @@
             <div class="dropdown-content">
                 <a href="/dashboard">Dashboard</a>
                 <a href="/dashboard/decks">Decks</a>
+                <a href="/dashboard/users">Users</a>
                 <a href="/dashboard/profile">Profile</a>
                 <form class="profile-icon" style="display: block;" method="POST"
                     action="/logout">
@@ -46,6 +47,7 @@
         <div class="sidebar">
             <a href="/dashboard" wire:current='active'>Dashboard</a>
             <a href="/dashboard/decks" wire:current='active'>Decks</a>
+            <a href="/dashboard/users" wire:current='active'>Users</a>
             <a href="/dashboard/profile" wire:current='active'>Profile</a>
         </div>
         <div class="main">

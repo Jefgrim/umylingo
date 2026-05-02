@@ -65,6 +65,11 @@ Route::get('/dashboard/decks', DashboardDecks::class)
     ->middleware('auth')
     ->can('administrate');
 
+Route::get('/dashboard/users', \App\Livewire\Admin\UserManagement::class)
+    ->middleware('auth')
+    ->can('administrate')
+    ->name('admin.users');
+
 Route::get('/dashboard/logs', [AdminLogController::class, 'index'])
     ->middleware('auth')
     ->can('administrate')
